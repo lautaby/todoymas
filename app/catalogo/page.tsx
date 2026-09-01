@@ -109,7 +109,7 @@ function CatalogContent() {
       const parentCat = parents.find(c => c.slug === selectedCategory);
       if (parentCat) {
         result = result.filter(p => {
-          const pcat = p.category_id ? categoryMap[pcategory_id] : null;
+          const pcat = p.category_id ? categoryMap[p.category_id] : null;
           const psub = p.subcategory_id ? categoryMap[p.subcategory_id] : null;
           return pcat?.slug === selectedCategory || psub?.slug === selectedCategory ||
             (psub && parents.find(pp => pp.id === psub.parent_id)?.slug === selectedCategory);
