@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "cf-build": "opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion",
     "build": "next build",
     "dev": "next dev",
     "start": "next start",
