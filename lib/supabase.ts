@@ -48,6 +48,8 @@ export type Order = {
   total: number;
   items: OrderItem[];
   created_at: string;
+  channel: 'online' | 'mostrador' | string;
+  payment_method: string | null;
 };
 
 export type Profile = {

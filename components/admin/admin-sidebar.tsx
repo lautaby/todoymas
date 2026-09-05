@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Store, LayoutDashboard, Package, FolderTree, ShoppingCart, LogOut, Menu, X } from 'lucide-react';
+import { Store, LayoutDashboard, Package, FolderTree, ShoppingCart, ShoppingBag, LogOut, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/lib/auth-context';
 import { cn } from '@/lib/utils';
@@ -10,6 +10,7 @@ import { useState } from 'react';
 
 const navItems = [
   { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/admin/ventas', label: 'Mostrador', icon: ShoppingBag },
   { href: '/admin/productos', label: 'Productos', icon: Package },
   { href: '/admin/categorias', label: 'Categorías', icon: FolderTree },
   { href: '/admin/pedidos', label: 'Pedidos', icon: ShoppingCart },

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Eye, Truck, MapPin } from 'lucide-react';
+import { Eye, Truck, MapPin, ShoppingBag, Globe } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -52,11 +52,19 @@ const STATUS_VARIANT: Record<string, 'default' | 'secondary' | 'destructive' | '
   cancelado: 'destructive',
 };
 
+const PAYMENT_LABEL: Record<string, string> = {
+  efectivo: 'Efectivo',
+  tarjeta: 'Tarjeta',
+  transferencia: 'Transferencia',
+  otro: 'Otro',
+};
+
 export default function PedidosPage() {
   const { toast } = useToast();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<string>('todos');
+  const [channelFilter, setChannelFilter] = useState<string>('todos');
   const [selected, setSelected] = useState<Order | null>(null);
   const [updating, setUpdating] = useState(false);
 
@@ -71,7 +79,9 @@ export default function PedidosPage() {
     loadData();
   }, []);
 
-  const filtered = filter === 'todos' ? orders : orders.filter((o) => o.status === filter);
+  const filtered = orders
+    .filter((o) => filter === 'todos' || o.status === filter)
+    .filter((o) => channelFilter === 'todos' || o.channel === channelFilter);
 
   async function updateStatus(orderId: string, status: string) {
     setUpdating(true);
@@ -95,16 +105,29 @@ export default function PedidosPage() {
         <p className="text-muted-foreground">{orders.length} pedidos en total</p>
       </div>
 
-      <Tabs value={filter} onValueChange={setFilter}>
-        <TabsList className="flex-wrap h-auto">
-          <TabsTrigger value="todos">Todos</TabsTrigger>
-          {STATUSES.map((s) => (
-            <TabsTrigger key={s} value={s}>
-              {STATUS_LABEL[s]}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+        <Tabs value={filter} onValueChange={setFilter}>
+          <TabsList className="flex-wrap h-auto">
+            <TabsTrigger value="todos">Todos</TabsTrigger>
+            {STATUSES.map((s) => (
+              <TabsTrigger key={s} value={s}>
+                {STATUS_LABEL[s]}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
+
+        <Select value={channelFilter} onValueChange={setChannelFilter}>
+          <SelectTrigger className="w-full sm:w-[170px]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="todos">Todos los canales</SelectItem>
+            <SelectItem value="online">Online</SelectItem>
+            <SelectItem value="mostrador">Mostrador</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
 
       <div className="border rounded-lg overflow-x-auto bg-card">
         <Table>
@@ -112,6 +135,7 @@ export default function PedidosPage() {
             <TableRow>
               <TableHead>Cliente</TableHead>
               <TableHead>Fecha</TableHead>
+              <TableHead>Canal</TableHead>
               <TableHead>Envío</TableHead>
               <TableHead>Total</TableHead>
               <TableHead>Estado</TableHead>
@@ -121,14 +145,14 @@ export default function PedidosPage() {
           <TableBody>
             {loading && (
               <TableRow>
-                <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
+                <TableCell colSpan={7} className="text-center text-muted-foreground py-8">
                   Cargando...
                 </TableCell>
               </TableRow>
             )}
             {!loading && filtered.length === 0 && (
               <TableRow>
-                <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
+                <TableCell colSpan={7} className="text-center text-muted-foreground py-8">
                   No hay pedidos en este estado.
                 </TableCell>
               </TableRow>
@@ -140,6 +164,16 @@ export default function PedidosPage() {
                   <p className="text-xs text-muted-foreground">{o.customer_phone}</p>
                 </TableCell>
                 <TableCell className="text-muted-foreground text-sm">{formatDate(o.created_at)}</TableCell>
+                <TableCell className="text-sm">
+                  <Badge variant={o.channel === 'mostrador' ? 'secondary' : 'outline'} className="inline-flex items-center gap-1 font-normal">
+                    {o.channel === 'mostrador' ? (
+                      <ShoppingBag className="h-3 w-3" />
+                    ) : (
+                      <Globe className="h-3 w-3" />
+                    )}
+                    {o.channel === 'mostrador' ? 'Mostrador' : 'Online'}
+                  </Badge>
+                </TableCell>
                 <TableCell className="text-sm">
                   <span className="inline-flex items-center gap-1">
                     {o.shipping_method === 'envio' ? (
@@ -172,7 +206,17 @@ export default function PedidosPage() {
           {selected && (
             <>
               <DialogHeader>
-                <DialogTitle>Pedido de {selected.customer_name}</DialogTitle>
+                <DialogTitle className="flex items-center gap-2 flex-wrap">
+                  Pedido de {selected.customer_name}
+                  <Badge variant={selected.channel === 'mostrador' ? 'secondary' : 'outline'} className="inline-flex items-center gap-1 font-normal">
+                    {selected.channel === 'mostrador' ? (
+                      <ShoppingBag className="h-3 w-3" />
+                    ) : (
+                      <Globe className="h-3 w-3" />
+                    )}
+                    {selected.channel === 'mostrador' ? 'Mostrador' : 'Online'}
+                  </Badge>
+                </DialogTitle>
               </DialogHeader>
 
               <div className="space-y-4">
@@ -193,6 +237,12 @@ export default function PedidosPage() {
                     <p className="text-muted-foreground">Fecha</p>
                     <p>{formatDate(selected.created_at)}</p>
                   </div>
+                  {selected.payment_method && (
+                    <div>
+                      <p className="text-muted-foreground">Forma de pago</p>
+                      <p>{PAYMENT_LABEL[selected.payment_method] ?? selected.payment_method}</p>
+                    </div>
+                  )}
                   {selected.address && (
                     <div className="col-span-2">
                       <p className="text-muted-foreground">Dirección</p>
