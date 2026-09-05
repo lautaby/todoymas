@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { ArrowRight, Truck, ShieldCheck, Store, Headphones, Leaf } from 'lucide-react';
 import { StoreLayout } from '@/components/store-layout';
 import { ProductCard } from '@/components/product-card';
-import { OrganicBlob, LeafScatter, LeafSprig } from '@/components/decorative-plants';
+import { OrganicBlob, LeafScatter, LeafSprig, Vine, Bloom } from '@/components/decorative-plants';
 import { supabase, type Product, type Category } from '@/lib/supabase';
 import { Fish, Cpu, Flower2, Home, Shirt, Sparkles, Tent, Camera } from 'lucide-react';
 
@@ -46,6 +46,8 @@ export default function HomePage() {
         <OrganicBlob className="absolute -right-32 -top-32 h-80 w-80 text-primary/25 animate-drift sm:-right-40 sm:-top-40 sm:h-[560px] sm:w-[560px] md:-right-24 md:-top-24" />
         <OrganicBlob className="absolute -left-28 bottom-[-6rem] h-64 w-64 text-accent/20 opacity-80 animate-drift sm:-left-52 sm:bottom-[-12rem] sm:h-[460px] sm:w-[460px]" />
         <LeafScatter className="absolute right-3 top-3 h-28 w-28 text-primary sm:right-8 sm:top-8 sm:h-64 sm:w-64" />
+        <Bloom className="absolute left-4 bottom-8 h-16 w-16 text-accent opacity-30 sm:left-10 sm:bottom-14 sm:h-24 sm:w-24" />
+        <Bloom className="absolute right-1/4 top-6 h-10 w-10 text-primary opacity-20 hidden sm:block" />
         <div className="container mx-auto px-4 relative">
           <div className="flex flex-col items-center text-center py-20 md:py-28 max-w-3xl mx-auto">
             <span className="inline-flex items-center gap-2 rounded-full bg-secondary px-4 py-1.5 text-sm font-medium text-secondary-foreground mb-6">
@@ -80,6 +82,7 @@ export default function HomePage() {
       <section className="relative overflow-hidden border-y border-border bg-secondary/40">
         <LeafSprig className="absolute -bottom-4 left-2 h-20 w-12 text-primary sm:-bottom-6 sm:left-6 sm:h-32 sm:w-20" />
         <LeafSprig className="absolute -top-6 right-3 h-16 w-10 text-accent rotate-[160deg] sm:-top-10 sm:right-10 sm:h-28 sm:w-16" />
+        <Vine className="pointer-events-none absolute -bottom-2 left-0 h-8 w-full text-primary opacity-[0.12] sm:h-10" />
         <div className="container mx-auto px-4 py-8 relative">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
@@ -105,6 +108,7 @@ export default function HomePage() {
       {/* Categories */}
       <section className="relative overflow-hidden container mx-auto px-4 py-14">
         <LeafSprig className="pointer-events-none absolute -top-4 -left-2 h-24 w-14 text-primary opacity-[0.09] -rotate-12 sm:h-36 sm:w-20" />
+        <Bloom className="pointer-events-none absolute -bottom-6 right-2 h-20 w-20 text-accent opacity-[0.12] sm:h-28 sm:w-28" />
         <div className="flex items-center justify-between mb-6 relative">
           <h2 className="text-2xl md:text-3xl font-display font-semibold tracking-tight">Explorá por categorías</h2>
           <Link href="/catalogo" className="text-sm font-medium text-primary hover:underline">
@@ -133,6 +137,7 @@ export default function HomePage() {
       {/* Featured products */}
       <section className="relative overflow-hidden container mx-auto px-4 py-10">
         <LeafScatter className="pointer-events-none absolute -right-6 bottom-0 h-32 w-32 text-accent opacity-[0.1] sm:h-52 sm:w-52" />
+        <LeafSprig className="pointer-events-none absolute -top-6 -left-3 h-24 w-14 text-primary opacity-[0.08] rotate-[25deg] sm:h-36 sm:w-20" />
         <div className="flex items-center justify-between mb-6 relative">
           <h2 className="text-2xl md:text-3xl font-display font-semibold tracking-tight">Productos destacados</h2>
           <Link href="/catalogo?destacados=true" className="text-sm font-medium text-primary hover:underline">
@@ -158,6 +163,8 @@ export default function HomePage() {
       <section className="container mx-auto px-4 py-14">
         <div className="relative overflow-hidden rounded-[2.5rem] bg-primary p-8 md:p-14 text-center shadow-soft-lg">
           <OrganicBlob className="absolute -right-28 -bottom-28 h-80 w-80 text-primary-foreground opacity-15" />
+          <Bloom className="absolute left-6 top-6 h-16 w-16 text-primary-foreground opacity-20 sm:left-10 sm:top-10 sm:h-24 sm:w-24" />
+          <Vine className="pointer-events-none absolute top-0 left-0 h-6 w-full text-primary-foreground opacity-[0.15] sm:h-8" />
           <div className="relative">
             <h2 className="text-3xl md:text-4xl font-display font-semibold tracking-tight text-primary-foreground">
               ¿Buscás algo específico?

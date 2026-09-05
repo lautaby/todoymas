@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { Search, SlidersHorizontal, X, ChevronDown } from 'lucide-react';
 import { StoreLayout } from '@/components/store-layout';
 import { ProductCard } from '@/components/product-card';
-import { LeafSprig } from '@/components/decorative-plants';
+import { LeafSprig, Bloom } from '@/components/decorative-plants';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -274,6 +274,7 @@ function CatalogContent() {
       <div className="relative overflow-hidden">
         <LeafSprig className="pointer-events-none absolute -top-3 right-2 h-24 w-14 text-primary opacity-[0.1] rotate-12 sm:-top-6 sm:right-6 sm:h-40 sm:w-24" />
         <LeafSprig className="pointer-events-none absolute -bottom-4 -left-2 h-24 w-14 text-accent opacity-[0.08] -rotate-[20deg] sm:-bottom-6 sm:-left-3 sm:h-32 sm:w-20 md:h-40 md:w-24" />
+        <Bloom className="pointer-events-none absolute right-1/3 -bottom-8 h-20 w-20 text-primary opacity-[0.06] hidden md:block" />
         <div className="container mx-auto px-4 py-8 relative">
           <div className="flex items-center justify-between mb-6">
           <div>

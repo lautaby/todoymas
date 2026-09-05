@@ -66,3 +66,42 @@ export function LeafSprig({ className }: { className?: string }) {
     </svg>
   );
 }
+
+// Enredadera horizontal: tallo sinuoso con hojitas alternadas, pensada
+// para correr a lo largo de un borde (top/bottom de una sección).
+export function Vine({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 500 90" className={className} fill="none" aria-hidden="true">
+      <path
+        d="M0 45c40-30 80 30 120 0s80-30 120 0 80 30 120 0 80-30 140 0"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        opacity="0.45"
+      />
+      <path d="M55 40c-4-16 6-28 22-30-2 18-8 28-22 30Z" fill="currentColor" opacity="0.28" />
+      <path d="M135 20c10-14 26-14 38-4-14 10-26 12-38 4Z" fill="currentColor" opacity="0.24" />
+      <path d="M215 60c-6-16 2-30 18-34 0 18-4 30-18 34Z" fill="currentColor" opacity="0.3" />
+      <path d="M295 20c10-14 26-14 38-4-14 10-26 12-38 4Z" fill="currentColor" opacity="0.24" />
+      <path d="M375 60c-6-16 2-30 18-34 0 18-4 30-18 34Z" fill="currentColor" opacity="0.28" />
+      <circle cx="450" cy="42" r="4" fill="currentColor" opacity="0.3" />
+    </svg>
+  );
+}
+
+// Flor simple de cinco pétalos con centro, para sumar variedad de
+// elementos naturales además de hojas (acentos chicos, poca opacidad).
+export function Bloom({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 100 100" className={className} aria-hidden="true">
+      <g fill="currentColor">
+        <ellipse cx="50" cy="24" rx="13" ry="20" opacity="0.28" />
+        <ellipse cx="50" cy="24" rx="13" ry="20" opacity="0.28" transform="rotate(72 50 50)" />
+        <ellipse cx="50" cy="24" rx="13" ry="20" opacity="0.28" transform="rotate(144 50 50)" />
+        <ellipse cx="50" cy="24" rx="13" ry="20" opacity="0.28" transform="rotate(216 50 50)" />
+        <ellipse cx="50" cy="24" rx="13" ry="20" opacity="0.28" transform="rotate(288 50 50)" />
+        <circle cx="50" cy="50" r="10" opacity="0.4" />
+      </g>
+    </svg>
+  );
+}

@@ -11,7 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Textarea } from '@/components/ui/textarea';
-import { OrganicBlob, LeafScatter, LeafSprig } from '@/components/decorative-plants';
+import { OrganicBlob, LeafScatter, LeafSprig, Bloom } from '@/components/decorative-plants';
 import { useCart } from '@/lib/cart-context';
 import { formatPrice } from '@/lib/format';
 import { supabase } from '@/lib/supabase';
@@ -89,6 +89,8 @@ export default function CheckoutPage() {
         <div className="relative overflow-hidden bg-hearth">
           <OrganicBlob className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 text-primary opacity-15 animate-drift sm:-right-32 sm:-top-32 sm:h-96 sm:w-96" />
           <LeafScatter className="pointer-events-none absolute -left-14 bottom-0 h-40 w-40 text-accent opacity-20 sm:-left-24 sm:h-72 sm:w-72" />
+          <Bloom className="pointer-events-none absolute right-8 bottom-10 h-16 w-16 text-accent opacity-25 sm:right-16 sm:h-24 sm:w-24" />
+          <Bloom className="pointer-events-none absolute left-1/2 -top-4 h-12 w-12 text-primary opacity-15 hidden sm:block" />
           <div className="container mx-auto px-4 py-16 relative">
           <div className="max-w-md mx-auto text-center">
             <div className="flex h-20 w-20 mx-auto items-center justify-center rounded-full bg-success/10 mb-6">
@@ -133,6 +135,7 @@ export default function CheckoutPage() {
     <StoreLayout>
       <div className="relative overflow-hidden">
         <LeafSprig className="pointer-events-none absolute -top-3 right-2 h-20 w-12 text-primary opacity-[0.08] rotate-12 sm:-top-6 sm:right-8 sm:h-32 sm:w-20" />
+        <LeafSprig className="pointer-events-none absolute -bottom-6 -left-3 h-24 w-14 text-accent opacity-[0.06] -rotate-[15deg] hidden md:block md:h-36 md:w-20" />
         <div className="container mx-auto px-4 py-8 relative">
         <Link href="/carrito" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary mb-6">
           <ArrowLeft className="h-4 w-4" />
