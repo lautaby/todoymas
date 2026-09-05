@@ -20,7 +20,7 @@ export default function AdminLoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-accent/30 to-secondary p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-primary text-primary-foreground mb-4">
+          <div className="inline-flex h-14 w-14 items-center justify-center rounded-none border-2 border-foreground bg-primary text-primary-foreground mb-4">
             <Store className="h-7 w-7" />
           </div>
           <h1 className="text-2xl font-bold">De todo y mas</h1>

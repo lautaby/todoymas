@@ -9,15 +9,30 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        mono: ['var(--font-mono)', 'ui-monospace', 'monospace'],
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'grid-pattern':
+          'linear-gradient(hsl(var(--foreground)/0.08) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)/0.08) 1px, transparent 1px)',
+      },
+      backgroundSize: {
+        grid: '32px 32px',
       },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
+      },
+      boxShadow: {
+        brutal: '4px 4px 0 0 hsl(var(--foreground))',
+        'brutal-sm': '2px 2px 0 0 hsl(var(--foreground))',
+        'brutal-lg': '8px 8px 0 0 hsl(var(--foreground))',
+        'brutal-primary': '4px 4px 0 0 hsl(var(--primary))',
       },
       colors: {
         background: 'hsl(var(--background))',

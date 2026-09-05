@@ -18,7 +18,7 @@ export default function CartPage() {
 
         {items.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-center">
-            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-muted mb-4">
+            <div className="flex h-20 w-20 items-center justify-center rounded-none border-2 border-foreground bg-muted mb-4">
               <ShoppingCart className="h-10 w-10 text-muted-foreground" />
             </div>
             <p className="text-lg font-medium">Tu carrito esta vacio</p>
@@ -39,7 +39,7 @@ export default function CartPage() {
               {items.map((item) => (
                 <div
                   key={item.product.id}
-                  className="flex gap-4 rounded-xl border bg-card p-4"
+                  className="flex gap-4 rounded-none border-2 border-foreground bg-card p-4"
                 >
                   <Link href={`/producto/${item.product.id}`} className="shrink-0">
                     <div className="h-24 w-24 overflow-hidden rounded-lg border bg-muted">
@@ -120,7 +120,7 @@ export default function CartPage() {
 
             {/* Summary */}
             <div className="lg:col-span-1">
-              <div className="sticky top-36 rounded-xl border bg-card p-6 space-y-4">
+              <div className="sticky top-36 rounded-none border-2 border-foreground bg-card p-6 space-y-4">
                 <h2 className="font-bold text-lg">Resumen</h2>
                 <Separator />
                 <div className="space-y-2">

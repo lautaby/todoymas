@@ -41,34 +41,30 @@ export default function HomePage() {
   return (
     <StoreLayout>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-accent/30 to-secondary">
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-0 left-1/4 w-72 h-72 bg-primary/20 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent/40 rounded-full blur-3xl" />
-        </div>
+      <section className="relative overflow-hidden bg-background border-b-2 border-foreground bg-grid">
         <div className="container mx-auto px-4 relative">
           <div className="flex flex-col items-center text-center py-20 md:py-28 max-w-3xl mx-auto">
-            <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary mb-4">
+            <span className="inline-flex items-center gap-2 border-2 border-foreground bg-primary px-4 py-1.5 text-sm font-mono font-bold uppercase tracking-wide text-primary-foreground shadow-brutal-sm mb-6">
               <Sparkles className="h-4 w-4" />
-              Mas de 8 rubros en una sola tienda
+              Toda la variedad, un solo lugar
             </span>
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
+            <h1 className="text-5xl md:text-7xl font-black tracking-tighter uppercase">
               De todo y mas
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground mt-4 max-w-2xl">
+            <p className="text-lg md:text-xl text-muted-foreground mt-4 max-w-2xl font-mono">
               Pesca, tecnologia, hogar, belleza, camping, seguridad y mucho mas.
               Todo lo que buscas en un solo lugar, con envios a todo el pais.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 mt-8">
+            <div className="flex flex-col sm:flex-row gap-4 mt-8">
               <Link href="/catalogo">
-                <button className="inline-flex items-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg px-8 py-3 font-medium transition-colors">
+                <button className="inline-flex items-center gap-2 bg-primary text-primary-foreground border-2 border-foreground rounded-none px-8 py-3 font-mono font-bold uppercase tracking-wide shadow-brutal hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all">
                   Ver catalogo
                   <ArrowRight className="h-4 w-4" />
                 </button>
               </Link>
               <Link href="/catalogo?destacados=true">
-                <button className="inline-flex items-center gap-2 border border-input bg-background hover:bg-accent rounded-lg px-8 py-3 font-medium transition-colors">
-                  Productos destacados
+                <button className="inline-flex items-center gap-2 bg-background border-2 border-foreground rounded-none px-8 py-3 font-mono font-bold uppercase tracking-wide shadow-brutal hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all">
+                  Destacados
                 </button>
               </Link>
             </div>
@@ -77,7 +73,7 @@ export default function HomePage() {
       </section>
 
       {/* Features bar */}
-      <section className="border-b bg-white">
+      <section className="border-b-2 border-foreground bg-foreground text-background">
         <div className="container mx-auto px-4 py-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
@@ -87,12 +83,12 @@ export default function HomePage() {
               { icon: Headphones, title: 'Atencion personalizada', desc: 'Lun a Sab' },
             ].map((f, i) => (
               <div key={i} className="flex items-center gap-3">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-accent text-primary">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center border-2 border-background bg-primary text-primary-foreground">
                   <f.icon className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold">{f.title}</p>
-                  <p className="text-xs text-muted-foreground">{f.desc}</p>
+                  <p className="text-sm font-bold font-mono uppercase">{f.title}</p>
+                  <p className="text-xs text-background/60 font-mono">{f.desc}</p>
                 </div>
               </div>
             ))}
@@ -103,24 +99,24 @@ export default function HomePage() {
       {/* Categories */}
       <section className="container mx-auto px-4 py-12">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold">Explora por categorias</h2>
-          <Link href="/catalogo" className="text-sm text-primary hover:underline">
+          <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tight">Explora por categorias</h2>
+          <Link href="/catalogo" className="text-sm font-mono font-bold uppercase text-primary-foreground bg-foreground px-3 py-1.5 border-2 border-foreground hover:bg-primary hover:text-primary-foreground transition-colors">
             Ver todo
           </Link>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4">
           {categories.map((cat) => {
             const Icon = cat.icon ? iconMap[cat.icon] : Home;
             return (
               <Link
                 key={cat.id}
                 href={`/catalogo?categoria=${cat.slug}`}
-                className="group flex flex-col items-center gap-2 p-4 rounded-xl border bg-card hover:border-primary/30 hover:shadow-md transition-all"
+                className="group flex flex-col items-center gap-2 p-4 border-2 border-foreground bg-card shadow-brutal-sm hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
               >
-                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-accent text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                <div className="flex h-14 w-14 items-center justify-center border-2 border-foreground bg-secondary text-foreground group-hover:bg-primary transition-colors">
                   <Icon className="h-6 w-6" />
                 </div>
-                <span className="text-xs font-medium text-center">{cat.name}</span>
+                <span className="text-xs font-mono font-bold text-center uppercase">{cat.name}</span>
               </Link>
             );
           })}
@@ -130,15 +126,15 @@ export default function HomePage() {
       {/* Featured products */}
       <section className="container mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold">Productos destacados</h2>
-          <Link href="/catalogo?destacados=true" className="text-sm text-primary hover:underline">
+          <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tight">Productos destacados</h2>
+          <Link href="/catalogo?destacados=true" className="text-sm font-mono font-bold uppercase text-primary-foreground bg-foreground px-3 py-1.5 border-2 border-foreground hover:bg-primary hover:text-primary-foreground transition-colors">
             Ver mas
           </Link>
         </div>
         {loading ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="aspect-[3/4] rounded-xl bg-muted animate-pulse" />
+              <div key={i} className="aspect-[3/4] border-2 border-foreground bg-muted animate-pulse" />
             ))}
           </div>
         ) : (
@@ -152,19 +148,16 @@ export default function HomePage() {
 
       {/* CTA banner */}
       <section className="container mx-auto px-4 py-12">
-        <div className="relative overflow-hidden rounded-2xl bg-primary p-8 md:p-12 text-center">
-          <div className="absolute inset-0 opacity-20">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl" />
-          </div>
+        <div className="relative overflow-hidden border-2 border-foreground bg-primary p-8 md:p-12 text-center shadow-brutal-lg">
           <div className="relative">
-            <h2 className="text-2xl md:text-3xl font-bold text-primary-foreground">
-              ¿Buscas algo especifico?
+            <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight text-primary-foreground">
+              Buscas algo especifico?
             </h2>
-            <p className="text-primary-foreground/80 mt-2 max-w-xl mx-auto">
-              Explora nuestro catalogo completo con mas de 35 productos en 8 rubros diferentes.
+            <p className="text-primary-foreground/80 mt-2 max-w-xl mx-auto font-mono">
+              Explora nuestro catalogo completo con una gran variedad de productos y rubros.
             </p>
             <Link href="/catalogo">
-              <button className="mt-6 inline-flex items-center gap-2 bg-white text-primary hover:bg-white/90 rounded-lg px-6 py-3 font-medium transition-colors">
+              <button className="mt-6 inline-flex items-center gap-2 bg-foreground text-background border-2 border-foreground rounded-none px-6 py-3 font-mono font-bold uppercase tracking-wide hover:bg-background hover:text-foreground transition-colors">
                 Ir al catalogo
                 <ArrowRight className="h-4 w-4" />
               </button>

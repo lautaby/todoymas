@@ -52,18 +52,15 @@ export function Header() {
         )}
       >
         {/* Top bar */}
-        <div className="bg-primary text-primary-foreground text-xs">
-          <div className="container mx-auto px-4 flex items-center justify-between h-8">
-            <span className="hidden sm:block">Envios a todo el pais - Retiro en local disponible</span>
+        <div className="bg-foreground text-background text-xs font-mono">
+          <div className="container mx-auto px-4 flex items-center justify-center h-8 uppercase tracking-wider">
+            <span className="hidden sm:block">Envios a todo el pais // Retiro en local disponible</span>
             <span className="sm:hidden">Envios a todo el pais</span>
-            <Link href="/admin" className="hover:underline font-medium">
-              Panel admin
-            </Link>
           </div>
         </div>
 
         {/* Main header */}
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 border-b-2 border-foreground">
           <div className="flex items-center gap-4 h-16">
             {/* Mobile menu */}
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
@@ -72,9 +69,9 @@ export function Header() {
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-80 p-0">
-                <SheetHeader className="p-4 border-b">
-                  <SheetTitle className="flex items-center gap-2">
+              <SheetContent side="left" className="w-80 p-0 border-r-2 border-foreground">
+                <SheetHeader className="p-4 border-b-2 border-foreground">
+                  <SheetTitle className="flex items-center gap-2 font-mono uppercase">
                     <Store className="h-5 w-5 text-primary" />
                     De todo y mas
                   </SheetTitle>
@@ -96,12 +93,12 @@ export function Header() {
 
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 shrink-0">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+              <div className="flex h-9 w-9 items-center justify-center rounded-none border-2 border-foreground bg-primary text-primary-foreground shadow-brutal-sm">
                 <Store className="h-5 w-5" />
               </div>
               <div className="hidden sm:block">
-                <span className="text-lg font-bold tracking-tight">De todo y mas</span>
-                <p className="text-[10px] text-muted-foreground -mt-1">Tienda online</p>
+                <span className="text-lg font-bold tracking-tight font-mono uppercase">De todo y mas</span>
+                <p className="text-[10px] text-muted-foreground -mt-1 font-mono uppercase tracking-wider">Tienda online</p>
               </div>
             </Link>
 
@@ -112,20 +109,20 @@ export function Header() {
                 placeholder="Buscar productos..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-9 bg-secondary/50 border-secondary"
+                className="pl-9 bg-background border-foreground"
               />
             </form>
 
             {/* Cart */}
             <Button
-              variant="ghost"
+              variant="default"
               size="icon"
               className="relative shrink-0"
               onClick={() => setCartOpen(true)}
             >
               <ShoppingCart className="h-5 w-5" />
               {itemCount > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs font-bold px-1">
+                <span className="absolute -top-2 -right-2 flex h-5 min-w-5 items-center justify-center rounded-none border-2 border-foreground bg-foreground text-background text-xs font-bold px-1">
                   {itemCount}
                 </span>
               )}
@@ -133,14 +130,14 @@ export function Header() {
           </div>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-1 h-11 border-t">
+          <nav className="hidden md:flex items-center gap-1 h-11">
             <Link href="/">
-              <Button variant="ghost" size="sm" className={cn(pathname === '/' && 'bg-accent')}>
+              <Button variant="ghost" size="sm" className={cn('font-mono', pathname === '/' && 'bg-accent text-accent-foreground')}>
                 Inicio
               </Button>
             </Link>
             <Link href="/catalogo">
-              <Button variant="ghost" size="sm" className={cn(pathname.startsWith('/catalogo') && 'bg-accent')}>
+              <Button variant="ghost" size="sm" className={cn('font-mono', pathname.startsWith('/catalogo') && 'bg-accent text-accent-foreground')}>
                 Todos los productos
               </Button>
             </Link>

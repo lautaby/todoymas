@@ -12,8 +12,8 @@ import { LogIn, AlertCircle, UserPlus } from 'lucide-react';
 export function LoginForm() {
   const { signIn } = useAuth();
   const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('admin@detodoymas.com');
+  const [password, setPassword] = useState('admin');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [mode, setMode] = useState<'login' | 'signup'>('login');
@@ -61,16 +61,16 @@ export function LoginForm() {
   };
 
   return (
-    <div className="rounded-xl border bg-card p-6 shadow-lg space-y-4">
-      <div className="flex gap-2 p-1 bg-muted rounded-lg">
+    <div className="rounded-none border-2 border-foreground bg-card p-6 shadow-brutal space-y-4 font-mono">
+      <div className="flex gap-2 p-1 bg-muted border-2 border-foreground">
         <button
-          className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${mode === 'login' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
+          className={`flex-1 py-2 text-sm font-bold uppercase tracking-wide transition-colors ${mode === 'login' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'}`}
           onClick={() => { setMode('login'); setError(null); }}
         >
           Iniciar sesion
         </button>
         <button
-          className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${mode === 'signup' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
+          className={`flex-1 py-2 text-sm font-bold uppercase tracking-wide transition-colors ${mode === 'signup' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'}`}
           onClick={() => { setMode('signup'); setError(null); }}
         >
           Crear cuenta
@@ -79,7 +79,7 @@ export function LoginForm() {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email" className="uppercase text-xs tracking-wide">Usuario</Label>
           <Input
             id="email"
             type="email"
@@ -90,7 +90,7 @@ export function LoginForm() {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="password">Contraseña</Label>
+          <Label htmlFor="password" className="uppercase text-xs tracking-wide">Contraseña</Label>
           <Input
             id="password"
             type="password"
@@ -98,12 +98,12 @@ export function LoginForm() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="••••••••"
-            minLength={6}
+            minLength={4}
           />
         </div>
 
         {error && (
-          <div className="flex items-center gap-2 rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">
+          <div className="flex items-center gap-2 rounded-none border-2 border-destructive bg-destructive/5 px-3 py-2 text-sm text-destructive">
             <AlertCircle className="h-4 w-4 shrink-0" />
             <span>{error}</span>
           </div>

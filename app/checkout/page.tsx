@@ -87,7 +87,7 @@ export default function CheckoutPage() {
       <StoreLayout>
         <div className="container mx-auto px-4 py-16">
           <div className="max-w-md mx-auto text-center">
-            <div className="flex h-20 w-20 mx-auto items-center justify-center rounded-full bg-success/10 mb-6">
+            <div className="flex h-20 w-20 mx-auto items-center justify-center rounded-none border-2 border-success bg-success/10 mb-6">
               <Check className="h-10 w-10 text-success" />
             </div>
             <h1 className="text-2xl font-bold mb-2">¡Pedido realizado!</h1>
@@ -97,7 +97,7 @@ export default function CheckoutPage() {
             <p className="text-sm text-muted-foreground mb-6">
               Numero de pedido: <span className="font-mono font-medium text-foreground">{orderId?.slice(0, 8)}</span>
             </p>
-            <div className="rounded-xl border bg-card p-4 text-left mb-6">
+            <div className="rounded-none border-2 border-foreground bg-card p-4 text-left mb-6">
               <p className="text-sm text-muted-foreground">Nos contactaremos a la brevedad para coordinar {form.shipping_method === 'retiro' ? 'el retiro en nuestro local' : 'la entrega'}.</p>
             </div>
             <Link href="/catalogo">
@@ -138,7 +138,7 @@ export default function CheckoutPage() {
           {/* Form */}
           <div className="lg:col-span-2 space-y-6">
             {/* Contact info */}
-            <div className="rounded-xl border bg-card p-6 space-y-4">
+            <div className="rounded-none border-2 border-foreground bg-card p-6 space-y-4">
               <h2 className="font-semibold text-lg">Datos de contacto</h2>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -175,7 +175,7 @@ export default function CheckoutPage() {
             </div>
 
             {/* Shipping method */}
-            <div className="rounded-xl border bg-card p-6 space-y-4">
+            <div className="rounded-none border-2 border-foreground bg-card p-6 space-y-4">
               <h2 className="font-semibold text-lg">Metodo de envio</h2>
               <RadioGroup
                 value={form.shipping_method}
@@ -239,7 +239,7 @@ export default function CheckoutPage() {
             </div>
 
             {/* Notes */}
-            <div className="rounded-xl border bg-card p-6 space-y-4">
+            <div className="rounded-none border-2 border-foreground bg-card p-6 space-y-4">
               <h2 className="font-semibold text-lg">Notas del pedido (opcional)</h2>
               <Textarea
                 value={form.notes}
@@ -250,7 +250,7 @@ export default function CheckoutPage() {
             </div>
 
             {/* Payment (mocked) */}
-            <div className="rounded-xl border bg-card p-6 space-y-4">
+            <div className="rounded-none border-2 border-foreground bg-card p-6 space-y-4">
               <div className="flex items-center gap-2">
                 <CreditCard className="h-5 w-5 text-primary" />
                 <h2 className="font-semibold text-lg">Metodo de pago</h2>
@@ -267,7 +267,7 @@ export default function CheckoutPage() {
 
           {/* Summary */}
           <div className="lg:col-span-1">
-            <div className="sticky top-36 rounded-xl border bg-card p-6 space-y-4">
+            <div className="sticky top-36 rounded-none border-2 border-foreground bg-card p-6 space-y-4">
               <h2 className="font-bold text-lg">Tu pedido</h2>
               <Separator />
               <div className="space-y-3 max-h-64 overflow-y-auto">
