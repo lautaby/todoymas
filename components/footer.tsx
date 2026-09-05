@@ -7,7 +7,7 @@ import { supabase, type Category } from '@/lib/supabase';
 import { WhatsAppIcon } from '@/components/icons/whatsapp-icon';
 import { TikTokIcon } from '@/components/icons/tiktok-icon';
 import { LeafScatter, LeafSprig } from '@/components/decorative-plants';
-import { WHATSAPP_URL, INSTAGRAM_URL, TIKTOK_URL } from '@/lib/contact';
+import { WHATSAPP_URL, WHATSAPP_CHANNEL_URL, INSTAGRAM_URL, TIKTOK_URL } from '@/lib/contact';
 
 export function Footer() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -72,6 +72,17 @@ export function Footer() {
                 <TikTokIcon className="h-4 w-4" />
               </a>
             </div>
+            <p className="text-xs text-footer-foreground/60 pt-1 leading-relaxed">
+              ¿Querés recibir notificaciones de promociones y nuevos productos? Sumate a nuestro{' '}
+              <a
+                href={WHATSAPP_CHANNEL_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline font-medium"
+              >
+                canal de WhatsApp
+              </a>.
+            </p>
           </div>
 
           <div>
