@@ -6,17 +6,15 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/lib/auth-context';
-import { supabase } from '@/lib/supabase';
-import { LogIn, AlertCircle, UserPlus } from 'lucide-react';
+import { LogIn, AlertCircle } from 'lucide-react';
 
 export function LoginForm() {
   const { signIn } = useAuth();
   const router = useRouter();
   const [email, setEmail] = useState('admin@detodoymas.com');
-  const [password, setPassword] = useState('admin');
+  const [password, setPassword] = useState('admin123');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [mode, setMode] = useState<'login' | 'signup'>('login');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,33 +22,8 @@ export function LoginForm() {
     setLoading(true);
 
     try {
-      if (mode === 'signup') {
-        const { data, error: signUpError } = await supabase.auth.signUp({
-          email,
-          password,
-        });
-
-        if (signUpError) throw signUpError;
-
-        if (data.user) {
-          const { error: profileError } = await supabase
-            .from('profiles')
-            .insert({
-              id: data.user.id,
-              email,
-              role: 'admin',
-            });
-
-          if (profileError) {
-            console.error('Profile creation error:', profileError);
-          }
-        }
-
-        await signIn(email, password);
-      } else {
-        const { error: signInError } = await signIn(email, password);
-        if (signInError) throw new Error(signInError);
-      }
+      const { error: signInError } = await signIn(email, password);
+      if (signInError) throw new Error(signInError);
 
       router.push('/admin/dashboard');
     } catch (err: any) {
@@ -62,20 +35,9 @@ export function LoginForm() {
 
   return (
     <div className="rounded-none border-2 border-foreground bg-card p-6 shadow-brutal space-y-4 font-mono">
-      <div className="flex gap-2 p-1 bg-muted border-2 border-foreground">
-        <button
-          className={`flex-1 py-2 text-sm font-bold uppercase tracking-wide transition-colors ${mode === 'login' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'}`}
-          onClick={() => { setMode('login'); setError(null); }}
-        >
-          Iniciar sesion
-        </button>
-        <button
-          className={`flex-1 py-2 text-sm font-bold uppercase tracking-wide transition-colors ${mode === 'signup' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'}`}
-          onClick={() => { setMode('signup'); setError(null); }}
-        >
-          Crear cuenta
-        </button>
-      </div>
+      <h2 className="text-sm font-bold uppercase tracking-wide text-center pb-2 border-b-2 border-foreground">
+        Iniciar sesion
+      </h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2">
@@ -98,7 +60,7 @@ export function LoginForm() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="••••••••"
-            minLength={4}
+            minLength={6}
           />
         </div>
 
@@ -112,19 +74,11 @@ export function LoginForm() {
         <Button type="submit" className="w-full" disabled={loading}>
           {loading ? (
             'Procesando...'
-          ) : mode === 'login' ? (
-            <><LogIn className="h-4 w-4 mr-2" /> Iniciar sesion</>
           ) : (
-            <><UserPlus className="h-4 w-4 mr-2" /> Crear cuenta de admin</>
+            <><LogIn className="h-4 w-4 mr-2" /> Iniciar sesion</>
           )}
         </Button>
       </form>
-
-      {mode === 'signup' && (
-        <p className="text-xs text-muted-foreground text-center">
-          Al crear una cuenta, se te asignara el rol de administrador (dueño).
-        </p>
-      )}
     </div>
   );
 }
