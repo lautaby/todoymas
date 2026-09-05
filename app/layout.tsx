@@ -1,6 +1,6 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Fraunces, Nunito_Sans, JetBrains_Mono } from 'next/font/google';
+import { Fraunces, Nunito_Sans, JetBrains_Mono, Pacifico } from 'next/font/google';
 import { CartProvider } from '@/lib/cart-context';
 import { AuthProvider } from '@/lib/auth-context';
 import { Toaster } from '@/components/ui/toaster';
@@ -23,8 +23,14 @@ const jetbrainsMono = JetBrains_Mono({
   variable: '--font-mono',
 });
 
+const pacifico = Pacifico({
+  subsets: ['latin'],
+  variable: '--font-script',
+  weight: ['400'],
+});
+
 export const metadata: Metadata = {
-  title: 'Todo y mas - Tienda Online',
+  title: 'Todo y Más - Tienda Online',
   description: 'Tu tienda de confianza: variedad de rubros y productos, sin vueltas.',
 };
 
@@ -35,7 +41,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" suppressHydrationWarning>
-      <body className={`${nunitoSans.variable} ${fraunces.variable} ${jetbrainsMono.variable} font-sans`}>
+      <body className={`${nunitoSans.variable} ${fraunces.variable} ${jetbrainsMono.variable} ${pacifico.variable} font-sans`}>
         <AuthProvider>
           <CartProvider>
             {children}

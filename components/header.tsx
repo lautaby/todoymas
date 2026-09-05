@@ -3,7 +3,9 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { Menu, Search, ShoppingCart, X, Leaf } from 'lucide-react';
+import { Menu, Search, ShoppingCart, X, Leaf, Instagram } from 'lucide-react';
+import { TikTokIcon } from '@/components/icons/tiktok-icon';
+import { INSTAGRAM_URL, TIKTOK_URL, INSTAGRAM_HANDLE } from '@/lib/contact';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -53,10 +55,34 @@ export function Header() {
       >
         {/* Top bar */}
         <div className="bg-primary text-primary-foreground text-xs">
-          <div className="container mx-auto px-4 flex items-center justify-center h-8 gap-1.5">
-            <Leaf className="h-3 w-3 shrink-0" />
-            <span className="hidden sm:block">Envíos a todo el país · Retiro en local disponible</span>
-            <span className="sm:hidden">Envíos a todo el país</span>
+          <div className="container mx-auto px-4 flex items-center justify-between h-8 gap-1.5">
+            <span className="w-4 shrink-0 sm:hidden" aria-hidden="true" />
+            <div className="flex items-center gap-1.5 mx-auto sm:mx-0">
+              <Leaf className="h-3 w-3 shrink-0" />
+              <span className="hidden sm:block">Envíos a todo el país · Retiro en local disponible</span>
+              <span className="sm:hidden">Envíos a todo el país</span>
+            </div>
+            <div className="hidden sm:flex items-center gap-3 shrink-0">
+              <span className="opacity-90">@{INSTAGRAM_HANDLE}</span>
+              <a
+                href={INSTAGRAM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center hover:opacity-80 transition-opacity"
+                aria-label="Seguinos en Instagram"
+              >
+                <Instagram className="h-3.5 w-3.5" />
+              </a>
+              <a
+                href={TIKTOK_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center hover:opacity-80 transition-opacity"
+                aria-label="Seguinos en TikTok"
+              >
+                <TikTokIcon className="h-3.5 w-3.5" />
+              </a>
+            </div>
           </div>
         </div>
 
@@ -72,9 +98,9 @@ export function Header() {
               </SheetTrigger>
               <SheetContent side="left" className="w-80 p-0">
                 <SheetHeader className="p-4 border-b border-border">
-                  <SheetTitle className="flex items-center gap-2 font-display">
-                    <Leaf className="h-5 w-5 text-primary" />
-                    Todo y mas
+                  <SheetTitle className="flex items-center gap-2 font-script text-xl">
+                    <Leaf className="h-5 w-5 text-primary shrink-0" />
+                    Todo y Más
                   </SheetTitle>
                 </SheetHeader>
                 <div className="p-4 space-y-4">
@@ -98,7 +124,7 @@ export function Header() {
                 <Leaf className="h-5 w-5" />
               </div>
               <div className="hidden sm:block">
-                <span className="text-lg font-display font-semibold tracking-tight leading-none">Todo y mas</span>
+                <span className="text-2xl font-script leading-none">Todo y Más</span>
                 <p className="text-[11px] text-muted-foreground mt-0.5">Tienda online</p>
               </div>
             </Link>

@@ -11,7 +11,7 @@ import { useState } from 'react';
 const navItems = [
   { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/admin/productos', label: 'Productos', icon: Package },
-  { href: '/admin/categorias', label: 'Categorias', icon: FolderTree },
+  { href: '/admin/categorias', label: 'Categorías', icon: FolderTree },
   { href: '/admin/pedidos', label: 'Pedidos', icon: ShoppingCart },
 ];
 
@@ -33,7 +33,7 @@ export function AdminSidebar() {
           <Store className="h-5 w-5" />
         </div>
         <div>
-          <p className="font-bold text-sm">Todo y mas</p>
+          <p className="font-bold text-sm">Todo y Más</p>
           <p className="text-[10px] text-muted-foreground">Panel admin</p>
         </div>
       </div>
@@ -77,7 +77,7 @@ export function AdminSidebar() {
         </div>
         <Button variant="outline" className="w-full" onClick={handleSignOut}>
           <LogOut className="h-4 w-4 mr-2" />
-          Cerrar sesion
+          Cerrar sesión
         </Button>
       </div>
     </>

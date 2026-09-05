@@ -112,7 +112,7 @@ export default function PedidosPage() {
             <TableRow>
               <TableHead>Cliente</TableHead>
               <TableHead>Fecha</TableHead>
-              <TableHead>Envio</TableHead>
+              <TableHead>Envío</TableHead>
               <TableHead>Total</TableHead>
               <TableHead>Estado</TableHead>
               <TableHead className="text-right">Ver</TableHead>
@@ -147,7 +147,7 @@ export default function PedidosPage() {
                     ) : (
                       <MapPin className="h-3.5 w-3.5" />
                     )}
-                    {o.shipping_method === 'envio' ? 'Envio' : 'Retiro'}
+                    {o.shipping_method === 'envio' ? 'Envío' : 'Retiro'}
                   </span>
                 </TableCell>
                 <TableCell className="font-medium">{formatPrice(o.total)}</TableCell>
@@ -178,7 +178,7 @@ export default function PedidosPage() {
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-3 text-sm">
                   <div>
-                    <p className="text-muted-foreground">Telefono</p>
+                    <p className="text-muted-foreground">Teléfono</p>
                     <p>{selected.customer_phone || '-'}</p>
                   </div>
                   <div>
@@ -186,8 +186,8 @@ export default function PedidosPage() {
                     <p className="truncate">{selected.customer_email || '-'}</p>
                   </div>
                   <div>
-                    <p className="text-muted-foreground">Metodo de envio</p>
-                    <p>{selected.shipping_method === 'envio' ? 'Envio a domicilio' : 'Retiro en local'}</p>
+                    <p className="text-muted-foreground">Método de envío</p>
+                    <p>{selected.shipping_method === 'envio' ? 'Envío a domicilio' : 'Retiro en local'}</p>
                   </div>
                   <div>
                     <p className="text-muted-foreground">Fecha</p>
@@ -195,7 +195,7 @@ export default function PedidosPage() {
                   </div>
                   {selected.address && (
                     <div className="col-span-2">
-                      <p className="text-muted-foreground">Direccion</p>
+                      <p className="text-muted-foreground">Dirección</p>
                       <p>
                         {selected.address}
                         {selected.city ? `, ${selected.city}` : ''}

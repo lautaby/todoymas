@@ -76,7 +76,7 @@ export default function CheckoutPage() {
       setSuccess(true);
       clearCart();
     } catch (err) {
-      setError('Ocurrio un error al procesar el pedido. Intenta nuevamente.');
+      setError('Ocurrió un error al procesar el pedido. Intentá nuevamente.');
     } finally {
       setProcessing(false);
     }
@@ -92,10 +92,10 @@ export default function CheckoutPage() {
             </div>
             <h1 className="text-2xl font-bold mb-2">¡Pedido realizado!</h1>
             <p className="text-muted-foreground mb-1">
-              Tu pedido se registro correctamente.
+              Tu pedido se registró correctamente.
             </p>
             <p className="text-sm text-muted-foreground mb-6">
-              Numero de pedido: <span className="font-mono font-medium text-foreground">{orderId?.slice(0, 8)}</span>
+              Número de pedido: <span className="font-mono font-medium text-foreground">{orderId?.slice(0, 8)}</span>
             </p>
             <div className="rounded-3xl border border-border bg-card p-4 text-left mb-6 shadow-soft">
               <p className="text-sm text-muted-foreground">Nos contactaremos a la brevedad para coordinar {form.shipping_method === 'retiro' ? 'el retiro en nuestro local' : 'la entrega'}.</p>
@@ -117,7 +117,7 @@ export default function CheckoutPage() {
         <div className="container mx-auto px-4 py-16 text-center">
           <p className="text-lg font-medium mb-2">No hay productos en el carrito</p>
           <Link href="/catalogo">
-            <Button className="mt-4">Ir al catalogo</Button>
+            <Button className="mt-4">Ir al catálogo</Button>
           </Link>
         </div>
       </StoreLayout>
@@ -148,11 +148,11 @@ export default function CheckoutPage() {
                     required
                     value={form.customer_name}
                     onChange={(e) => setForm({ ...form, customer_name: e.target.value })}
-                    placeholder="Juan Perez"
+                    placeholder="Juan Pérez"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="phone">Telefono *</Label>
+                  <Label htmlFor="phone">Teléfono *</Label>
                   <Input
                     id="phone"
                     required
@@ -176,7 +176,7 @@ export default function CheckoutPage() {
 
             {/* Shipping method */}
             <div className="rounded-3xl border border-border bg-card p-6 space-y-4 shadow-soft">
-              <h2 className="font-semibold text-lg">Metodo de envio</h2>
+              <h2 className="font-semibold text-lg">Método de envío</h2>
               <RadioGroup
                 value={form.shipping_method}
                 onValueChange={(v) => setForm({ ...form, shipping_method: v })}
@@ -191,7 +191,7 @@ export default function CheckoutPage() {
                       <Store className="h-4 w-4 text-primary" />
                       <Label htmlFor="retiro" className="font-medium cursor-pointer">Retiro en local</Label>
                     </div>
-                    <p className="text-sm text-muted-foreground mt-1">Sin costo adicional - Disponible de Lun a Sab</p>
+                    <p className="text-sm text-muted-foreground mt-1">Sin costo adicional - Disponible de Lun a Sáb</p>
                   </div>
                   <span className="font-semibold text-success">Gratis</span>
                 </div>
@@ -204,9 +204,9 @@ export default function CheckoutPage() {
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
                       <Truck className="h-4 w-4 text-primary" />
-                      <Label htmlFor="envio" className="font-medium cursor-pointer">Envio a domicilio</Label>
+                      <Label htmlFor="envio" className="font-medium cursor-pointer">Envío a domicilio</Label>
                     </div>
-                    <p className="text-sm text-muted-foreground mt-1">Entrega en 3-5 dias habiles</p>
+                    <p className="text-sm text-muted-foreground mt-1">Entrega en 3-5 días hábiles</p>
                   </div>
                   <span className="font-semibold">{formatPrice(3500)}</span>
                 </div>
@@ -215,7 +215,7 @@ export default function CheckoutPage() {
               {form.shipping_method === 'envio' && (
                 <div className="space-y-4 pt-2">
                   <div className="space-y-2">
-                    <Label htmlFor="address">Direccion de envio *</Label>
+                    <Label htmlFor="address">Dirección de envío *</Label>
                     <Input
                       id="address"
                       required={form.shipping_method === 'envio'}
@@ -253,14 +253,24 @@ export default function CheckoutPage() {
             <div className="rounded-3xl border border-border bg-card p-6 space-y-4 shadow-soft">
               <div className="flex items-center gap-2">
                 <CreditCard className="h-5 w-5 text-primary" />
-                <h2 className="font-semibold text-lg">Metodo de pago</h2>
+                <h2 className="font-semibold text-lg">Método de pago</h2>
               </div>
               <div className="rounded-lg border-2 border-dashed border-border p-6 text-center">
                 <Lock className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
                 <p className="text-sm font-medium">Pago simulado (prototipo)</p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  La integracion de pago estara disponible proximamente. El pedido se registrara sin cobro real.
+                  La integración de pago estará disponible próximamente. El pedido se registrará sin cobro real.
                 </p>
+              </div>
+              <div className="flex flex-wrap gap-2 justify-center">
+                {['Go Cuotas', 'Mercado Pago', 'Tarjetas de crédito', 'Tarjetas de débito', 'Y más'].map((m) => (
+                  <span
+                    key={m}
+                    className="inline-flex items-center rounded-full border border-border bg-secondary/50 px-3 py-1 text-xs text-muted-foreground"
+                  >
+                    {m}
+                  </span>
+                ))}
               </div>
             </div>
           </div>
@@ -298,7 +308,7 @@ export default function CheckoutPage() {
                   <span>{formatPrice(total)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Envio</span>
+                  <span className="text-muted-foreground">Envío</span>
                   <span>{shippingCost === 0 ? 'Gratis' : formatPrice(shippingCost)}</span>
                 </div>
               </div>

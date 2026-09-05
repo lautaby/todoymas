@@ -12,7 +12,22 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Fish, Cpu, Flower2, Home, Shirt, Sparkles, Tent, Camera,
 };
 
-function Mandala({ className }: { className?: string }) {
+function OrganicBlob({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 600 600"
+      className={className}
+      aria-hidden="true"
+    >
+      <path
+        fill="currentColor"
+        d="M431.5 73.5C495 116 552 178 566 250.5c14 72.5-14 155.5-63.5 216.5C453 528 380 566 305 570.5c-75 4.5-153.5-24.5-207-79.5C44.5 436 16 355.5 21.5 278 27 200.5 66.5 126 128 82C189.5 38 273 24.5 344 33c71 8.5 24 -1.5 87.5 40.5Z"
+      />
+    </svg>
+  );
+}
+
+function LeafScatter({ className }: { className?: string }) {
   return (
     <svg
       viewBox="0 0 600 600"
@@ -20,32 +35,16 @@ function Mandala({ className }: { className?: string }) {
       fill="none"
       aria-hidden="true"
     >
-      <circle cx="300" cy="300" r="280" stroke="currentColor" strokeWidth="1" strokeDasharray="2 10" opacity="0.5" />
-      <circle cx="300" cy="300" r="220" stroke="currentColor" strokeWidth="1" opacity="0.4" />
-      <circle cx="300" cy="300" r="160" stroke="currentColor" strokeWidth="1" strokeDasharray="6 6" opacity="0.5" />
-      <circle cx="300" cy="300" r="100" stroke="currentColor" strokeWidth="1" opacity="0.4" />
-      <circle cx="300" cy="300" r="8" fill="currentColor" opacity="0.5" />
-      {Array.from({ length: 16 }).map((_, i) => {
-        const angle = (i * 360) / 16;
-        return (
-          <line
-            key={i}
-            x1="300"
-            y1="300"
-            x2={300 + 280 * Math.cos((angle * Math.PI) / 180)}
-            y2={300 + 280 * Math.sin((angle * Math.PI) / 180)}
-            stroke="currentColor"
-            strokeWidth="1"
-            opacity="0.15"
-          />
-        );
-      })}
-      {Array.from({ length: 12 }).map((_, i) => {
-        const angle = (i * 360) / 12;
-        const x = 300 + 190 * Math.cos((angle * Math.PI) / 180);
-        const y = 300 + 190 * Math.sin((angle * Math.PI) / 180);
-        return <circle key={i} cx={x} cy={y} r="5" fill="currentColor" opacity="0.35" />;
-      })}
+      <path
+        d="M120 460c60-140 200-220 340-200-20 140-140 240-280 260-30 4-50-30-60-60Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        opacity="0.35"
+      />
+      <path d="M150 445c70-110 190-170 290-165" stroke="currentColor" strokeWidth="1" opacity="0.3" />
+      <circle cx="470" cy="120" r="5" fill="currentColor" opacity="0.3" />
+      <circle cx="500" cy="150" r="3" fill="currentColor" opacity="0.25" />
+      <circle cx="440" cy="95" r="3" fill="currentColor" opacity="0.25" />
     </svg>
   );
 }
@@ -80,16 +79,17 @@ export default function HomePage() {
     <StoreLayout>
       {/* Hero */}
       <section className="relative overflow-hidden bg-hearth">
-        <Mandala className="absolute -right-32 -top-32 h-[520px] w-[520px] text-primary animate-spin-slow md:-right-16 md:-top-16" />
-        <Mandala className="absolute -left-40 bottom-[-10rem] h-[420px] w-[420px] text-accent opacity-70 hidden md:block" />
+        <OrganicBlob className="absolute -right-40 -top-40 h-[560px] w-[560px] text-primary/25 animate-drift md:-right-24 md:-top-24" />
+        <OrganicBlob className="absolute -left-52 bottom-[-12rem] h-[460px] w-[460px] text-accent/20 opacity-80 hidden md:block animate-drift" />
+        <LeafScatter className="absolute right-8 top-8 h-64 w-64 text-primary hidden lg:block" />
         <div className="container mx-auto px-4 relative">
           <div className="flex flex-col items-center text-center py-20 md:py-28 max-w-3xl mx-auto">
             <span className="inline-flex items-center gap-2 rounded-full bg-secondary px-4 py-1.5 text-sm font-medium text-secondary-foreground mb-6">
               <Leaf className="h-4 w-4 text-primary" />
               Toda la variedad, en un solo lugar
             </span>
-            <h1 className="text-5xl md:text-7xl font-display font-semibold tracking-tight text-foreground">
-              Todo y mas
+            <h1 className="text-6xl md:text-8xl font-script font-normal tracking-tight text-primary drop-shadow-sm">
+              Todo y Más
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground mt-5 max-w-2xl">
               Pesca, tecnología, hogar, belleza, camping, seguridad y mucho más.
@@ -189,7 +189,7 @@ export default function HomePage() {
       {/* CTA banner */}
       <section className="container mx-auto px-4 py-14">
         <div className="relative overflow-hidden rounded-[2.5rem] bg-primary p-8 md:p-14 text-center shadow-soft-lg">
-          <Mandala className="absolute -right-24 -bottom-24 h-80 w-80 text-primary-foreground opacity-20" />
+          <OrganicBlob className="absolute -right-28 -bottom-28 h-80 w-80 text-primary-foreground opacity-15" />
           <div className="relative">
             <h2 className="text-3xl md:text-4xl font-display font-semibold tracking-tight text-primary-foreground">
               ¿Buscás algo específico?

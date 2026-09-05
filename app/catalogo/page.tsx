@@ -149,7 +149,7 @@ function CatalogContent() {
   }, [products, query, selectedCategory, selectedSubcategory, priceMin, priceMax, sortBy, parents, categoryMap]);
 
   const activeFilters: string[] = [];
-  if (query) activeFilters.push(`Busqueda: "${query}"`);
+  if (query) activeFilters.push(`Búsqueda: "${query}"`);
   if (selectedCategory) activeFilters.push(parents.find(c => c.slug === selectedCategory)?.name ?? selectedCategory);
   if (selectedSubcategory) activeFilters.push(categories.find(c => c.slug === selectedSubcategory)?.name ?? selectedSubcategory);
   if (showFeaturedOnly) activeFilters.push('Destacados');
@@ -167,7 +167,7 @@ function CatalogContent() {
   const FiltersPanel = () => (
     <div className="space-y-6">
       <div>
-        <h3 className="font-semibold text-sm mb-3">Categorias</h3>
+        <h3 className="font-semibold text-sm mb-3">Categorías</h3>
         <div className="space-y-1">
           <button
             className={cn(
@@ -176,7 +176,7 @@ function CatalogContent() {
             )}
             onClick={() => { setSelectedCategory(''); setSelectedSubcategory(''); }}
           >
-            Todas las categorias
+            Todas las categorías
           </button>
           {parents.map((parent) => {
             const subs = childrenOf[parent.id] ?? [];
@@ -273,7 +273,7 @@ function CatalogContent() {
       <div className="container mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold">Catalogo</h1>
+            <h1 className="text-2xl font-bold">Catálogo</h1>
             <p className="text-sm text-muted-foreground mt-1">
               {loading ? 'Cargando...' : `${filtered.length} producto${filtered.length !== 1 ? 's' : ''}`}
             </p>
@@ -346,7 +346,7 @@ function CatalogContent() {
                 <Search className="h-12 w-12 text-muted-foreground mb-4" />
                 <p className="text-lg font-medium">No se encontraron productos</p>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Intenta cambiar los filtros o la busqueda
+                  Intentá cambiar los filtros o la búsqueda
                 </p>
                 {activeFilters.length > 0 && (
                   <Button variant="outline" className="mt-4" onClick={clearFilters}>

@@ -36,7 +36,7 @@ export function ImageUploader({
         continue;
       }
       if (file.size > MAX_SIZE_MB * 1024 * 1024) {
-        toast({ title: `${file.name} pesa mas de ${MAX_SIZE_MB}MB`, variant: 'destructive' });
+        toast({ title: `${file.name} pesa más de ${MAX_SIZE_MB}MB`, variant: 'destructive' });
         continue;
       }
 
@@ -138,7 +138,7 @@ export function ImageUploader({
           onClick={() => galleryInputRef.current?.click()}
         >
           {uploading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <ImageIcon className="h-4 w-4 mr-2" />}
-          Elegir de galeria
+          Elegir de galería
         </Button>
       </div>
 

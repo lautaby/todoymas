@@ -23,10 +23,10 @@ export default function AdminLoginPage() {
           <div className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground mb-4 shadow-soft">
             <Leaf className="h-7 w-7" />
           </div>
-          <h1 className="text-2xl font-display font-semibold">Todo y mas</h1>
+          <h1 className="text-2xl font-script">Todo y Más</h1>
           <p className="text-muted-foreground mt-1 flex items-center justify-center gap-1">
             <Lock className="h-3 w-3" />
-            Panel de administracion
+            Panel de administración
           </p>
         </div>
         <LoginForm />

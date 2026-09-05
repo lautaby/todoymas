@@ -27,7 +27,7 @@ export function LoginForm() {
 
       router.push('/admin/dashboard');
     } catch (err: any) {
-      setError(err.message ?? 'Error al iniciar sesion');
+      setError(err.message ?? 'Error al iniciar sesión');
     } finally {
       setLoading(false);
     }

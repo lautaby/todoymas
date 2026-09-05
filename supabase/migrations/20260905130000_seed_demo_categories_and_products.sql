@@ -33,13 +33,13 @@ INSERT INTO categories (name, slug, icon)
 SELECT v.name, v.slug, v.icon
 FROM (VALUES
   ('Pesca', 'pesca', 'Fish'),
-  ('Tecnologia', 'tecnologia', 'Cpu'),
+  ('Tecnología', 'tecnologia', 'Cpu'),
   ('Hogar', 'hogar', 'Home'),
   ('Belleza', 'belleza', 'Flower2'),
   ('Indumentaria', 'indumentaria', 'Shirt'),
   ('Bazar y Regalos', 'bazar-y-regalos', 'Sparkles'),
   ('Camping y Aire Libre', 'camping-y-aire-libre', 'Tent'),
-  ('Fotografia y Electronica', 'fotografia-y-electronica', 'Camera')
+  ('Fotografía y Electrónica', 'fotografia-y-electronica', 'Camera')
 ) AS v(name, slug, icon)
 WHERE NOT EXISTS (
   SELECT 1 FROM categories c WHERE c.slug = v.slug
@@ -71,7 +71,7 @@ FROM (VALUES
    'Set completo con señuelos de distintos colores, anzuelos y accesorios básicos. Viene en una caja organizadora resistente al agua, lista para llevar a cualquier salida de pesca.',
    12000, 40, 'pesca', 'https://images.pexels.com/photos/2542/fishing-fishing-tackle-fisherman-bait.jpg?auto=compress&cs=tinysrgb&w=800', false),
 
-  -- Tecnologia
+  -- Tecnología
   ('Auriculares inalámbricos Bluetooth',
    'Auriculares Bluetooth con cancelación de ruido pasiva y hasta 20 horas de batería. Conexión estable, sonido equilibrado y estuche de carga incluido.',
    42000, 35, 'tecnologia', 'https://images.pexels.com/photos/610945/pexels-photo-610945.jpeg?auto=compress&cs=tinysrgb&w=800', true),
@@ -137,7 +137,7 @@ FROM (VALUES
    'Reposera plegable con apoyabrazos acolchados y portavaso integrado. Estructura resistente, fácil de transportar y guardar.',
    42000, 22, 'camping-y-aire-libre', 'https://images.pexels.com/photos/2398220/pexels-photo-2398220.jpeg?auto=compress&cs=tinysrgb&w=800', false),
 
-  -- Fotografia y Electronica
+  -- Fotografía y Electrónica
   ('Cámara digital compacta 20MP zoom óptico',
    'Cámara digital compacta de 20 megapíxeles con zoom óptico 8x y grabación de video Full HD. Ideal para viajes y uso diario.',
    165000, 8, 'fotografia-y-electronica', 'https://images.pexels.com/photos/9943239/pexels-photo-9943239.jpeg?auto=compress&cs=tinysrgb&w=800', true),

@@ -185,7 +185,7 @@ export default function ProductosPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold">Productos</h1>
-          <p className="text-muted-foreground">{products.length} productos en el catalogo</p>
+          <p className="text-muted-foreground">{products.length} productos en el catálogo</p>
         </div>
         <Button onClick={openCreate}>
           <Plus className="h-4 w-4 mr-2" />
@@ -208,7 +208,7 @@ export default function ProductosPage() {
           <TableHeader>
             <TableRow>
               <TableHead>Producto</TableHead>
-              <TableHead>Categoria</TableHead>
+              <TableHead>Categoría</TableHead>
               <TableHead>Precio</TableHead>
               <TableHead>Stock</TableHead>
               <TableHead className="text-right">Acciones</TableHead>
@@ -278,7 +278,7 @@ export default function ProductosPage() {
             </div>
 
             <div className="space-y-1.5">
-              <Label>Descripcion</Label>
+              <Label>Descripción</Label>
               <Textarea
                 value={form.description}
                 onChange={(e) => setForm({ ...form, description: e.target.value })}
@@ -307,7 +307,7 @@ export default function ProductosPage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label>Categoria</Label>
+                <Label>Categoría</Label>
                 <Select
                   value={form.category_id}
                   onValueChange={(v) => setForm({ ...form, category_id: v, subcategory_id: NONE })}
@@ -316,7 +316,7 @@ export default function ProductosPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value={NONE}>Sin categoria</SelectItem>
+                    <SelectItem value={NONE}>Sin categoría</SelectItem>
                     {parents.map((c) => (
                       <SelectItem key={c.id} value={c.id}>
                         {c.name}
@@ -326,7 +326,7 @@ export default function ProductosPage() {
                 </Select>
               </div>
               <div className="space-y-1.5">
-                <Label>Subcategoria</Label>
+                <Label>Subcategoría</Label>
                 <Select
                   value={form.subcategory_id}
                   onValueChange={(v) => setForm({ ...form, subcategory_id: v })}
@@ -336,7 +336,7 @@ export default function ProductosPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value={NONE}>Sin subcategoria</SelectItem>
+                    <SelectItem value={NONE}>Sin subcategoría</SelectItem>
                     {subcategoriesFor(form.category_id).map((c) => (
                       <SelectItem key={c.id} value={c.id}>
                         {c.name}
@@ -348,7 +348,7 @@ export default function ProductosPage() {
             </div>
 
             <div className="space-y-1.5">
-              <Label>Imagenes</Label>
+              <Label>Imágenes</Label>
               <ImageUploader
                 images={form.images}
                 onChange={(images) => setForm({ ...form, images })}
@@ -383,7 +383,7 @@ export default function ProductosPage() {
           <AlertDialogHeader>
             <AlertDialogTitle>Eliminar producto</AlertDialogTitle>
             <AlertDialogDescription>
-              ¿Seguro que queres eliminar &quot;{deleteTarget?.name}&quot;? Esta accion no se puede deshacer.
+              ¿Seguro que querés eliminar &quot;{deleteTarget?.name}&quot;? Esta acción no se puede deshacer.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

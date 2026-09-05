@@ -2,8 +2,11 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { Leaf, Phone, MapPin } from 'lucide-react';
+import { Leaf, Phone, MapPin, Instagram, CreditCard, Landmark, Wallet } from 'lucide-react';
 import { supabase, type Category } from '@/lib/supabase';
+import { WhatsAppIcon } from '@/components/icons/whatsapp-icon';
+import { TikTokIcon } from '@/components/icons/tiktok-icon';
+import { WHATSAPP_URL, INSTAGRAM_URL, TIKTOK_URL } from '@/lib/contact';
 
 export function Footer() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -31,11 +34,40 @@ export function Footer() {
               <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground">
                 <Leaf className="h-5 w-5" />
               </div>
-              <span className="text-lg font-display font-semibold tracking-tight">Todo y mas</span>
+              <span className="text-2xl font-script leading-none">Todo y Más</span>
             </div>
             <p className="text-sm text-footer-foreground/70">
               Tu tienda de confianza, con una gran variedad de rubros y productos, todo en un mismo lugar.
             </p>
+            <div className="flex items-center gap-2 pt-1">
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Escribinos por WhatsApp"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-footer-foreground/10 text-footer-foreground hover:bg-[#25D366] hover:text-white transition-colors"
+              >
+                <WhatsAppIcon className="h-4 w-4" />
+              </a>
+              <a
+                href={INSTAGRAM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Seguinos en Instagram"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-footer-foreground/10 text-footer-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
+              >
+                <Instagram className="h-4 w-4" />
+              </a>
+              <a
+                href={TIKTOK_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Seguinos en TikTok"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-footer-foreground/10 text-footer-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
+              >
+                <TikTokIcon className="h-4 w-4" />
+              </a>
+            </div>
           </div>
 
           <div>
@@ -74,8 +106,29 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-footer-foreground/10 mt-8 pt-6 text-center text-xs text-footer-foreground/50">
-          <p>&copy; {new Date().getFullYear()} Todo y mas · Todos los derechos reservados</p>
+        <div className="border-t border-footer-foreground/10 mt-8 pt-6">
+          <h3 className="font-display font-semibold mb-3 text-primary/90 text-sm">Medios de pago</h3>
+          <div className="flex flex-wrap gap-2">
+            {[
+              { label: 'Go Cuotas', icon: Wallet },
+              { label: 'Mercado Pago', icon: Landmark },
+              { label: 'Tarjetas de crédito', icon: CreditCard },
+              { label: 'Tarjetas de débito', icon: CreditCard },
+              { label: 'Y más', icon: null },
+            ].map(({ label, icon: Icon }) => (
+              <span
+                key={label}
+                className="inline-flex items-center gap-1.5 rounded-full border border-footer-foreground/15 bg-footer-foreground/5 px-3 py-1.5 text-xs text-footer-foreground/80"
+              >
+                {Icon && <Icon className="h-3.5 w-3.5" />}
+                {label}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="border-t border-footer-foreground/10 mt-6 pt-6 text-center text-xs text-footer-foreground/50">
+          <p>&copy; {new Date().getFullYear()} Todo y Más · Todos los derechos reservados</p>
         </div>
       </div>
     </footer>

@@ -80,6 +80,9 @@
   .font-display {
     font-family: var(--font-display), 'Georgia', serif;
   }
+  .font-script {
+    font-family: var(--font-script), cursive;
+  }
   .bg-hearth {
     background: radial-gradient(circle at 15% 20%, hsl(var(--primary) / 0.08), transparent 45%),
       radial-gradient(circle at 85% 75%, hsl(var(--accent) / 0.08), transparent 50%);
@@ -119,19 +122,19 @@
       transform: translateY(0);
     }
   }
-  @keyframes spin-slow {
-    from {
-      transform: rotate(0deg);
+  @keyframes drift {
+    0%, 100% {
+      transform: translate(0, 0) scale(1);
     }
-    to {
-      transform: rotate(360deg);
+    50% {
+      transform: translate(3%, -2%) scale(1.04);
     }
   }
-  .animate-spin-slow {
-    animation: spin-slow 90s linear infinite;
+  .animate-drift {
+    animation: drift 22s ease-in-out infinite;
   }
   @media (prefers-reduced-motion: reduce) {
-    .animate-spin-slow {
+    .animate-drift {
       animation: none;
     }
   }

@@ -52,13 +52,13 @@ const NO_ICON = 'no-icon';
 
 const ICON_OPTIONS: { value: string; label: string; Icon: React.ComponentType<{ className?: string }> }[] = [
   { value: 'Fish', label: 'Pesca', Icon: Fish },
-  { value: 'Cpu', label: 'Tecnologia', Icon: Cpu },
+  { value: 'Cpu', label: 'Tecnología', Icon: Cpu },
   { value: 'Home', label: 'Hogar', Icon: Home },
   { value: 'Flower2', label: 'Belleza', Icon: Flower2 },
   { value: 'Shirt', label: 'Indumentaria', Icon: Shirt },
   { value: 'Sparkles', label: 'Bazar / Regalos', Icon: Sparkles },
   { value: 'Tent', label: 'Camping', Icon: Tent },
-  { value: 'Camera', label: 'Fotografia', Icon: Camera },
+  { value: 'Camera', label: 'Fotografía', Icon: Camera },
 ];
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = Object.fromEntries(
@@ -140,11 +140,11 @@ export default function CategoriasPage() {
     setSaving(false);
 
     if (error) {
-      toast({ title: 'No se pudo guardar la categoria', description: error.message, variant: 'destructive' });
+      toast({ title: 'No se pudo guardar la categoría', description: error.message, variant: 'destructive' });
       return;
     }
 
-    toast({ title: form.id ? 'Categoria actualizada' : 'Categoria creada' });
+    toast({ title: form.id ? 'Categoría actualizada' : 'Categoría creada' });
     setDialogOpen(false);
     loadData();
   }
@@ -160,7 +160,7 @@ export default function CategoriasPage() {
       toast({ title: 'No se pudo eliminar', description: error.message, variant: 'destructive' });
       return;
     }
-    toast({ title: 'Categoria eliminada' });
+    toast({ title: 'Categoría eliminada' });
     loadData();
   }
 
@@ -168,12 +168,12 @@ export default function CategoriasPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold">Categorias</h1>
-          <p className="text-muted-foreground">Organiza el catalogo en categorias y subcategorias</p>
+          <h1 className="text-2xl font-bold">Categorías</h1>
+          <p className="text-muted-foreground">Organizá el catálogo en categorías y subcategorías</p>
         </div>
         <Button onClick={() => openCreate()}>
           <Plus className="h-4 w-4 mr-2" />
-          Nueva categoria
+          Nueva categoría
         </Button>
       </div>
 
@@ -181,7 +181,7 @@ export default function CategoriasPage() {
 
       {!loading && parents.length === 0 && (
         <div className="border rounded-lg p-8 text-center text-muted-foreground bg-card">
-          Todavia no hay categorias. Crea la primera.
+          Todavía no hay categorías. Creá la primera.
         </div>
       )}
 
@@ -203,10 +203,10 @@ export default function CategoriasPage() {
                   <FolderTree className="h-4 w-4 text-primary shrink-0" />
                 )}
                 <span className="font-medium truncate">{parent.name}</span>
-                <Badge variant="secondary">{childrenOf(parent.id).length} subcategorias</Badge>
+                <Badge variant="secondary">{childrenOf(parent.id).length} subcategorías</Badge>
               </div>
               <div className="flex items-center gap-1 shrink-0">
-                <Button variant="ghost" size="icon" onClick={() => openCreate(parent.id)} title="Agregar subcategoria">
+                <Button variant="ghost" size="icon" onClick={() => openCreate(parent.id)} title="Agregar subcategoría">
                   <Plus className="h-4 w-4" />
                 </Button>
                 <Button variant="ghost" size="icon" onClick={() => openEdit(parent)}>
@@ -245,7 +245,7 @@ export default function CategoriasPage() {
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>{form.id ? 'Editar categoria' : 'Nueva categoria'}</DialogTitle>
+            <DialogTitle>{form.id ? 'Editar categoría' : 'Nueva categoría'}</DialogTitle>
           </DialogHeader>
 
           <div className="space-y-4">
@@ -259,7 +259,7 @@ export default function CategoriasPage() {
             </div>
 
             <div className="space-y-1.5">
-              <Label>Categoria padre (opcional)</Label>
+              <Label>Categoría padre (opcional)</Label>
               <Select
                 value={form.parent_id}
                 onValueChange={(v) => setForm({ ...form, parent_id: v })}
@@ -268,7 +268,7 @@ export default function CategoriasPage() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value={NONE}>Ninguna (categoria principal)</SelectItem>
+                  <SelectItem value={NONE}>Ninguna (categoría principal)</SelectItem>
                   {parents
                     .filter((p) => p.id !== form.id)
                     .map((p) => (
@@ -279,7 +279,7 @@ export default function CategoriasPage() {
                 </SelectContent>
               </Select>
               <p className="text-xs text-muted-foreground">
-                Dejala vacia para crear una categoria principal, o elegi una para crear una subcategoria.
+                Dejala vacía para crear una categoría principal, o elegí una para crear una subcategoría.
               </p>
             </div>
 
@@ -306,7 +306,7 @@ export default function CategoriasPage() {
                   </SelectContent>
                 </Select>
                 <p className="text-xs text-muted-foreground">
-                  Se muestra en la portada y el menu de categorias. Las subcategorias no llevan icono propio.
+                  Se muestra en la portada y el menú de categorías. Las subcategorías no llevan ícono propio.
                 </p>
               </div>
             )}
@@ -326,10 +326,10 @@ export default function CategoriasPage() {
       <AlertDialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Eliminar categoria</AlertDialogTitle>
+            <AlertDialogTitle>Eliminar categoría</AlertDialogTitle>
             <AlertDialogDescription>
-              ¿Seguro que queres eliminar &quot;{deleteTarget?.name}&quot;? Si tiene subcategorias o productos asociados,
-              tambien se van a ver afectados.
+              ¿Seguro que querés eliminar &quot;{deleteTarget?.name}&quot;? Si tiene subcategorías o productos asociados,
+              también se van a ver afectados.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

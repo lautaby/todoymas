@@ -21,13 +21,13 @@ export default function CartPage() {
             <div className="flex h-20 w-20 items-center justify-center rounded-full bg-secondary mb-4">
               <ShoppingCart className="h-10 w-10 text-muted-foreground" />
             </div>
-            <p className="text-lg font-medium">Tu carrito esta vacio</p>
+            <p className="text-lg font-medium">Tu carrito está vacío</p>
             <p className="text-sm text-muted-foreground mt-1 mb-6">
-              Explora nuestro catalogo y agrega productos
+              Explorá nuestro catálogo y agregá productos
             </p>
             <Link href="/catalogo">
               <Button size="lg">
-                Ir al catalogo
+                Ir al catálogo
                 <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
             </Link>
@@ -141,7 +141,7 @@ export default function CartPage() {
                   <span>{formatPrice(total)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Envio</span>
+                  <span className="text-muted-foreground">Envío</span>
                   <span className="text-muted-foreground">A calcular en checkout</span>
                 </div>
                 <Separator />

@@ -39,7 +39,7 @@ export function CartDrawer({
               <ShoppingCart className="h-8 w-8 text-muted-foreground" />
             </div>
             <div>
-              <p className="font-medium">Tu carrito esta vacio</p>
+              <p className="font-medium">Tu carrito está vacío</p>
               <p className="text-sm text-muted-foreground mt-1">
                 Agrega productos para empezar tu compra
               </p>

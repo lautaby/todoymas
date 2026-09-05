@@ -63,7 +63,7 @@ export default function DashboardPage() {
 
   const stats = [
     { label: 'Productos', value: productCount, icon: Package, href: '/admin/productos' },
-    { label: 'Categorias', value: categoryCount, icon: FolderTree, href: '/admin/categorias' },
+    { label: 'Categorías', value: categoryCount, icon: FolderTree, href: '/admin/categorias' },
     { label: 'Pedidos', value: orderCount, icon: ShoppingCart, href: '/admin/pedidos' },
   ];
 
@@ -128,11 +128,11 @@ export default function DashboardPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Ultimos pedidos</CardTitle>
+            <CardTitle className="text-base">Últimos pedidos</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {!loading && recentOrders.length === 0 && (
-              <p className="text-sm text-muted-foreground">Todavia no hay pedidos.</p>
+              <p className="text-sm text-muted-foreground">Todavía no hay pedidos.</p>
             )}
             {recentOrders.map((o) => (
               <div key={o.id} className="flex items-center justify-between text-sm">

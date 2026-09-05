@@ -111,7 +111,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
         <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
           <Link href="/" className="hover:text-primary">Inicio</Link>
           <span>/</span>
-          <Link href="/catalogo" className="hover:text-primary">Catalogo</Link>
+          <Link href="/catalogo" className="hover:text-primary">Catálogo</Link>
           {category && (
             <>
               <span>/</span>
@@ -130,7 +130,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
 
         <Link href="/catalogo" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary mb-6">
           <ArrowLeft className="h-4 w-4" />
-          Volver al catalogo
+          Volver al catálogo
         </Link>
 
         <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
@@ -211,9 +211,9 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
             <Separator />
 
             <div>
-              <h3 className="font-semibold mb-2">Descripcion</h3>
+              <h3 className="font-semibold mb-2">Descripción</h3>
               <p className="text-muted-foreground leading-relaxed">
-                {product.description ?? 'Sin descripcion disponible.'}
+                {product.description ?? 'Sin descripción disponible.'}
               </p>
             </div>
 
@@ -262,8 +262,8 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
               <div className="flex items-center gap-2 p-3 rounded-lg border">
                 <Truck className="h-5 w-5 text-primary shrink-0" />
                 <div>
-                  <p className="text-xs font-semibold">Envio a domicilio</p>
-                  <p className="text-xs text-muted-foreground">A todo el pais</p>
+                  <p className="text-xs font-semibold">Envío a domicilio</p>
+                  <p className="text-xs text-muted-foreground">A todo el país</p>
                 </div>
               </div>
               <div className="flex items-center gap-2 p-3 rounded-lg border">
