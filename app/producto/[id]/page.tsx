@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, use } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, ShoppingCart, Minus, Plus, Check, Truck, Store, ShieldCheck, Package } from 'lucide-react';
@@ -13,8 +13,8 @@ import { supabase, type Product, type Category } from '@/lib/supabase';
 import { formatPrice } from '@/lib/format';
 import { cn } from '@/lib/utils';
 
-export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params);
+export default function ProductDetailPage({ params }: { params: { id: string } }) {
+  const { id } = params;
   const { addItem } = useCart();
   const [product, setProduct] = useState<Product | null>(null);
   const [category, setCategory] = useState<Category | null>(null);
