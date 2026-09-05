@@ -24,6 +24,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
   const [added, setAdded] = useState(false);
+  const [imgErrors, setImgErrors] = useState<Record<number, boolean>>({});
 
   useEffect(() => {
     async function load() {
@@ -136,11 +137,12 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           {/* Images */}
           <div className="space-y-4">
             <div className="relative aspect-square overflow-hidden rounded-xl border bg-muted">
-              {images[selectedImage] ? (
+              {images[selectedImage] && !imgErrors[selectedImage] ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={images[selectedImage]}
                   alt={product.name}
+                  onError={() => setImgErrors((prev) => ({ ...prev, [selectedImage]: true }))}
                   className="h-full w-full object-cover"
                 />
               ) : (
@@ -165,8 +167,15 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                       selectedImage === i ? 'border-primary' : 'border-border'
                     )}
                   >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    {img && <img src={img} alt={`${product.name} ${i + 1}`} className="h-full w-full object-cover" />}
+                    {img && !imgErrors[i] && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={img}
+                        alt={`${product.name} ${i + 1}`}
+                        onError={() => setImgErrors((prev) => ({ ...prev, [i]: true }))}
+                        className="h-full w-full object-cover"
+                      />
+                    )}
                   </button>
                 ))}
               </div>
@@ -295,15 +304,17 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 }
 
 function ProductCardMini({ product }: { product: Product }) {
+  const [imgError, setImgError] = useState(false);
   return (
     <Link href={`/producto/${product.id}`}>
       <div className="group flex flex-col overflow-hidden rounded-xl border bg-card shadow-sm transition-all hover:shadow-lg">
         <div className="relative aspect-square overflow-hidden bg-muted">
-          {product.images[0] && (
+          {product.images[0] && !imgError && (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={product.images[0]}
               alt={product.name}
+              onError={() => setImgError(true)}
               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
           )}

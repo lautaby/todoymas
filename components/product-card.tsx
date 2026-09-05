@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { ShoppingCart, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -12,16 +13,18 @@ import { cn } from '@/lib/utils';
 export function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
   const outOfStock = product.stock <= 0;
+  const [imgError, setImgError] = useState(false);
 
   return (
     <div className="group relative flex flex-col overflow-hidden rounded-none border-2 border-foreground bg-card shadow-brutal transition-all duration-200 hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px]">
       <Link href={`/producto/${product.id}`} className="block">
         <div className="relative aspect-square overflow-hidden bg-muted border-b-2 border-foreground">
-          {product.images[0] ? (
+          {product.images[0] && !imgError ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={product.images[0]}
               alt={product.name}
+              onError={() => setImgError(true)}
               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
           ) : (

@@ -69,7 +69,7 @@ FROM (VALUES
    38000, 20, 'pesca', 'https://images.pexels.com/photos/3098597/pexels-photo-3098597.jpeg?auto=compress&cs=tinysrgb&w=800', false),
   ('Kit de señuelos y anzuelos x25',
    'Set completo con señuelos de distintos colores, anzuelos y accesorios básicos. Viene en una caja organizadora resistente al agua, lista para llevar a cualquier salida de pesca.',
-   12000, 40, 'pesca', 'https://images.pexels.com/photos/2542/pexels-photo-2542.jpeg?auto=compress&cs=tinysrgb&w=800', false),
+   12000, 40, 'pesca', 'https://images.pexels.com/photos/2542/fishing-fishing-tackle-fisherman-bait.jpg?auto=compress&cs=tinysrgb&w=800', false),
 
   -- Tecnologia
   ('Auriculares inalámbricos Bluetooth',
@@ -99,7 +99,7 @@ FROM (VALUES
    19500, 45, 'belleza', 'https://images.pexels.com/photos/13794471/pexels-photo-13794471.jpeg?auto=compress&cs=tinysrgb&w=800', false),
   ('Set de brochas de maquillaje profesional x12',
    'Kit de 12 brochas de distintos tamaños para rostro y ojos, con cerdas suaves sintéticas. Incluye estuche organizador para guardarlas ordenadas.',
-   24000, 30, 'belleza', 'https://images.pexels.com/photos/5553/pexels-photo-5553.jpeg?auto=compress&cs=tinysrgb&w=800', false),
+   24000, 30, 'belleza', 'https://images.pexels.com/photos/5553/makeup-brushes.jpg?auto=compress&cs=tinysrgb&w=800', false),
   ('Kit de cosméticos maquillaje completo',
    'Set con paleta de sombras, labial y base, pensado para lucir un maquillaje completo en cualquier ocasión. Colores versátiles para uso diario o de noche.',
    36000, 20, 'belleza', 'https://images.pexels.com/photos/3018845/pexels-photo-3018845.jpeg?auto=compress&cs=tinysrgb&w=800', true),
@@ -129,7 +129,7 @@ FROM (VALUES
   -- Camping y Aire Libre
   ('Carpa impermeable 4 personas doble techo',
    'Carpa para 4 personas con doble techo impermeable y armado sencillo tipo iglú. Ideal para camping, trekking o festivales.',
-   145000, 10, 'camping-y-aire-libre', 'https://images.pexels.com/photos/6714/pexels-photo-6714.jpeg?auto=compress&cs=tinysrgb&w=800', true),
+   145000, 10, 'camping-y-aire-libre', 'https://images.pexels.com/photos/6714/light-forest-trees-morning.jpg?auto=compress&cs=tinysrgb&w=800', true),
   ('Bolsa de dormir térmica -5°C',
    'Bolsa de dormir con relleno térmico para temperaturas de hasta -5°C. Liviana, compacta y con funda de transporte incluida.',
    68000, 18, 'camping-y-aire-libre', 'https://images.pexels.com/photos/15782410/pexels-photo-15782410.jpeg?auto=compress&cs=tinysrgb&w=800', false),
