@@ -43,9 +43,9 @@ export default function HomePage() {
     <StoreLayout>
       {/* Hero */}
       <section className="relative overflow-hidden bg-hearth">
-        <OrganicBlob className="absolute -right-40 -top-40 h-[560px] w-[560px] text-primary/25 animate-drift md:-right-24 md:-top-24" />
-        <OrganicBlob className="absolute -left-52 bottom-[-12rem] h-[460px] w-[460px] text-accent/20 opacity-80 hidden md:block animate-drift" />
-        <LeafScatter className="absolute right-8 top-8 h-64 w-64 text-primary hidden lg:block" />
+        <OrganicBlob className="absolute -right-32 -top-32 h-80 w-80 text-primary/25 animate-drift sm:-right-40 sm:-top-40 sm:h-[560px] sm:w-[560px] md:-right-24 md:-top-24" />
+        <OrganicBlob className="absolute -left-28 bottom-[-6rem] h-64 w-64 text-accent/20 opacity-80 animate-drift sm:-left-52 sm:bottom-[-12rem] sm:h-[460px] sm:w-[460px]" />
+        <LeafScatter className="absolute right-3 top-3 h-28 w-28 text-primary sm:right-8 sm:top-8 sm:h-64 sm:w-64" />
         <div className="container mx-auto px-4 relative">
           <div className="flex flex-col items-center text-center py-20 md:py-28 max-w-3xl mx-auto">
             <span className="inline-flex items-center gap-2 rounded-full bg-secondary px-4 py-1.5 text-sm font-medium text-secondary-foreground mb-6">
@@ -78,8 +78,8 @@ export default function HomePage() {
 
       {/* Features bar */}
       <section className="relative overflow-hidden border-y border-border bg-secondary/40">
-        <LeafSprig className="absolute -bottom-6 left-6 h-32 w-20 text-primary hidden sm:block" />
-        <LeafSprig className="absolute -top-10 right-10 h-28 w-16 text-accent rotate-[160deg] hidden md:block" />
+        <LeafSprig className="absolute -bottom-4 left-2 h-20 w-12 text-primary sm:-bottom-6 sm:left-6 sm:h-32 sm:w-20" />
+        <LeafSprig className="absolute -top-6 right-3 h-16 w-10 text-accent rotate-[160deg] sm:-top-10 sm:right-10 sm:h-28 sm:w-16" />
         <div className="container mx-auto px-4 py-8 relative">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
@@ -103,14 +103,15 @@ export default function HomePage() {
       </section>
 
       {/* Categories */}
-      <section className="container mx-auto px-4 py-14">
-        <div className="flex items-center justify-between mb-6">
+      <section className="relative overflow-hidden container mx-auto px-4 py-14">
+        <LeafSprig className="pointer-events-none absolute -top-4 -left-2 h-24 w-14 text-primary opacity-[0.09] -rotate-12 sm:h-36 sm:w-20" />
+        <div className="flex items-center justify-between mb-6 relative">
           <h2 className="text-2xl md:text-3xl font-display font-semibold tracking-tight">Explorá por categorías</h2>
           <Link href="/catalogo" className="text-sm font-medium text-primary hover:underline">
             Ver todo
           </Link>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4 relative">
           {categories.map((cat) => {
             const Icon = cat.icon ? iconMap[cat.icon] : Home;
             return (
@@ -130,21 +131,22 @@ export default function HomePage() {
       </section>
 
       {/* Featured products */}
-      <section className="container mx-auto px-4 py-10">
-        <div className="flex items-center justify-between mb-6">
+      <section className="relative overflow-hidden container mx-auto px-4 py-10">
+        <LeafScatter className="pointer-events-none absolute -right-6 bottom-0 h-32 w-32 text-accent opacity-[0.1] sm:h-52 sm:w-52" />
+        <div className="flex items-center justify-between mb-6 relative">
           <h2 className="text-2xl md:text-3xl font-display font-semibold tracking-tight">Productos destacados</h2>
           <Link href="/catalogo?destacados=true" className="text-sm font-medium text-primary hover:underline">
             Ver más
           </Link>
         </div>
         {loading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 relative">
             {Array.from({ length: 8 }).map((_, i) => (
               <div key={i} className="aspect-[3/4] rounded-3xl border border-border bg-muted animate-pulse" />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 relative">
             {featured.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}

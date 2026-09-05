@@ -272,7 +272,8 @@ function CatalogContent() {
   return (
     <StoreLayout>
       <div className="relative overflow-hidden">
-        <LeafSprig className="pointer-events-none absolute -top-6 right-6 h-40 w-24 text-primary opacity-[0.08] rotate-12 hidden lg:block" />
+        <LeafSprig className="pointer-events-none absolute -top-3 right-2 h-24 w-14 text-primary opacity-[0.1] rotate-12 sm:-top-6 sm:right-6 sm:h-40 sm:w-24" />
+        <LeafSprig className="pointer-events-none absolute -bottom-4 -left-2 h-24 w-14 text-accent opacity-[0.08] -rotate-[20deg] sm:-bottom-6 sm:-left-3 sm:h-32 sm:w-20 md:h-40 md:w-24" />
         <div className="container mx-auto px-4 py-8 relative">
           <div className="flex items-center justify-between mb-6">
           <div>

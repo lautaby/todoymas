@@ -28,8 +28,9 @@ export function Footer() {
   return (
     <footer className="relative overflow-hidden bg-footer text-footer-foreground mt-16">
       <div className="h-1 w-full bg-gradient-to-r from-primary via-accent to-primary opacity-70" />
-      <LeafScatter className="absolute -right-16 -top-16 h-72 w-72 text-primary opacity-20 hidden md:block" />
-      <LeafSprig className="absolute -bottom-8 left-8 h-40 w-24 text-primary opacity-15 hidden sm:block" />
+      <LeafScatter className="absolute -right-10 -top-10 h-44 w-44 text-primary opacity-20 sm:-right-16 sm:-top-16 sm:h-72 sm:w-72" />
+      <LeafSprig className="absolute -bottom-6 left-3 h-28 w-16 text-primary opacity-15 sm:-bottom-8 sm:left-8 sm:h-40 sm:w-24" />
+      <LeafSprig className="absolute -bottom-4 right-6 h-20 w-12 text-accent opacity-15 rotate-[200deg] sm:hidden" />
       <div className="container mx-auto px-4 py-12 relative">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-3">

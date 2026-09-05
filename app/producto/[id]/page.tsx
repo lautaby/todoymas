@@ -8,6 +8,7 @@ import { StoreLayout } from '@/components/store-layout';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { LeafSprig } from '@/components/decorative-plants';
 import { useCart } from '@/lib/cart-context';
 import { supabase, type Product, type Category } from '@/lib/supabase';
 import { formatPrice } from '@/lib/format';
@@ -106,7 +107,9 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
 
   return (
     <StoreLayout>
-      <div className="container mx-auto px-4 py-8">
+      <div className="relative overflow-hidden">
+        <LeafSprig className="pointer-events-none absolute -top-3 right-2 h-20 w-12 text-primary opacity-[0.08] rotate-12 sm:-top-6 sm:right-6 sm:h-32 sm:w-20" />
+        <div className="container mx-auto px-4 py-8 relative">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
           <Link href="/" className="hover:text-primary">Inicio</Link>
@@ -298,6 +301,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
             </div>
           </section>
         )}
+        </div>
       </div>
     </StoreLayout>
   );

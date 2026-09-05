@@ -15,7 +15,7 @@ export default function CartPage() {
   return (
     <StoreLayout>
       <div className="relative overflow-hidden">
-        <LeafSprig className="pointer-events-none absolute -top-8 -left-4 h-44 w-28 text-accent opacity-[0.08] hidden md:block" />
+        <LeafSprig className="pointer-events-none absolute -top-4 -left-2 h-24 w-14 text-accent opacity-[0.09] sm:-top-8 sm:-left-4 sm:h-44 sm:w-28" />
       <div className="container mx-auto px-4 py-8 relative">
         <h1 className="text-2xl font-bold mb-6">Carrito de compras</h1>
 
@@ -124,10 +124,11 @@ export default function CartPage() {
 
             {/* Summary */}
             <div className="lg:col-span-1">
-              <div className="sticky top-36 rounded-3xl border border-border bg-card p-6 space-y-4 shadow-soft">
-                <h2 className="font-bold text-lg">Resumen</h2>
-                <Separator />
-                <div className="space-y-2">
+              <div className="relative overflow-hidden sticky top-36 rounded-3xl border border-border bg-card p-6 space-y-4 shadow-soft">
+                <LeafSprig className="pointer-events-none absolute -top-3 -right-3 h-20 w-12 text-primary opacity-10 rotate-[35deg] sm:h-28 sm:w-16" />
+                <h2 className="font-bold text-lg relative">Resumen</h2>
+                <Separator className="relative" />
+                <div className="space-y-2 relative">
                   {items.map((item) => (
                     <div key={item.product.id} className="flex justify-between text-sm">
                       <span className="text-muted-foreground line-clamp-1 pr-2">
