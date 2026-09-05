@@ -30,7 +30,7 @@ export function Footer() {
               <div className="flex h-9 w-9 items-center justify-center rounded-none border-2 border-background bg-primary text-primary-foreground">
                 <Store className="h-5 w-5" />
               </div>
-              <span className="text-lg font-bold uppercase tracking-tight">De todo y mas</span>
+              <span className="text-lg font-bold uppercase tracking-tight">Todo y mas</span>
             </div>
             <p className="text-sm text-background/70">
               Tu tienda de confianza con una gran variedad de rubros y productos, todo en un mismo lugar.
@@ -75,7 +75,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-background/20 mt-8 pt-6 text-center text-xs text-background/60 uppercase tracking-wider">
-          <p>&copy; {new Date().getFullYear()} De todo y mas - Todos los derechos reservados</p>
+          <p>&copy; {new Date().getFullYear()} Todo y mas - Todos los derechos reservados</p>
         </div>
       </div>
     </footer>

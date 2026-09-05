@@ -33,7 +33,7 @@ export function AdminSidebar() {
           <Store className="h-5 w-5" />
         </div>
         <div>
-          <p className="font-bold text-sm">De todo y mas</p>
+          <p className="font-bold text-sm">Todo y mas</p>
           <p className="text-[10px] text-muted-foreground">Panel admin</p>
         </div>
       </div>

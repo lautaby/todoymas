@@ -73,7 +73,7 @@ export function Header() {
                 <SheetHeader className="p-4 border-b-2 border-foreground">
                   <SheetTitle className="flex items-center gap-2 font-mono uppercase">
                     <Store className="h-5 w-5 text-primary" />
-                    De todo y mas
+                    Todo y mas
                   </SheetTitle>
                 </SheetHeader>
                 <div className="p-4 space-y-4">
@@ -97,7 +97,7 @@ export function Header() {
                 <Store className="h-5 w-5" />
               </div>
               <div className="hidden sm:block">
-                <span className="text-lg font-bold tracking-tight font-mono uppercase">De todo y mas</span>
+                <span className="text-lg font-bold tracking-tight font-mono uppercase">Todo y mas</span>
                 <p className="text-[10px] text-muted-foreground -mt-1 font-mono uppercase tracking-wider">Tienda online</p>
               </div>
             </Link>

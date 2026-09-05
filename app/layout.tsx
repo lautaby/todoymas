@@ -16,7 +16,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'De todo y mas - Tienda Online',
+  title: 'Todo y mas - Tienda Online',
   description: 'Tu tienda de confianza: variedad de rubros y productos, sin vueltas.',
 };
 

@@ -49,7 +49,7 @@ export default function HomePage() {
               Toda la variedad, un solo lugar
             </span>
             <h1 className="text-5xl md:text-7xl font-black tracking-tighter uppercase">
-              De todo y mas
+              Todo y mas
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground mt-4 max-w-2xl font-mono">
               Pesca, tecnologia, hogar, belleza, camping, seguridad y mucho mas.

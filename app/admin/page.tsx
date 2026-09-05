@@ -23,7 +23,7 @@ export default function AdminLoginPage() {
           <div className="inline-flex h-14 w-14 items-center justify-center rounded-none border-2 border-foreground bg-primary text-primary-foreground mb-4">
             <Store className="h-7 w-7" />
           </div>
-          <h1 className="text-2xl font-bold">De todo y mas</h1>
+          <h1 className="text-2xl font-bold">Todo y mas</h1>
           <p className="text-muted-foreground mt-1 flex items-center justify-center gap-1">
             <Lock className="h-3 w-3" />
             Panel de administracion
