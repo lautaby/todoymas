@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { Store, Mail, Phone, MapPin } from 'lucide-react';
+import { Store, Phone, MapPin } from 'lucide-react';
 import { supabase, type Category } from '@/lib/supabase';
 
 export function Footer() {
@@ -67,9 +67,8 @@ export function Footer() {
           <div>
             <h3 className="font-semibold mb-3 uppercase text-primary">Contacto</h3>
             <ul className="space-y-2 text-sm text-background/70">
-              <li className="flex items-center gap-2"><MapPin className="h-4 w-4 shrink-0" /> Av. Principal 1234, CABA</li>
-              <li className="flex items-center gap-2"><Phone className="h-4 w-4 shrink-0" /> (11) 5555-1234</li>
-              <li className="flex items-center gap-2"><Mail className="h-4 w-4 shrink-0" /> info@detodoymas.com</li>
+              <li className="flex items-center gap-2"><MapPin className="h-4 w-4 shrink-0" /> Paseo España, Avenida España 86, Local 8</li>
+              <li className="flex items-center gap-2"><Phone className="h-4 w-4 shrink-0" /> +54 9 261 665-7183</li>
             </ul>
           </div>
         </div>
