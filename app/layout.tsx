@@ -1,13 +1,21 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Space_Grotesk, JetBrains_Mono } from 'next/font/google';
+import { Fraunces, Nunito_Sans, JetBrains_Mono } from 'next/font/google';
 import { CartProvider } from '@/lib/cart-context';
 import { AuthProvider } from '@/lib/auth-context';
 import { Toaster } from '@/components/ui/toaster';
 
-const spaceGrotesk = Space_Grotesk({
+const nunitoSans = Nunito_Sans({
   subsets: ['latin'],
   variable: '--font-sans',
+  weight: ['400', '500', '600', '700', '800'],
+});
+
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  variable: '--font-display',
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -27,7 +35,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" suppressHydrationWarning>
-      <body className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} font-sans`}>
+      <body className={`${nunitoSans.variable} ${fraunces.variable} ${jetbrainsMono.variable} font-sans`}>
         <AuthProvider>
           <CartProvider>
             {children}

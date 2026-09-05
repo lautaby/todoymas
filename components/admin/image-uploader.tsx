@@ -80,13 +80,13 @@ export function ImageUploader({
       {images.length > 0 && (
         <div className="grid grid-cols-4 gap-2">
           {images.map((url, idx) => (
-            <div key={idx} className="relative aspect-square rounded-none border-2 border-foreground overflow-hidden bg-muted group">
+            <div key={idx} className="relative aspect-square rounded-2xl border border-border overflow-hidden bg-muted group">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={url} alt={`Imagen ${idx + 1}`} className="h-full w-full object-cover" />
               <button
                 type="button"
                 onClick={() => removeImage(idx)}
-                className="absolute top-1 right-1 flex h-6 w-6 items-center justify-center bg-destructive text-destructive-foreground border-2 border-foreground opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute top-1.5 right-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-destructive text-destructive-foreground opacity-0 group-hover:opacity-100 transition-opacity shadow-soft"
                 aria-label="Quitar imagen"
               >
                 <X className="h-3.5 w-3.5" />

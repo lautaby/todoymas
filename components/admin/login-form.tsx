@@ -34,14 +34,14 @@ export function LoginForm() {
   };
 
   return (
-    <div className="rounded-none border-2 border-foreground bg-card p-6 shadow-brutal space-y-4 font-mono">
-      <h2 className="text-sm font-bold uppercase tracking-wide text-center pb-2 border-b-2 border-foreground">
-        Iniciar sesion
+    <div className="rounded-3xl border border-border bg-card p-6 shadow-soft space-y-4">
+      <h2 className="text-lg font-display font-semibold text-center pb-3 border-b border-border">
+        Iniciar sesión
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="email" className="uppercase text-xs tracking-wide">Usuario</Label>
+          <Label htmlFor="email">Usuario</Label>
           <Input
             id="email"
             type="email"
@@ -52,7 +52,7 @@ export function LoginForm() {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="password" className="uppercase text-xs tracking-wide">Contraseña</Label>
+          <Label htmlFor="password">Contraseña</Label>
           <Input
             id="password"
             type="password"
@@ -65,7 +65,7 @@ export function LoginForm() {
         </div>
 
         {error && (
-          <div className="flex items-center gap-2 rounded-none border-2 border-destructive bg-destructive/5 px-3 py-2 text-sm text-destructive">
+          <div className="flex items-center gap-2 rounded-2xl border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">
             <AlertCircle className="h-4 w-4 shrink-0" />
             <span>{error}</span>
           </div>
@@ -75,7 +75,7 @@ export function LoginForm() {
           {loading ? (
             'Procesando...'
           ) : (
-            <><LogIn className="h-4 w-4 mr-2" /> Iniciar sesion</>
+            <><LogIn className="h-4 w-4 mr-2" /> Iniciar sesión</>
           )}
         </Button>
       </form>

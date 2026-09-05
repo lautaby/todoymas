@@ -11,32 +11,31 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-display)', 'Georgia', 'serif'],
         mono: ['var(--font-mono)', 'ui-monospace', 'monospace'],
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-        'grid-pattern':
-          'linear-gradient(hsl(var(--foreground)/0.08) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)/0.08) 1px, transparent 1px)',
-      },
-      backgroundSize: {
-        grid: '32px 32px',
       },
       borderRadius: {
         lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
+        md: 'calc(var(--radius) - 6px)',
+        sm: 'calc(var(--radius) - 10px)',
       },
       boxShadow: {
-        brutal: '4px 4px 0 0 hsl(var(--foreground))',
-        'brutal-sm': '2px 2px 0 0 hsl(var(--foreground))',
-        'brutal-lg': '8px 8px 0 0 hsl(var(--foreground))',
-        'brutal-primary': '4px 4px 0 0 hsl(var(--primary))',
+        soft: '0 1px 2px hsl(25 30% 20% / 0.04), 0 8px 24px -8px hsl(25 30% 20% / 0.12)',
+        'soft-md': '0 2px 4px hsl(25 30% 20% / 0.05), 0 16px 32px -12px hsl(25 30% 20% / 0.16)',
+        'soft-lg': '0 4px 8px hsl(25 30% 20% / 0.06), 0 24px 48px -16px hsl(25 30% 20% / 0.2)',
       },
       colors: {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
+        footer: {
+          DEFAULT: 'hsl(var(--footer))',
+          foreground: 'hsl(var(--footer-foreground))',
+        },
         card: {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',

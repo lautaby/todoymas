@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { Store, Phone, MapPin } from 'lucide-react';
+import { Leaf, Phone, MapPin } from 'lucide-react';
 import { supabase, type Category } from '@/lib/supabase';
 
 export function Footer() {
@@ -22,24 +22,25 @@ export function Footer() {
   }, []);
 
   return (
-    <footer className="border-t-2 border-foreground bg-foreground text-background mt-16 font-mono">
+    <footer className="bg-footer text-footer-foreground mt-16">
+      <div className="h-1 w-full bg-gradient-to-r from-primary via-accent to-primary opacity-70" />
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <div className="flex h-9 w-9 items-center justify-center rounded-none border-2 border-background bg-primary text-primary-foreground">
-                <Store className="h-5 w-5" />
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                <Leaf className="h-5 w-5" />
               </div>
-              <span className="text-lg font-bold uppercase tracking-tight">Todo y mas</span>
+              <span className="text-lg font-display font-semibold tracking-tight">Todo y mas</span>
             </div>
-            <p className="text-sm text-background/70">
-              Tu tienda de confianza con una gran variedad de rubros y productos, todo en un mismo lugar.
+            <p className="text-sm text-footer-foreground/70">
+              Tu tienda de confianza, con una gran variedad de rubros y productos, todo en un mismo lugar.
             </p>
           </div>
 
           <div>
-            <h3 className="font-semibold mb-3 uppercase text-primary">Categorias</h3>
-            <ul className="space-y-2 text-sm text-background/70">
+            <h3 className="font-display font-semibold mb-3 text-primary/90">Categorías</h3>
+            <ul className="space-y-2 text-sm text-footer-foreground/70">
               {categories.map((cat) => (
                 <li key={cat.id}>
                   <Link href={`/catalogo?categoria=${cat.slug}`} className="hover:text-primary transition-colors">
@@ -49,32 +50,32 @@ export function Footer() {
               ))}
               <li>
                 <Link href="/catalogo" className="hover:text-primary transition-colors">
-                  Ver todas &rarr;
+                  Ver todas
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="font-semibold mb-3 uppercase text-primary">Informacion</h3>
-            <ul className="space-y-2 text-sm text-background/70">
-              <li><Link href="/catalogo" className="hover:text-primary transition-colors">Catalogo completo</Link></li>
+            <h3 className="font-display font-semibold mb-3 text-primary/90">Información</h3>
+            <ul className="space-y-2 text-sm text-footer-foreground/70">
+              <li><Link href="/catalogo" className="hover:text-primary transition-colors">Catálogo completo</Link></li>
               <li><Link href="/carrito" className="hover:text-primary transition-colors">Carrito</Link></li>
               <li><Link href="/checkout" className="hover:text-primary transition-colors">Checkout</Link></li>
             </ul>
           </div>
 
           <div>
-            <h3 className="font-semibold mb-3 uppercase text-primary">Contacto</h3>
-            <ul className="space-y-2 text-sm text-background/70">
+            <h3 className="font-display font-semibold mb-3 text-primary/90">Contacto</h3>
+            <ul className="space-y-2 text-sm text-footer-foreground/70">
               <li className="flex items-center gap-2"><MapPin className="h-4 w-4 shrink-0" /> Paseo España, Avenida España 86, Local 8</li>
               <li className="flex items-center gap-2"><Phone className="h-4 w-4 shrink-0" /> +54 9 261 665-7183</li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-background/20 mt-8 pt-6 text-center text-xs text-background/60 uppercase tracking-wider">
-          <p>&copy; {new Date().getFullYear()} Todo y mas - Todos los derechos reservados</p>
+        <div className="border-t border-footer-foreground/10 mt-8 pt-6 text-center text-xs text-footer-foreground/50">
+          <p>&copy; {new Date().getFullYear()} Todo y mas · Todos los derechos reservados</p>
         </div>
       </div>
     </footer>
