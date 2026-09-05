@@ -43,6 +43,7 @@ import {
 import { supabase, type Product, type Category } from '@/lib/supabase';
 import { formatPrice } from '@/lib/format';
 import { useToast } from '@/hooks/use-toast';
+import { ImageUploader } from '@/components/admin/image-uploader';
 
 const NONE = 'none';
 
@@ -54,7 +55,7 @@ type FormState = {
   stock: string;
   category_id: string;
   subcategory_id: string;
-  images: string;
+  images: string[];
   featured: boolean;
 };
 
@@ -66,7 +67,7 @@ const EMPTY_FORM: FormState = {
   stock: '',
   category_id: NONE,
   subcategory_id: NONE,
-  images: '',
+  images: [],
   featured: false,
 };
 
@@ -124,7 +125,7 @@ export default function ProductosPage() {
       stock: String(p.stock),
       category_id: p.category_id ?? NONE,
       subcategory_id: p.subcategory_id ?? NONE,
-      images: (p.images ?? []).join(', '),
+      images: p.images ?? [],
       featured: p.featured,
     });
     setDialogOpen(true);
@@ -144,10 +145,7 @@ export default function ProductosPage() {
       stock: Number(form.stock) || 0,
       category_id: form.category_id === NONE ? null : form.category_id,
       subcategory_id: form.subcategory_id === NONE ? null : form.subcategory_id,
-      images: form.images
-        .split(',')
-        .map((s) => s.trim())
-        .filter(Boolean),
+      images: form.images,
       featured: form.featured,
     };
 
@@ -350,12 +348,10 @@ export default function ProductosPage() {
             </div>
 
             <div className="space-y-1.5">
-              <Label>Imagenes (URLs separadas por coma)</Label>
-              <Textarea
-                value={form.images}
-                onChange={(e) => setForm({ ...form, images: e.target.value })}
-                placeholder="https://..., https://..."
-                rows={2}
+              <Label>Imagenes</Label>
+              <ImageUploader
+                images={form.images}
+                onChange={(images) => setForm({ ...form, images })}
               />
             </div>
 
