@@ -1,7 +1,21 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Plus, Pencil, Trash2, FolderTree, ChevronRight } from 'lucide-react';
+import {
+  Plus,
+  Pencil,
+  Trash2,
+  FolderTree,
+  ChevronRight,
+  Fish,
+  Cpu,
+  Home,
+  Flower2,
+  Shirt,
+  Sparkles,
+  Tent,
+  Camera,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -34,14 +48,31 @@ import { supabase, type Category } from '@/lib/supabase';
 import { useToast } from '@/hooks/use-toast';
 
 const NONE = 'none';
+const NO_ICON = 'no-icon';
+
+const ICON_OPTIONS: { value: string; label: string; Icon: React.ComponentType<{ className?: string }> }[] = [
+  { value: 'Fish', label: 'Pesca', Icon: Fish },
+  { value: 'Cpu', label: 'Tecnologia', Icon: Cpu },
+  { value: 'Home', label: 'Hogar', Icon: Home },
+  { value: 'Flower2', label: 'Belleza', Icon: Flower2 },
+  { value: 'Shirt', label: 'Indumentaria', Icon: Shirt },
+  { value: 'Sparkles', label: 'Bazar / Regalos', Icon: Sparkles },
+  { value: 'Tent', label: 'Camping', Icon: Tent },
+  { value: 'Camera', label: 'Fotografia', Icon: Camera },
+];
+
+const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = Object.fromEntries(
+  ICON_OPTIONS.map((opt) => [opt.value, opt.Icon])
+);
 
 type FormState = {
   id: string | null;
   name: string;
   parent_id: string;
+  icon: string;
 };
 
-const EMPTY_FORM: FormState = { id: null, name: '', parent_id: NONE };
+const EMPTY_FORM: FormState = { id: null, name: '', parent_id: NONE, icon: NO_ICON };
 
 function slugify(text: string) {
   return text
@@ -79,12 +110,12 @@ export default function CategoriasPage() {
   const childrenOf = (parentId: string) => categories.filter((c) => c.parent_id === parentId);
 
   function openCreate(parentId?: string) {
-    setForm({ id: null, name: '', parent_id: parentId ?? NONE });
+    setForm({ id: null, name: '', parent_id: parentId ?? NONE, icon: NO_ICON });
     setDialogOpen(true);
   }
 
   function openEdit(c: Category) {
-    setForm({ id: c.id, name: c.name, parent_id: c.parent_id ?? NONE });
+    setForm({ id: c.id, name: c.name, parent_id: c.parent_id ?? NONE, icon: c.icon ?? NO_ICON });
     setDialogOpen(true);
   }
 
@@ -99,6 +130,7 @@ export default function CategoriasPage() {
       name: form.name.trim(),
       slug: slugify(form.name),
       parent_id: form.parent_id === NONE ? null : form.parent_id,
+      icon: form.parent_id === NONE && form.icon !== NO_ICON ? form.icon : null,
     };
 
     const { error } = form.id
@@ -158,7 +190,18 @@ export default function CategoriasPage() {
           <div key={parent.id} className="border rounded-lg bg-card overflow-hidden">
             <div className="flex items-center justify-between p-4">
               <div className="flex items-center gap-2 min-w-0">
-                <FolderTree className="h-4 w-4 text-primary shrink-0" />
+                {parent.icon && ICON_MAP[parent.icon] ? (
+                  (() => {
+                    const Icon = ICON_MAP[parent.icon as string];
+                    return (
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md border bg-muted">
+                        <Icon className="h-4 w-4 text-primary" />
+                      </span>
+                    );
+                  })()
+                ) : (
+                  <FolderTree className="h-4 w-4 text-primary shrink-0" />
+                )}
                 <span className="font-medium truncate">{parent.name}</span>
                 <Badge variant="secondary">{childrenOf(parent.id).length} subcategorias</Badge>
               </div>
@@ -239,6 +282,34 @@ export default function CategoriasPage() {
                 Dejala vacia para crear una categoria principal, o elegi una para crear una subcategoria.
               </p>
             </div>
+
+            {form.parent_id === NONE && (
+              <div className="space-y-1.5">
+                <Label>Icono (opcional)</Label>
+                <Select
+                  value={form.icon}
+                  onValueChange={(v) => setForm({ ...form, icon: v })}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value={NO_ICON}>Sin icono</SelectItem>
+                    {ICON_OPTIONS.map(({ value, label, Icon }) => (
+                      <SelectItem key={value} value={value}>
+                        <span className="flex items-center gap-2">
+                          <Icon className="h-4 w-4" />
+                          {label}
+                        </span>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-muted-foreground">
+                  Se muestra en la portada y el menu de categorias. Las subcategorias no llevan icono propio.
+                </p>
+              </div>
+            )}
           </div>
 
           <DialogFooter>
