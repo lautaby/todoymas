@@ -5,49 +5,13 @@ import Link from 'next/link';
 import { ArrowRight, Truck, ShieldCheck, Store, Headphones, Leaf } from 'lucide-react';
 import { StoreLayout } from '@/components/store-layout';
 import { ProductCard } from '@/components/product-card';
+import { OrganicBlob, LeafScatter, LeafSprig } from '@/components/decorative-plants';
 import { supabase, type Product, type Category } from '@/lib/supabase';
 import { Fish, Cpu, Flower2, Home, Shirt, Sparkles, Tent, Camera } from 'lucide-react';
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Fish, Cpu, Flower2, Home, Shirt, Sparkles, Tent, Camera,
 };
-
-function OrganicBlob({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 600 600"
-      className={className}
-      aria-hidden="true"
-    >
-      <path
-        fill="currentColor"
-        d="M431.5 73.5C495 116 552 178 566 250.5c14 72.5-14 155.5-63.5 216.5C453 528 380 566 305 570.5c-75 4.5-153.5-24.5-207-79.5C44.5 436 16 355.5 21.5 278 27 200.5 66.5 126 128 82C189.5 38 273 24.5 344 33c71 8.5 24 -1.5 87.5 40.5Z"
-      />
-    </svg>
-  );
-}
-
-function LeafScatter({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 600 600"
-      className={className}
-      fill="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M120 460c60-140 200-220 340-200-20 140-140 240-280 260-30 4-50-30-60-60Z"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        opacity="0.35"
-      />
-      <path d="M150 445c70-110 190-170 290-165" stroke="currentColor" strokeWidth="1" opacity="0.3" />
-      <circle cx="470" cy="120" r="5" fill="currentColor" opacity="0.3" />
-      <circle cx="500" cy="150" r="3" fill="currentColor" opacity="0.25" />
-      <circle cx="440" cy="95" r="3" fill="currentColor" opacity="0.25" />
-    </svg>
-  );
-}
 
 export default function HomePage() {
   const [featured, setFeatured] = useState<Product[]>([]);
@@ -113,8 +77,10 @@ export default function HomePage() {
       </section>
 
       {/* Features bar */}
-      <section className="border-y border-border bg-secondary/40">
-        <div className="container mx-auto px-4 py-8">
+      <section className="relative overflow-hidden border-y border-border bg-secondary/40">
+        <LeafSprig className="absolute -bottom-6 left-6 h-32 w-20 text-primary hidden sm:block" />
+        <LeafSprig className="absolute -top-10 right-10 h-28 w-16 text-accent rotate-[160deg] hidden md:block" />
+        <div className="container mx-auto px-4 py-8 relative">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
               { icon: Truck, title: 'Envíos a todo el país', desc: 'Entregas rápidas' },

@@ -6,6 +6,7 @@ import { Leaf, Phone, MapPin, Instagram, CreditCard, Landmark, Wallet } from 'lu
 import { supabase, type Category } from '@/lib/supabase';
 import { WhatsAppIcon } from '@/components/icons/whatsapp-icon';
 import { TikTokIcon } from '@/components/icons/tiktok-icon';
+import { LeafScatter, LeafSprig } from '@/components/decorative-plants';
 import { WHATSAPP_URL, INSTAGRAM_URL, TIKTOK_URL } from '@/lib/contact';
 
 export function Footer() {
@@ -25,9 +26,11 @@ export function Footer() {
   }, []);
 
   return (
-    <footer className="bg-footer text-footer-foreground mt-16">
+    <footer className="relative overflow-hidden bg-footer text-footer-foreground mt-16">
       <div className="h-1 w-full bg-gradient-to-r from-primary via-accent to-primary opacity-70" />
-      <div className="container mx-auto px-4 py-12">
+      <LeafScatter className="absolute -right-16 -top-16 h-72 w-72 text-primary opacity-20 hidden md:block" />
+      <LeafSprig className="absolute -bottom-8 left-8 h-40 w-24 text-primary opacity-15 hidden sm:block" />
+      <div className="container mx-auto px-4 py-12 relative">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-3">
             <div className="flex items-center gap-2.5">

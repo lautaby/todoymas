@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { Search, SlidersHorizontal, X, ChevronDown } from 'lucide-react';
 import { StoreLayout } from '@/components/store-layout';
 import { ProductCard } from '@/components/product-card';
+import { LeafSprig } from '@/components/decorative-plants';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -270,8 +271,10 @@ function CatalogContent() {
 
   return (
     <StoreLayout>
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-6">
+      <div className="relative overflow-hidden">
+        <LeafSprig className="pointer-events-none absolute -top-6 right-6 h-40 w-24 text-primary opacity-[0.08] rotate-12 hidden lg:block" />
+        <div className="container mx-auto px-4 py-8 relative">
+          <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold">Catálogo</h1>
             <p className="text-sm text-muted-foreground mt-1">
@@ -362,6 +365,7 @@ function CatalogContent() {
               </div>
             )}
           </div>
+        </div>
         </div>
       </div>
     </StoreLayout>

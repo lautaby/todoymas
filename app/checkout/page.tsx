@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Textarea } from '@/components/ui/textarea';
+import { OrganicBlob, LeafScatter } from '@/components/decorative-plants';
 import { useCart } from '@/lib/cart-context';
 import { formatPrice } from '@/lib/format';
 import { supabase } from '@/lib/supabase';
@@ -85,7 +86,10 @@ export default function CheckoutPage() {
   if (success) {
     return (
       <StoreLayout>
-        <div className="container mx-auto px-4 py-16">
+        <div className="relative overflow-hidden bg-hearth">
+          <OrganicBlob className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 text-primary opacity-15 animate-drift hidden md:block" />
+          <LeafScatter className="pointer-events-none absolute -left-24 bottom-0 h-72 w-72 text-accent opacity-20 hidden md:block" />
+          <div className="container mx-auto px-4 py-16 relative">
           <div className="max-w-md mx-auto text-center">
             <div className="flex h-20 w-20 mx-auto items-center justify-center rounded-full bg-success/10 mb-6">
               <Check className="h-10 w-10 text-success" />
@@ -105,6 +109,7 @@ export default function CheckoutPage() {
                 Seguir comprando
               </Button>
             </Link>
+          </div>
           </div>
         </div>
       </StoreLayout>

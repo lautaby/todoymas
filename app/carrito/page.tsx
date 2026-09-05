@@ -5,6 +5,7 @@ import { Minus, Plus, Trash2, ShoppingCart, ArrowRight } from 'lucide-react';
 import { StoreLayout } from '@/components/store-layout';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { LeafSprig, OrganicBlob } from '@/components/decorative-plants';
 import { useCart } from '@/lib/cart-context';
 import { formatPrice } from '@/lib/format';
 
@@ -13,12 +14,15 @@ export default function CartPage() {
 
   return (
     <StoreLayout>
-      <div className="container mx-auto px-4 py-8">
+      <div className="relative overflow-hidden">
+        <LeafSprig className="pointer-events-none absolute -top-8 -left-4 h-44 w-28 text-accent opacity-[0.08] hidden md:block" />
+      <div className="container mx-auto px-4 py-8 relative">
         <h1 className="text-2xl font-bold mb-6">Carrito de compras</h1>
 
         {items.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 text-center">
-            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-secondary mb-4">
+          <div className="relative flex flex-col items-center justify-center py-20 text-center overflow-hidden">
+            <OrganicBlob className="pointer-events-none absolute left-1/2 top-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 text-primary opacity-[0.06]" />
+            <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-secondary mb-4">
               <ShoppingCart className="h-10 w-10 text-muted-foreground" />
             </div>
             <p className="text-lg font-medium">Tu carrito está vacío</p>
@@ -159,6 +163,7 @@ export default function CartPage() {
             </div>
           </div>
         )}
+      </div>
       </div>
     </StoreLayout>
   );
