@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { supabase } from '@/lib/supabase';
 import { useToast } from '@/hooks/use-toast';
+import { compressImage } from '@/lib/image-compress';
 
 const BUCKET = 'product-images';
 const MAX_SIZE_MB = 5;
@@ -35,17 +36,25 @@ export function ImageUploader({
         toast({ title: `${file.name} no es una imagen`, variant: 'destructive' });
         continue;
       }
-      if (file.size > MAX_SIZE_MB * 1024 * 1024) {
-        toast({ title: `${file.name} pesa más de ${MAX_SIZE_MB}MB`, variant: 'destructive' });
+
+      // Compress/resize before validating size — this is what avoids the
+      // "low memory" error on phones when uploading full-resolution camera
+      // photos, and also shrinks upload time and storage usage.
+      const originalName = file.name;
+      const compressed = await compressImage(file);
+
+      if (compressed.size > MAX_SIZE_MB * 1024 * 1024) {
+        toast({ title: `${originalName} pesa más de ${MAX_SIZE_MB}MB incluso comprimida`, variant: 'destructive' });
         continue;
       }
 
-      const ext = file.name.split('.').pop() || 'jpg';
+      const ext = compressed.name.split('.').pop() || 'jpg';
       const path = `${crypto.randomUUID()}.${ext}`;
 
-      const { error } = await supabase.storage.from(BUCKET).upload(path, file, {
+      const { error } = await supabase.storage.from(BUCKET).upload(path, compressed, {
         cacheControl: '3600',
         upsert: false,
+        contentType: compressed.type || undefined,
       });
 
       if (error) {
