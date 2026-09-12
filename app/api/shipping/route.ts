@@ -29,22 +29,36 @@ export async function POST(request: Request) {
     const totalItemsCount = items?.reduce((acc, item) => acc + item.quantity, 0) || 1;
     const estimatedWeightKg = Math.max(1, totalItemsCount * 0.5);
 
-    // Correo Argentino / Regional Shipping Cost Logic in Argentina
-    let baseCost = 3500;
+    // Origin: Mendoza Palmira (C.P. 5577)
+    // Correo Argentino / Regional Shipping Cost Logic originating from Mendoza
+    let baseCost = 4500;
 
-    // CABA (C prefix or 1000-1499)
-    if (firstChar === 'C' || (numericCP >= 1000 && numericCP <= 1499)) {
-      baseCost = 3200;
+    // 1. Local / Cuyo region (Mendoza M 5500-5699, San Juan J 5400-5499, San Luis D 5700-5799)
+    if (
+      firstChar === 'M' || 
+      firstChar === 'J' || 
+      firstChar === 'D' || 
+      (numericCP >= 5400 && numericCP <= 5799)
+    ) {
+      baseCost = 2800; // Local / Cuyo
     }
-    // GBA (Gran Buenos Aires - 1600-1999 or B ranges near CABA)
-    else if ((numericCP >= 1600 && numericCP <= 1999) || (firstChar === 'B' && numericCP < 7000)) {
-      baseCost = 3900;
+    // 2. Region Centro (Córdoba X 5000-5999, Santa Fe S 2000-S3500)
+    else if (
+      firstChar === 'X' || 
+      firstChar === 'S' || 
+      (numericCP >= 2000 && numericCP <= 5999)
+    ) {
+      baseCost = 4200;
     }
-    // Provincia de Buenos Aires (Interior)
-    else if (firstChar === 'B' || (numericCP >= 2000 && numericCP <= 8700)) {
-      baseCost = 4800;
+    // 3. CABA & Buenos Aires (C prefix or 1000-1999, B prefix)
+    else if (
+      firstChar === 'C' || 
+      firstChar === 'B' || 
+      (numericCP >= 1000 && numericCP <= 1999)
+    ) {
+      baseCost = 4900;
     }
-    // Resto del país (Interior / Rest of Argentina: Cordoba X, Santa Fe S, Mendoza M, etc.)
+    // 4. Resto del país (Patagonia, NEA, NOA)
     else {
       baseCost = 6500;
     }
@@ -57,7 +71,7 @@ export async function POST(request: Request) {
       success: true,
       cost: finalCost,
       estimatedDays: '3 a 5 días hábiles',
-      service: 'Correo Argentino - Paq.ar (Clásico a Domicilio)',
+      service: 'Correo Argentino - Paq.ar (Desde Mendoza Palmira)',
     });
   } catch (error) {
     console.error('Error in shipping calculation API:', error);
