@@ -32,11 +32,37 @@ export default function CheckoutPage() {
     shipping_method: 'retiro',
     address: '',
     city: '',
+    postal_code: '',
     notes: '',
   });
 
-  const shippingCost = form.shipping_method === 'envio' ? 3500 : 0;
-  const grandTotal = total + shippingCost;
+  const [shippingCost, setShippingCost] = useState(3500);
+  const [calculatingShipping, setCalculatingShipping] = useState(false);
+  const [shippingService, setShippingService] = useState('Correo Argentino');
+
+  const fetchShippingCost = async (cp: string, currentItems: typeof items) => {
+    if (!cp || cp.trim().length < 4) return;
+    setCalculatingShipping(true);
+    try {
+      const res = await fetch('/api/shipping', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ postalCode: cp, items: currentItems }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setShippingCost(data.cost);
+        if (data.service) setShippingService(data.service);
+      }
+    } catch (err) {
+      console.error('Error fetching shipping:', err);
+    } finally {
+      setCalculatingShipping(false);
+    }
+  };
+
+  const actualShippingCost = form.shipping_method === 'envio' ? shippingCost : 0;
+  const grandTotal = total + actualShippingCost;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,7 +88,7 @@ export default function CheckoutPage() {
           customer_phone: form.customer_phone || null,
           status: 'pendiente',
           shipping_method: form.shipping_method,
-          address: form.shipping_method === 'envio' ? form.address : null,
+          address: form.shipping_method === 'envio' ? `${form.address} (CP: ${form.postal_code})` : null,
           city: form.shipping_method === 'envio' ? form.city : null,
           notes: form.notes || null,
           total: grandTotal,
@@ -214,34 +240,54 @@ export default function CheckoutPage() {
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
                       <Truck className="h-4 w-4 text-primary" />
-                      <Label htmlFor="envio" className="font-medium cursor-pointer">Envío a domicilio</Label>
+                      <Label htmlFor="envio" className="font-medium cursor-pointer">Envío a domicilio (Correo Argentino)</Label>
                     </div>
-                    <p className="text-sm text-muted-foreground mt-1">Entrega en 3-5 días hábiles</p>
+                    <p className="text-sm text-muted-foreground mt-1">Cotización automática por Código Postal</p>
                   </div>
-                  <span className="font-semibold">{formatPrice(3500)}</span>
+                  <span className="font-semibold">
+                    {calculatingShipping ? 'Calculando...' : formatPrice(shippingCost)}
+                  </span>
                 </div>
               </RadioGroup>
 
               {form.shipping_method === 'envio' && (
                 <div className="space-y-4 pt-2">
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="postal_code">Código Postal *</Label>
+                      <Input
+                        id="postal_code"
+                        required={form.shipping_method === 'envio'}
+                        value={form.postal_code}
+                        onChange={(e) => {
+                          const cp = e.target.value;
+                          setForm({ ...form, postal_code: cp });
+                          if (cp.trim().length >= 4) {
+                            fetchShippingCost(cp, items);
+                          }
+                        }}
+                        placeholder="1425"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="city">Ciudad / Provincia *</Label>
+                      <Input
+                        id="city"
+                        required={form.shipping_method === 'envio'}
+                        value={form.city}
+                        onChange={(e) => setForm({ ...form, city: e.target.value })}
+                        placeholder="CABA"
+                      />
+                    </div>
+                  </div>
                   <div className="space-y-2">
-                    <Label htmlFor="address">Dirección de envío *</Label>
+                    <Label htmlFor="address">Dirección de envío (Calle y número) *</Label>
                     <Input
                       id="address"
                       required={form.shipping_method === 'envio'}
                       value={form.address}
                       onChange={(e) => setForm({ ...form, address: e.target.value })}
-                      placeholder="Av. Corrientes 1234"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="city">Ciudad *</Label>
-                    <Input
-                      id="city"
-                      required={form.shipping_method === 'envio'}
-                      value={form.city}
-                      onChange={(e) => setForm({ ...form, city: e.target.value })}
-                      placeholder="CABA"
+                      placeholder="Av. Corrientes 1234, Piso 2 B"
                     />
                   </div>
                 </div>
