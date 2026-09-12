@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowLeft, Check, Truck, Store, CreditCard, Lock } from 'lucide-react';
 import { StoreLayout } from '@/components/store-layout';
 import { Button } from '@/components/ui/button';
@@ -32,13 +33,41 @@ export default function CheckoutPage() {
     shipping_method: 'retiro',
     address: '',
     city: '',
+    province: 'Mendoza',
     postal_code: '',
     notes: '',
   });
 
-  const [shippingCost, setShippingCost] = useState(3500);
+  const [shippingCost, setShippingCost] = useState<number | null>(null);
   const [calculatingShipping, setCalculatingShipping] = useState(false);
   const [shippingService, setShippingService] = useState('Correo Argentino');
+
+  const ARGENTINE_PROVINCES = [
+    'Buenos Aires',
+    'Ciudad Autónoma de Buenos Aires',
+    'Catamarca',
+    'Chaco',
+    'Chubut',
+    'Córdoba',
+    'Corrientes',
+    'Entre Ríos',
+    'Formosa',
+    'Jujuy',
+    'La Pampa',
+    'La Rioja',
+    'Mendoza',
+    'Misiones',
+    'Neuquén',
+    'Río Negro',
+    'Salta',
+    'San Juan',
+    'San Luis',
+    'Santa Cruz',
+    'Santa Fe',
+    'Santiago del Estero',
+    'Tierra del Fuego',
+    'Tucumán',
+  ];
 
   const fetchShippingCost = async (cp: string, currentItems: typeof items) => {
     if (!cp || cp.trim().length < 4) return;
@@ -61,7 +90,7 @@ export default function CheckoutPage() {
     }
   };
 
-  const actualShippingCost = form.shipping_method === 'envio' ? shippingCost : 0;
+  const actualShippingCost = form.shipping_method === 'envio' ? (shippingCost ?? 0) : 0;
   const grandTotal = total + actualShippingCost;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -88,8 +117,8 @@ export default function CheckoutPage() {
           customer_phone: form.customer_phone || null,
           status: 'pendiente',
           shipping_method: form.shipping_method,
-          address: form.shipping_method === 'envio' ? `${form.address} (CP: ${form.postal_code})` : null,
-          city: form.shipping_method === 'envio' ? form.city : null,
+          address: form.shipping_method === 'envio' ? `${form.address}, ${form.city}, ${form.province} (CP: ${form.postal_code})` : null,
+          city: form.shipping_method === 'envio' ? `${form.city} (${form.province})` : null,
           notes: form.notes || null,
           total: grandTotal,
           items: orderItems,
@@ -245,7 +274,11 @@ export default function CheckoutPage() {
                     <p className="text-sm text-muted-foreground mt-1">Cotización automática por Código Postal</p>
                   </div>
                   <span className="font-semibold">
-                    {calculatingShipping ? 'Calculando...' : formatPrice(shippingCost)}
+                    {form.shipping_method === 'envio' && shippingCost === null
+                      ? '-'
+                      : calculatingShipping
+                      ? 'Calculando...'
+                      : formatPrice(shippingCost ?? 0)}
                   </span>
                 </div>
               </RadioGroup>
@@ -266,29 +299,49 @@ export default function CheckoutPage() {
                             fetchShippingCost(cp, items);
                           }
                         }}
-                        placeholder="1425"
+                        placeholder="5577"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="city">Ciudad / Provincia *</Label>
+                      <Label htmlFor="province">Provincia *</Label>
+                      <Select
+                        value={form.province}
+                        onValueChange={(val) => setForm({ ...form, province: val })}
+                      >
+                        <SelectTrigger id="province">
+                          <SelectValue placeholder="Seleccioná provincia" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {ARGENTINE_PROVINCES.map((prov) => (
+                            <SelectItem key={prov} value={prov}>
+                              {prov}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="city">Ciudad / Localidad *</Label>
                       <Input
                         id="city"
                         required={form.shipping_method === 'envio'}
                         value={form.city}
                         onChange={(e) => setForm({ ...form, city: e.target.value })}
-                        placeholder="CABA"
+                        placeholder="Palmira"
                       />
                     </div>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="address">Dirección de envío (Calle y número) *</Label>
-                    <Input
-                      id="address"
-                      required={form.shipping_method === 'envio'}
-                      value={form.address}
-                      onChange={(e) => setForm({ ...form, address: e.target.value })}
-                      placeholder="Av. Corrientes 1234, Piso 2 B"
-                    />
+                    <div className="space-y-2">
+                      <Label htmlFor="address">Dirección de envío (Calle y número) *</Label>
+                      <Input
+                        id="address"
+                        required={form.shipping_method === 'envio'}
+                        value={form.address}
+                        onChange={(e) => setForm({ ...form, address: e.target.value })}
+                        placeholder="Av. San Martín 123"
+                      />
+                    </div>
                   </div>
                 </div>
               )}
@@ -365,7 +418,15 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Envío</span>
-                  <span>{shippingCost === 0 ? 'Gratis' : formatPrice(shippingCost)}</span>
+                  <span>
+                    {form.shipping_method === 'retiro'
+                      ? 'Gratis'
+                      : shippingCost === null
+                      ? '-'
+                      : calculatingShipping
+                      ? 'Calculando...'
+                      : formatPrice(shippingCost)}
+                  </span>
                 </div>
               </div>
               <Separator />
