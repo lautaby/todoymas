@@ -56,7 +56,22 @@ const PAYMENT_LABEL: Record<string, string> = {
   efectivo: 'Efectivo',
   tarjeta: 'Tarjeta',
   transferencia: 'Transferencia',
+  mercadopago: 'Mercado Pago',
   otro: 'Otro',
+};
+
+const PAYMENT_STATUS_LABEL: Record<string, string> = {
+  pendiente: 'Pago pendiente',
+  aprobado: 'Pago aprobado',
+  rechazado: 'Pago rechazado',
+  en_proceso: 'Pago en proceso',
+};
+
+const PAYMENT_STATUS_VARIANT: Record<string, 'default' | 'secondary' | 'destructive' | 'outline'> = {
+  pendiente: 'outline',
+  aprobado: 'default',
+  rechazado: 'destructive',
+  en_proceso: 'secondary',
 };
 
 export default function PedidosPage() {
@@ -241,6 +256,14 @@ export default function PedidosPage() {
                     <div>
                       <p className="text-muted-foreground">Forma de pago</p>
                       <p>{PAYMENT_LABEL[selected.payment_method] ?? selected.payment_method}</p>
+                    </div>
+                  )}
+                  {selected.channel === 'online' && (
+                    <div>
+                      <p className="text-muted-foreground">Estado del pago</p>
+                      <Badge variant={PAYMENT_STATUS_VARIANT[selected.payment_status] ?? 'outline'} className="mt-0.5">
+                        {PAYMENT_STATUS_LABEL[selected.payment_status] ?? selected.payment_status}
+                      </Badge>
                     </div>
                   )}
                   {selected.address && (

@@ -50,6 +50,9 @@ export type Order = {
   created_at: string;
   channel: 'online' | 'mostrador' | string;
   payment_method: string | null;
+  payment_status: 'pendiente' | 'aprobado' | 'rechazado' | 'en_proceso' | string;
+  mp_preference_id: string | null;
+  mp_payment_id: string | null;
 };
 
 export type Profile = {

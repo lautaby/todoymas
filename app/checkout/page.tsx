@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ArrowLeft, Check, Truck, Store, CreditCard, Lock } from 'lucide-react';
+import { ArrowLeft, Check, Truck, Store, CreditCard, Lock, Landmark, Banknote, Loader2 } from 'lucide-react';
 import { StoreLayout } from '@/components/store-layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -17,6 +17,7 @@ import { useCart } from '@/lib/cart-context';
 import { formatPrice } from '@/lib/format';
 import { supabase } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
+import { WHATSAPP_NUMBER } from '@/lib/contact';
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -36,11 +37,13 @@ export default function CheckoutPage() {
     province: 'Mendoza',
     postal_code: '',
     notes: '',
+    payment_method: 'mercadopago',
   });
 
   const [shippingCost, setShippingCost] = useState<number | null>(null);
   const [calculatingShipping, setCalculatingShipping] = useState(false);
   const [shippingService, setShippingService] = useState('Correo Argentino');
+  const [paymentError, setPaymentError] = useState<string | null>(null);
 
   const ARGENTINE_PROVINCES = [
     'Buenos Aires',
@@ -99,6 +102,7 @@ export default function CheckoutPage() {
 
     setProcessing(true);
     setError(null);
+    setPaymentError(null);
 
     try {
       const orderItems = items.map(i => ({
@@ -109,26 +113,65 @@ export default function CheckoutPage() {
         image: i.product.images[0] ?? '',
       }));
 
-      const { data, error: insertError } = await supabase
-        .from('orders')
-        .insert({
-          customer_name: form.customer_name,
-          customer_email: form.customer_email || null,
-          customer_phone: form.customer_phone || null,
-          status: 'pendiente',
-          shipping_method: form.shipping_method,
-          address: form.shipping_method === 'envio' ? `${form.address}, ${form.city}, ${form.province} (CP: ${form.postal_code})` : null,
-          city: form.shipping_method === 'envio' ? `${form.city} (${form.province})` : null,
-          notes: form.notes || null,
-          total: grandTotal,
-          items: orderItems,
-        })
-        .select('id')
-        .single();
+      const newOrderId = crypto.randomUUID();
+      const baseOrder = {
+        id: newOrderId,
+        customer_name: form.customer_name,
+        customer_email: form.customer_email || null,
+        customer_phone: form.customer_phone || null,
+        status: 'pendiente',
+        payment_method: form.payment_method,
+        payment_status: 'pendiente',
+        shipping_method: form.shipping_method,
+        address: form.shipping_method === 'envio' ? `${form.address}, ${form.city}, ${form.province} (CP: ${form.postal_code})` : null,
+        city: form.shipping_method === 'envio' ? `${form.city} (${form.province})` : null,
+        notes: form.notes || null,
+        total: grandTotal,
+        items: orderItems,
+      };
 
+      if (form.payment_method === 'mercadopago') {
+        // 1. Create the Mercado Pago preference BEFORE inserting the order,
+        // so we can store its id and only redirect if it actually succeeded.
+        const prefRes = await fetch('/api/mercadopago/create-preference', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            orderId: newOrderId,
+            items: orderItems,
+            shippingCost: actualShippingCost,
+            payer: {
+              name: form.customer_name,
+              email: form.customer_email || undefined,
+              phone: form.customer_phone || undefined,
+            },
+          }),
+        });
+        const prefData = await prefRes.json();
+
+        if (!prefRes.ok || !prefData.success) {
+          setPaymentError(
+            prefData.error || 'No pudimos iniciar el pago con Mercado Pago. Probá con transferencia o efectivo.'
+          );
+          setProcessing(false);
+          return;
+        }
+
+        const { error: insertError } = await supabase.from('orders').insert({
+          ...baseOrder,
+          mp_preference_id: prefData.preferenceId,
+        });
+        if (insertError) throw insertError;
+
+        clearCart();
+        window.location.href = prefData.initPoint;
+        return;
+      }
+
+      const { error: insertError } = await supabase.from('orders').insert(baseOrder);
       if (insertError) throw insertError;
 
-      setOrderId(data.id);
+      setOrderId(newOrderId);
       setSuccess(true);
       clearCart();
     } catch (err) {
@@ -158,9 +201,33 @@ export default function CheckoutPage() {
             <p className="text-sm text-muted-foreground mb-6">
               Número de pedido: <span className="font-mono font-medium text-foreground">{orderId?.slice(0, 8)}</span>
             </p>
-            <div className="rounded-3xl border border-border bg-card p-4 text-left mb-6 shadow-soft">
+            <div className="rounded-3xl border border-border bg-card p-4 text-left mb-6 shadow-soft space-y-2">
               <p className="text-sm text-muted-foreground">Nos contactaremos a la brevedad para coordinar {form.shipping_method === 'retiro' ? 'el retiro en nuestro local' : 'la entrega'}.</p>
+              {form.payment_method === 'transferencia' && (
+                <p className="text-sm text-muted-foreground">
+                  Te vamos a enviar los datos bancarios por WhatsApp para que puedas transferir.
+                </p>
+              )}
+              {form.payment_method === 'efectivo' && (
+                <p className="text-sm text-muted-foreground">
+                  Recordá que el pago es en efectivo al momento de retirar tu pedido.
+                </p>
+              )}
             </div>
+            {form.payment_method === 'transferencia' && (
+              <a
+                href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+                  `Hola! Hice el pedido ${orderId?.slice(0, 8)} y quiero coordinar la transferencia.`
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block mb-3"
+              >
+                <Button size="lg" variant="outline" className="w-full">
+                  Coordinar transferencia por WhatsApp
+                </Button>
+              </a>
+            )}
             <Link href="/catalogo">
               <Button size="lg" className="w-full">
                 Seguir comprando
@@ -244,7 +311,13 @@ export default function CheckoutPage() {
               <h2 className="font-semibold text-lg">Método de envío</h2>
               <RadioGroup
                 value={form.shipping_method}
-                onValueChange={(v) => setForm({ ...form, shipping_method: v })}
+                onValueChange={(v) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    shipping_method: v,
+                    payment_method: v === 'envio' && prev.payment_method === 'efectivo' ? 'mercadopago' : prev.payment_method,
+                  }))
+                }
               >
                 <div className={cn(
                   'flex items-start gap-3 rounded-lg border p-4 cursor-pointer transition-colors',
@@ -358,29 +431,84 @@ export default function CheckoutPage() {
               />
             </div>
 
-            {/* Payment (mocked) */}
+            {/* Payment */}
             <div className="rounded-3xl border border-border bg-card p-6 space-y-4 shadow-soft">
               <div className="flex items-center gap-2">
                 <CreditCard className="h-5 w-5 text-primary" />
                 <h2 className="font-semibold text-lg">Método de pago</h2>
               </div>
-              <div className="rounded-lg border-2 border-dashed border-border p-6 text-center">
-                <Lock className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-                <p className="text-sm font-medium">Pago simulado (prototipo)</p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  La integración de pago estará disponible próximamente. El pedido se registrará sin cobro real.
+
+              <RadioGroup
+                value={form.payment_method}
+                onValueChange={(v) => setForm({ ...form, payment_method: v })}
+              >
+                <div className={cn(
+                  'flex items-start gap-3 rounded-lg border p-4 cursor-pointer transition-colors',
+                  form.payment_method === 'mercadopago' && 'border-primary bg-primary/5'
+                )}>
+                  <RadioGroupItem value="mercadopago" id="pago-mp" className="mt-1" />
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <CreditCard className="h-4 w-4 text-primary" />
+                      <Label htmlFor="pago-mp" className="font-medium cursor-pointer">Mercado Pago</Label>
+                    </div>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Tarjetas de crédito/débito, cuotas y dinero en cuenta. Te lleva a un checkout seguro de Mercado Pago.
+                    </p>
+                  </div>
+                </div>
+
+                <div className={cn(
+                  'flex items-start gap-3 rounded-lg border p-4 cursor-pointer transition-colors',
+                  form.payment_method === 'transferencia' && 'border-primary bg-primary/5'
+                )}>
+                  <RadioGroupItem value="transferencia" id="pago-transferencia" className="mt-1" />
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <Landmark className="h-4 w-4 text-primary" />
+                      <Label htmlFor="pago-transferencia" className="font-medium cursor-pointer">Transferencia bancaria</Label>
+                    </div>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Registramos tu pedido y te enviamos los datos para transferir por WhatsApp.
+                    </p>
+                  </div>
+                </div>
+
+                <div className={cn(
+                  'flex items-start gap-3 rounded-lg border p-4 transition-colors',
+                  form.shipping_method === 'envio' ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer',
+                  form.payment_method === 'efectivo' && 'border-primary bg-primary/5'
+                )}>
+                  <RadioGroupItem
+                    value="efectivo"
+                    id="pago-efectivo"
+                    className="mt-1"
+                    disabled={form.shipping_method === 'envio'}
+                  />
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <Banknote className="h-4 w-4 text-primary" />
+                      <Label htmlFor="pago-efectivo" className="font-medium cursor-pointer">Efectivo al retirar</Label>
+                    </div>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {form.shipping_method === 'envio'
+                        ? 'Solo disponible con retiro en local'
+                        : 'Pagás al retirar tu pedido en el local'}
+                    </p>
+                  </div>
+                </div>
+              </RadioGroup>
+
+              {form.payment_method === 'mercadopago' && (
+                <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                  <Lock className="h-3 w-3" />
+                  Vas a ser redirigido al checkout de Mercado Pago para completar el pago de forma segura.
                 </p>
-              </div>
-              <div className="flex flex-wrap gap-2 justify-center">
-                {['Go Cuotas', 'Mercado Pago', 'Tarjetas de crédito', 'Tarjetas de débito', 'Y más'].map((m) => (
-                  <span
-                    key={m}
-                    className="inline-flex items-center rounded-full border border-border bg-secondary/50 px-3 py-1 text-xs text-muted-foreground"
-                  >
-                    {m}
-                  </span>
-                ))}
-              </div>
+              )}
+
+              {paymentError && (
+                <p className="text-sm text-destructive">{paymentError}</p>
+              )}
             </div>
           </div>
 
@@ -440,7 +568,16 @@ export default function CheckoutPage() {
               )}
 
               <Button type="submit" size="lg" className="w-full" disabled={processing}>
-                {processing ? 'Procesando...' : 'Confirmar pedido'}
+                {processing ? (
+                  <span className="flex items-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    {form.payment_method === 'mercadopago' ? 'Redirigiendo a Mercado Pago...' : 'Procesando...'}
+                  </span>
+                ) : form.payment_method === 'mercadopago' ? (
+                  'Pagar con Mercado Pago'
+                ) : (
+                  'Confirmar pedido'
+                )}
               </Button>
               <p className="text-xs text-muted-foreground text-center flex items-center justify-center gap-1">
                 <Lock className="h-3 w-3" />
