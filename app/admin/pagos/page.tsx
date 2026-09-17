@@ -80,7 +80,7 @@ function PagosContent() {
       });
       const data = await res.json();
       if (!res.ok || !data.success) {
-        setErrorMsg(data.error || 'No pudimos iniciar la conexión.');
+        setErrorMsg((data.error || 'No pudimos iniciar la conexión.') + (data.details ? "\nDetalles: " + data.details : ''));
         setConnecting(false);
         return;
       }
