@@ -35,6 +35,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true, url: authUrl.toString() });
   } catch (error) {
     console.error('Error starting Mercado Pago OAuth:', error);
-    return NextResponse.json({ success: false, error: 'Error al iniciar la conexión' }, { status: 500 });
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    return NextResponse.json({ success: false, error: 'Error al iniciar la conexión', details: errorMessage }, { status: 500 });
   }
 }
