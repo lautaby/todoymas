@@ -1,12 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 
-const getEnv = (key: string) => {
-  if (typeof process !== 'undefined' && process.env[key]) return process.env[key];
-  return (globalThis as any)[key] || (globalThis as any).env?.[key];
-};
-
-const supabaseUrl = getEnv('NEXT_PUBLIC_SUPABASE_URL') || '';
-const supabaseAnonKey = getEnv('NEXT_PUBLIC_SUPABASE_ANON_KEY') || '';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
