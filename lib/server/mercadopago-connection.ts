@@ -1,5 +1,4 @@
 import { createClient } from '@supabase/supabase-js';
-import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 
 export async function getServiceSupabase() {
@@ -24,28 +23,22 @@ export async function requireAdmin(request?: Request) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
   
-  const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
-    cookies: {
-      get(name: string) { return cookieStore.get(name)?.value; },
-      set(name: string, value: string, options: any) {
-        try {
-          cookieStore.set({ name, value, ...options });
-        } catch (error) {
-          // Ignore server-component write errors
-        }
-      },
-      remove(name: string, options: any) {
-        try {
-          cookieStore.set({ name, value: '', ...options });
-        } catch (error) {
-          // Ignore server-component write errors
-        }
-      },
-    },
+  // Creamos un cliente de Supabase usando cookies de forma nativa con supabase-js
+  const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false
+    }
   });
 
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) throw new Error('Unauthorized');
+  // Obtenemos el token de acceso de la cookie de sesión de Supabase
+  const tokenCookie = cookieStore.get('sb-access-token') || cookieStore.get('supabase-auth-token');
+  const token = tokenCookie?.value;
+
+  if (!token) throw new Error('Unauthorized');
+
+  const { data: { user }, error: userError } = await supabase.auth.getUser(token);
+  if (userError || !user) throw new Error('Unauthorized');
 
   const { data: profile } = await supabase
     .from('profiles')
