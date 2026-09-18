@@ -8,9 +8,14 @@ import { getServerEnv } from '@/lib/server/env';
 export async function getSupabaseAdmin() {
   const supabaseUrl = await getServerEnv('NEXT_PUBLIC_SUPABASE_URL');
   const serviceRoleKey = await getServerEnv('SUPABASE_SERVICE_ROLE_KEY');
+  
   if (!supabaseUrl || !serviceRoleKey) {
-    throw new Error(`Supabase service role key not configured (URL: ${Boolean(supabaseUrl)}, KEY: ${Boolean(serviceRoleKey)})`);
+    const keysInEnv = Object.keys(process.env).filter(k => k.includes('SUPABASE')).join(', ');
+    const keysInGlobal = Object.keys(globalThis).filter(k => k.includes('SUPABASE')).join(', ');
+    throw new Error('Variables de Supabase no detectadas. Env: [' + (keysInEnv || 'vacio') + '], Global: [' + (keysInGlobal || 'vacio') + ']. Por favor pulsa SAVE en Cloudflare.');
   }
+  return createClient(supabaseUrl, serviceRoleKey, { auth: { persistSession: false } });
+}
   return createClient(supabaseUrl, serviceRoleKey, { auth: { persistSession: false } });
 }
 
