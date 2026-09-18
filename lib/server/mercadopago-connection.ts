@@ -1,14 +1,15 @@
 import { createClient } from '@supabase/supabase-js';
+import { getServerEnv } from '@/lib/server/env';
 
 // Server-only helpers for the Mercado Pago OAuth connection. NEVER import
 // this from a 'use client' component - it uses the Supabase service role
 // key, which must stay off the browser bundle.
 
-function getSupabaseAdmin() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+export async function getSupabaseAdmin() {
+  const supabaseUrl = await getServerEnv('NEXT_PUBLIC_SUPABASE_URL');
+  const serviceRoleKey = await getServerEnv('SUPABASE_SERVICE_ROLE_KEY');
   if (!supabaseUrl || !serviceRoleKey) {
-    throw new Error('Supabase service role key not configured');
+    throw new Error(`Supabase service role key not configured (URL: ${Boolean(supabaseUrl)}, KEY: ${Boolean(serviceRoleKey)})`);
   }
   return createClient(supabaseUrl, serviceRoleKey, { auth: { persistSession: false } });
 }
@@ -24,7 +25,7 @@ interface MpTokenResponse {
 // Saves the tokens Mercado Pago gives us after exchanging an OAuth code (or
 // after a refresh), overwriting the single connection row.
 export async function saveMercadoPagoTokens(tokens: MpTokenResponse) {
-  const supabaseAdmin = getSupabaseAdmin();
+  const supabaseAdmin = await getSupabaseAdmin();
   const expiresAt = new Date(Date.now() + tokens.expires_in * 1000).toISOString();
 
   const { error } = await supabaseAdmin.from('mercadopago_connection').upsert({
@@ -40,19 +41,25 @@ export async function saveMercadoPagoTokens(tokens: MpTokenResponse) {
     pending_state_created_at: null,
   });
 
-  if (error) throw error;
+  if (error) {
+    console.error('Error in saveMercadoPagoTokens:', error);
+    throw error;
+  }
 }
 
 export async function disconnectMercadoPago() {
-  const supabaseAdmin = getSupabaseAdmin();
+  const supabaseAdmin = await getSupabaseAdmin();
   const { error } = await supabaseAdmin.from('mercadopago_connection').delete().eq('id', true);
-  if (error) throw error;
+  if (error) {
+    console.error('Error in disconnectMercadoPago:', error);
+    throw error;
+  }
 }
 
 // Generates and stores a one-time OAuth state value, so the callback can
 // verify the connect flow was actually started by an authenticated admin.
 export async function createPendingOauthState(): Promise<string> {
-  const supabaseAdmin = getSupabaseAdmin();
+  const supabaseAdmin = await getSupabaseAdmin();
   const state = crypto.randomUUID();
 
   const { error } = await supabaseAdmin.from('mercadopago_connection').upsert({
@@ -62,14 +69,17 @@ export async function createPendingOauthState(): Promise<string> {
     updated_at: new Date().toISOString(),
   });
 
-  if (error) throw error;
+  if (error) {
+    console.error('Error in createPendingOauthState:', error);
+    throw error;
+  }
   return state;
 }
 
 // Verifies a state value coming back from Mercado Pago's redirect matches
 // the one we generated, and that it isn't stale (10 minute window).
 export async function consumePendingOauthState(state: string): Promise<boolean> {
-  const supabaseAdmin = getSupabaseAdmin();
+  const supabaseAdmin = await getSupabaseAdmin();
   const { data, error } = await supabaseAdmin
     .from('mercadopago_connection')
     .select('pending_state, pending_state_created_at')
@@ -87,7 +97,7 @@ export async function consumePendingOauthState(state: string): Promise<boolean> 
 // refreshing it first if it's expired or about to expire. Returns null if
 // no account is connected yet.
 export async function getValidMercadoPagoAccessToken(): Promise<string | null> {
-  const supabaseAdmin = getSupabaseAdmin();
+  const supabaseAdmin = await getSupabaseAdmin();
   const { data, error } = await supabaseAdmin
     .from('mercadopago_connection')
     .select('access_token, refresh_token, token_expires_at')
@@ -101,8 +111,8 @@ export async function getValidMercadoPagoAccessToken(): Promise<string | null> {
 
   if (!needsRefresh) return data.access_token;
 
-  const clientId = process.env.MERCADOPAGO_CLIENT_ID;
-  const clientSecret = process.env.MERCADOPAGO_CLIENT_SECRET;
+  const clientId = await getServerEnv('MERCADOPAGO_CLIENT_ID');
+  const clientSecret = await getServerEnv('MERCADOPAGO_CLIENT_SECRET');
   if (!clientId || !clientSecret) return data.access_token; // can't refresh, use what we have
 
   try {
@@ -132,7 +142,7 @@ export async function getValidMercadoPagoAccessToken(): Promise<string | null> {
 }
 
 export async function getMercadoPagoConnectionStatus() {
-  const supabaseAdmin = getSupabaseAdmin();
+  const supabaseAdmin = await getSupabaseAdmin();
   const { data } = await supabaseAdmin
     .from('mercadopago_connection')
     .select('mp_user_id, connected_at')
@@ -147,22 +157,22 @@ export async function getMercadoPagoConnectionStatus() {
 }
 
 // Verifies the request's Authorization: Bearer <token> belongs to a logged
-// in user with role = 'admin' in `profiles`. Used to protect the OAuth
+// in user with role = 'admin' in . Used to protect the OAuth
 // start/status/disconnect endpoints from being triggered by strangers.
 export async function requireAdmin(request: Request): Promise<boolean> {
   const authHeader = request.headers.get('authorization') || '';
   const token = authHeader.replace(/^Bearer\s+/i, '');
   if (!token) return false;
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const supabaseUrl = await getServerEnv('NEXT_PUBLIC_SUPABASE_URL');
+  const anonKey = await getServerEnv('NEXT_PUBLIC_SUPABASE_ANON_KEY');
   if (!supabaseUrl || !anonKey) return false;
 
   const supabaseAuth = createClient(supabaseUrl, anonKey);
   const { data: userData, error: userError } = await supabaseAuth.auth.getUser(token);
   if (userError || !userData?.user) return false;
 
-  const supabaseAdmin = getSupabaseAdmin();
+  const supabaseAdmin = await getSupabaseAdmin();
   const { data: profile } = await supabaseAdmin
     .from('profiles')
     .select('role')

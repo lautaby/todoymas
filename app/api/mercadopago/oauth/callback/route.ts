@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { consumePendingOauthState, saveMercadoPagoTokens } from '@/lib/server/mercadopago-connection';
+import { getServerEnv } from '@/lib/server/env';
 
 // GET /api/mercadopago/oauth/callback
 // Mercado Pago redirects the client's browser here after they log in to
@@ -7,7 +8,8 @@ import { consumePendingOauthState, saveMercadoPagoTokens } from '@/lib/server/me
 // password - only this one-time `code`, which we exchange server-side for
 // an access token tied to their account.
 export async function GET(request: Request) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ?? new URL(request.url).origin;
+  const rawSiteUrl = await getServerEnv('NEXT_PUBLIC_SITE_URL');
+  const siteUrl = rawSiteUrl?.replace(/\/$/, '') ?? new URL(request.url).origin;
   const adminPagosUrl = `${siteUrl}/admin/pagos`;
 
   try {
@@ -30,8 +32,8 @@ export async function GET(request: Request) {
       return NextResponse.redirect(`${adminPagosUrl}?mp_error=estado_invalido`);
     }
 
-    const clientId = process.env.MERCADOPAGO_CLIENT_ID;
-    const clientSecret = process.env.MERCADOPAGO_CLIENT_SECRET;
+    const clientId = await getServerEnv('MERCADOPAGO_CLIENT_ID');
+    const clientSecret = await getServerEnv('MERCADOPAGO_CLIENT_SECRET');
     if (!clientId || !clientSecret) {
       return NextResponse.redirect(`${adminPagosUrl}?mp_error=no_configurado`);
     }

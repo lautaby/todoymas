@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createPendingOauthState, requireAdmin } from '@/lib/server/mercadopago-connection';
+import { getServerEnv } from '@/lib/server/env';
 
 // POST /api/mercadopago/oauth/start
 // Called from /admin/pagos with the logged-in admin's Supabase access token
@@ -12,8 +13,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: 'No autorizado' }, { status: 401 });
     }
 
-    const clientId = process.env.MERCADOPAGO_CLIENT_ID;
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ?? new URL(request.url).origin;
+    const clientId = await getServerEnv('MERCADOPAGO_CLIENT_ID');
+    const rawSiteUrl = await getServerEnv('NEXT_PUBLIC_SITE_URL');
+    const siteUrl = rawSiteUrl?.replace(/\/$/, '') ?? new URL(request.url).origin;
 
     if (!clientId) {
       return NextResponse.json(

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getValidMercadoPagoAccessToken } from '@/lib/server/mercadopago-connection';
+import { getServerEnv } from '@/lib/server/env';
 
 interface OrderItemInput {
   product_id?: string;
@@ -54,9 +55,8 @@ export async function POST(request: Request) {
       );
     }
 
-    const siteUrl =
-      process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ??
-      new URL(request.url).origin;
+    const rawSiteUrl = await getServerEnv('NEXT_PUBLIC_SITE_URL');
+    const siteUrl = rawSiteUrl?.replace(/\/$/, '') ?? new URL(request.url).origin;
 
     const preferenceItems = items.map((item) => ({
       id: item.product_id,

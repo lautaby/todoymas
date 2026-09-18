@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { getValidMercadoPagoAccessToken } from '@/lib/server/mercadopago-connection';
+import { getServerEnv } from '@/lib/server/env';
 
 // Maps Mercado Pago payment statuses to our own payment_status vocabulary.
 function mapPaymentStatus(mpStatus: string): string {
@@ -60,8 +61,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ received: true });
     }
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const supabaseUrl = await getServerEnv('NEXT_PUBLIC_SUPABASE_URL');
+    const serviceRoleKey = await getServerEnv('SUPABASE_SERVICE_ROLE_KEY');
 
     if (!supabaseUrl || !serviceRoleKey) {
       console.error('Supabase service role key not configured, cannot update order from webhook');
