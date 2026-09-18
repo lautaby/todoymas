@@ -18,7 +18,7 @@ export async function getServiceSupabase() {
   });
 }
 
-export async function requireAdmin() {
+export async function requireAdmin(request?: Request) {
   const cookieStore = cookies();
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
