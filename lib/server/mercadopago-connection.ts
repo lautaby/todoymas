@@ -81,9 +81,11 @@ export async function disconnectMercadoPago() {
   if (error) throw error;
 }
 
-export async function createPendingOauthState(state: string) {
+export async function createPendingOauthState() {
+  const state = crypto.randomUUID();
   const supabase = await getServiceSupabase();
   await supabase.from('oauth_states').insert({ state, created_at: new Date().toISOString() });
+  return state;
 }
 
 export async function consumePendingOauthState(state: string) {
