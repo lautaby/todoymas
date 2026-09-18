@@ -162,22 +162,46 @@ export async function getMercadoPagoConnectionStatus() {
 export async function requireAdmin(request: Request): Promise<boolean> {
   const authHeader = request.headers.get('authorization') || '';
   const token = authHeader.replace(/^Bearer\s+/i, '');
-  if (!token) return false;
+  if (!token) {
+    console.error('requireAdmin failed: No token in Authorization header');
+    return false;
+  }
 
   const supabaseUrl = await getServerEnv('NEXT_PUBLIC_SUPABASE_URL');
   const anonKey = await getServerEnv('NEXT_PUBLIC_SUPABASE_ANON_KEY');
-  if (!supabaseUrl || !anonKey) return false;
+  if (!supabaseUrl || !anonKey) {
+    console.error('requireAdmin failed: Supabase URL or Anon Key not configured');
+    return false;
+  }
 
   const supabaseAuth = createClient(supabaseUrl, anonKey);
   const { data: userData, error: userError } = await supabaseAuth.auth.getUser(token);
-  if (userError || !userData?.user) return false;
+  if (userError || !userData?.user) {
+    console.error('requireAdmin failed: getUser error or no user:', userError?.message || 'No user');
+    return false;
+  }
 
   const supabaseAdmin = await getSupabaseAdmin();
-  const { data: profile } = await supabaseAdmin
+  const { data: profile, error: profileError } = await supabaseAdmin
     .from('profiles')
     .select('role')
     .eq('id', userData.user.id)
     .maybeSingle();
 
-  return profile?.role === 'admin';
+  if (profileError) {
+    console.error('requireAdmin failed: profile query error:', profileError.message);
+    return false;
+  }
+
+  if (!profile) {
+    console.error('requireAdmin failed: No profile found for user id:', userData.user.id);
+    return false;
+  }
+
+  if (profile.role !== 'admin') {
+    console.error('requireAdmin failed: User role is not admin, it is:', profile.role);
+    return false;
+  }
+
+  return true;
 }
