@@ -40,13 +40,16 @@ export async function requireAdmin(request?: Request) {
   const { data: { user }, error: userError } = await supabase.auth.getUser(token);
   if (userError || !user) throw new Error('Unauthorized');
 
-  const { data: profile } = await supabase
+  const adminClient = await getServiceSupabase();
+  const { data: profile, error: profileError } = await adminClient
     .from('profiles')
     .select('role')
     .eq('id', user.id)
-    .single();
+    .maybeSingle();
 
-  if (profile?.role !== 'admin') throw new Error('Forbidden');
+  if (profileError) throw new Error(`Profile lookup failed: ${profileError.message}`);
+  if (!profile) throw new Error(`Forbidden: no profile row for user ${user.id}`);
+  if (profile.role !== 'admin') throw new Error(`Forbidden: role is "${profile.role}"`);
   return user;
 }
 
