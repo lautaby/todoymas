@@ -1,5 +1,4 @@
 import { createClient } from '@supabase/supabase-js';
-import { cookies } from 'next/headers';
 
 export async function getServiceSupabase() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -19,11 +18,9 @@ export async function getServiceSupabase() {
 }
 
 export async function requireAdmin(request?: Request) {
-  const cookieStore = cookies();
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  
-  // Creamos un cliente de Supabase usando cookies de forma nativa con supabase-js
+
   const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     auth: {
       persistSession: false,
@@ -31,9 +28,12 @@ export async function requireAdmin(request?: Request) {
     }
   });
 
-  // Obtenemos el token de acceso de la cookie de sesión de Supabase
-  const tokenCookie = cookieStore.get('sb-access-token') || cookieStore.get('supabase-auth-token');
-  const token = tokenCookie?.value;
+  // El front-end (admin/pagos) manda el access_token de la sesión de
+  // Supabase en el header Authorization: "Bearer <token>". El cliente de
+  // supabase-js guarda la sesión en localStorage, no en cookies, así que
+  // acá hay que leer el header — nunca va a haber una cookie seteada.
+  const authHeader = request?.headers.get('authorization') ?? request?.headers.get('Authorization');
+  const token = authHeader?.replace(/^Bearer\s+/i, '').trim();
 
   if (!token) throw new Error('Unauthorized');
 
@@ -62,19 +62,31 @@ export async function getValidMercadoPagoAccessToken() {
 }
 
 export async function getMercadoPagoConnectionStatus() {
-  const token = await getValidMercadoPagoAccessToken();
-  return { connected: !!token };
+  const supabase = await getServiceSupabase();
+  const { data, error } = await supabase
+    .from('mercadopago_connection')
+    .select('access_token, mp_user_id')
+    .single();
+
+  if (error || !data?.access_token) return { connected: false, mpUserId: null };
+  return { connected: true, mpUserId: data.mp_user_id ?? null };
 }
 
 export async function saveMercadoPagoTokens(tokens: any) {
   const supabase = await getServiceSupabase();
+  // id es boolean (tabla singleton, CHECK id = true) — NO un string 'default'.
+  // Los nombres de columna tienen que matchear la migración: token_expires_at,
+  // no expires_at.
   const { error } = await supabase
     .from('mercadopago_connection')
     .upsert({
-      id: 'default',
+      id: true,
       access_token: tokens.access_token,
       refresh_token: tokens.refresh_token,
-      expires_at: new Date(Date.now() + tokens.expires_in * 1000).toISOString(),
+      public_key: tokens.public_key ?? null,
+      mp_user_id: tokens.user_id ? String(tokens.user_id) : null,
+      token_expires_at: new Date(Date.now() + tokens.expires_in * 1000).toISOString(),
+      connected_at: new Date().toISOString(),
       updated_at: new Date().toISOString()
     });
   if (error) throw error;
@@ -85,7 +97,7 @@ export async function disconnectMercadoPago() {
   const { error } = await supabase
     .from('mercadopago_connection')
     .delete()
-    .eq('id', 'default');
+    .eq('id', true);
   if (error) throw error;
 }
 
