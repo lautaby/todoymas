@@ -69,10 +69,16 @@ export async function POST(request: Request) {
     authUrl.searchParams.set('password', password);
 
     const authRes = await fetch(authUrl.toString(), { method: 'POST' });
-    const authData = await authRes.json().catch(() => ({}));
+    const authRaw = await authRes.text();
+    let authData: any = {};
+    try {
+      authData = JSON.parse(authRaw);
+    } catch {
+      // respuesta no JSON: se registra abajo
+    }
 
     if (!authRes.ok) {
-      console.error('GoCuotas authentication error:', authData);
+      console.error('GoCuotas authentication error:', authRes.status, authRaw.slice(0, 500));
       return NextResponse.json(
         { success: false, error: 'No pudimos autenticarnos con GoCuotas.' },
         { status: 502 }

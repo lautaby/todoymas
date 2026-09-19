@@ -54,7 +54,7 @@ export default function HomePage() {
               <Leaf className="h-4 w-4 text-primary" />
               Toda la variedad, en un solo lugar
             </span>
-            <h1 className="text-6xl md:text-8xl font-script font-semibold tracking-tight text-primary drop-shadow-sm">
+            <h1 className="text-6xl md:text-8xl font-script font-bold tracking-tight text-primary drop-shadow-sm">
               Todo y Más
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground mt-5 max-w-2xl">

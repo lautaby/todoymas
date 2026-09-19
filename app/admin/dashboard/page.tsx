@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { supabase, type Product, type Order } from '@/lib/supabase';
 import { formatPrice, formatDate } from '@/lib/format';
+import { PushNotificationsCard } from '@/components/admin/push-notifications-card';
 
 const STATUS_LABEL: Record<string, string> = {
   pendiente: 'Pendiente',
@@ -73,6 +74,8 @@ export default function DashboardPage() {
         <h1 className="text-2xl font-bold">Dashboard</h1>
         <p className="text-muted-foreground">Resumen general de la tienda</p>
       </div>
+
+      <PushNotificationsCard />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((s) => (

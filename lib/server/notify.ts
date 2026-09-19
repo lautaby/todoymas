@@ -1,4 +1,5 @@
 import { getServerEnv } from './env';
+import { sendPush } from './push';
 
 const PAYMENT_LABELS: Record<string, string> = {
   mercadopago: 'Mercado Pago',
@@ -16,14 +17,23 @@ function formatMoney(value: unknown): string {
   }
 }
 
-// Manda un aviso push al celular de la dueña (app "ntfy") por cada compra.
+// Manda una notificación push (a los dispositivos donde la dueña activó los
+// avisos desde el panel) por cada compra.
 // - Solo avisa UNA vez por pedido (reclama orders.notified_at de forma atómica).
 // - Nunca lanza errores: si algo falla, la compra sigue normal.
 export async function notifyOrderOnce(supabaseAdmin: any, orderId: string) {
   let claimed = false;
   try {
-    const topic = await getServerEnv('NTFY_TOPIC');
-    if (!topic) return;
+    if (!(await getServerEnv('VAPID_PRIVATE_KEY'))) return;
+
+    const { data: subs, error: subsError } = await supabaseAdmin
+      .from('push_subscriptions')
+      .select('endpoint, p256dh, auth');
+    if (subsError) {
+      console.error('No se pudieron leer las suscripciones push:', subsError.message);
+      return;
+    }
+    if (!subs || subs.length === 0) return; // nadie para avisar: no reservamos el pedido
 
     const { data: order, error: claimError } = await supabaseAdmin
       .from('orders')
@@ -53,29 +63,28 @@ export async function notifyOrderOnce(supabaseAdmin: any, orderId: string) {
         : 'Retiro en local';
     const pago = PAYMENT_LABELS[order.payment_method] ?? order.payment_method ?? '';
 
-    const server = ((await getServerEnv('NTFY_SERVER')) || 'https://ntfy.sh').replace(/\/$/, '');
-    const siteUrl = (
-      (await getServerEnv('NEXT_PUBLIC_SITE_URL')) || 'https://todoymas.lautaby12.workers.dev'
-    ).replace(/\/$/, '');
+    const payload = {
+      title: `Nueva compra: ${formatMoney(order.total)}`,
+      body: `${order.customer_name}\n${itemsText}${extra}\n${pago} · ${entrega}`,
+      url: '/admin/pedidos',
+      tag: `order-${order.id}`,
+    };
 
-    const res = await fetch(server, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        topic,
-        title: `Nueva compra: ${formatMoney(order.total)}`,
-        message: `${order.customer_name}\n${itemsText}${extra}\n${pago} · ${entrega}`,
-        priority: 4,
-        tags: ['shopping_cart'],
-        click: `${siteUrl}/admin/pedidos`,
-      }),
-    });
+    const results = await Promise.all(subs.map((s: any) => sendPush(s, payload)));
 
-    if (!res.ok) throw new Error(`ntfy respondió ${res.status}`);
+    // Limpiar dispositivos que ya no existen.
+    const gone = subs.filter((_: any, i: number) => results[i] === 'gone').map((s: any) => s.endpoint);
+    if (gone.length > 0) {
+      await supabaseAdmin.from('push_subscriptions').delete().in('endpoint', gone);
+    }
+
+    if (!results.includes('ok')) {
+      throw new Error('Ningún dispositivo recibió el aviso');
+    }
   } catch (err) {
     console.error('Error enviando el aviso de compra:', err);
     if (claimed) {
-      // Liberar la reserva para que un reintento pueda avisar.
+      // Liberar la reserva para que un reintento (ej. reenvío del webhook) pueda avisar.
       await supabaseAdmin.from('orders').update({ notified_at: null }).eq('id', orderId);
     }
   }
