@@ -10,11 +10,11 @@
     --card-foreground: 25 24% 15%;
     --popover: 40 30% 98%;
     --popover-foreground: 25 24% 15%;
-    --primary: 168 50% 37%;
+    --primary: 86 78% 27%;
     --primary-foreground: 0 0% 100%;
     --secondary: 36 36% 90%;
     --secondary-foreground: 25 24% 18%;
-    --muted: 160 20% 93%;
+    --muted: 86 20% 93%;
     --muted-foreground: 30 12% 42%;
     --accent: 16 55% 46%;
     --accent-foreground: 46 45% 97%;
@@ -22,18 +22,18 @@
     --destructive-foreground: 46 45% 97%;
     --border: 35 24% 85%;
     --input: 35 22% 82%;
-    --ring: 168 50% 37%;
-    --chart-1: 168 45% 45%;
+    --ring: 86 78% 27%;
+    --chart-1: 86 60% 40%;
     --chart-2: 16 55% 50%;
     --chart-3: 42 65% 55%;
     --chart-4: 350 30% 58%;
     --chart-5: 195 25% 35%;
     --radius: 1.25rem;
-    --success: 168 50% 33%;
+    --success: 86 78% 23%;
     --success-foreground: 46 45% 97%;
     --warning: 38 75% 48%;
     --warning-foreground: 25 24% 15%;
-    --footer: 165 25% 13%;
+    --footer: 86 25% 12%;
     --footer-foreground: 42 30% 92%;
   }
 
@@ -44,7 +44,7 @@
     --card-foreground: 42 25% 92%;
     --popover: 25 16% 13%;
     --popover-foreground: 42 25% 92%;
-    --primary: 168 40% 50%;
+    --primary: 86 55% 50%;
     --primary-foreground: 25 18% 10%;
     --secondary: 25 14% 20%;
     --secondary-foreground: 42 25% 92%;
@@ -56,7 +56,7 @@
     --destructive-foreground: 42 25% 92%;
     --border: 25 14% 24%;
     --input: 25 14% 24%;
-    --ring: 168 40% 50%;
+    --ring: 86 55% 50%;
   }
 }
 
@@ -82,7 +82,8 @@
     font-family: var(--font-display), 'Georgia', serif;
   }
   .font-script {
-    font-family: var(--font-script), 'Comic Sans MS', ui-rounded, sans-serif;
+    font-family: var(--font-script), system-ui, sans-serif;
+    font-weight: 600;
   }
   .bg-hearth {
     background: radial-gradient(circle at 15% 20%, hsl(var(--primary) / 0.08), transparent 45%),

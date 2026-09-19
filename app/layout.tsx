@@ -1,6 +1,6 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Fraunces, Nunito_Sans, JetBrains_Mono, Comic_Neue } from 'next/font/google';
+import { Fraunces, Nunito_Sans, JetBrains_Mono, Poppins } from 'next/font/google';
 import { CartProvider } from '@/lib/cart-context';
 import { AuthProvider } from '@/lib/auth-context';
 import { Toaster } from '@/components/ui/toaster';
@@ -23,10 +23,10 @@ const jetbrainsMono = JetBrains_Mono({
   variable: '--font-mono',
 });
 
-const scriptFont = Comic_Neue({
+const scriptFont = Poppins({
   subsets: ['latin'],
   variable: '--font-script',
-  weight: ['400', '700'],
+  weight: ['500', '600', '700'],
   style: 'normal',
 });
 
