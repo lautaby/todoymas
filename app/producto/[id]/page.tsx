@@ -118,7 +118,6 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
   }
 
   const outOfStockBase = product.stock <= 0;
-  const images = product.images.length > 0 ? product.images : [''];
 
   // Variantes agrupadas (ej: "Color" -> [Rojo cereza, Bordó...]),
   // conservando el orden en que aparecen.
@@ -138,6 +137,15 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
     .map((g) => variants.find((v) => v.id === selectedVariantByGroup[g]))
     .filter((v): v is ProductVariant => !!v);
 
+  // Si la variante elegida tiene foto propia (ej: el labial en "Rojo
+  // cereza"), la mostramos primero en la galería en vez de la genérica.
+  const activeVariantImage = selectedVariantObjects.find((v) => v.image_url)?.image_url ?? null;
+  const images = activeVariantImage
+    ? [activeVariantImage, ...product.images.filter((img) => img !== activeVariantImage)]
+    : product.images.length > 0
+      ? product.images
+      : [''];
+
   const variantStock = selectedVariantObjects.length
     ? Math.min(...selectedVariantObjects.map((v) => v.stock))
     : null;
@@ -154,12 +162,14 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
         group_name: groupNames.join(', '),
         label: selectedVariantObjects.map((v) => v.label).join(', '),
         color_hex: selectedVariantObjects.find((v) => v.color_hex)?.color_hex ?? null,
+        image_url: activeVariantImage,
       }
     : undefined;
 
   function selectVariant(group: string, variantId: string) {
     setSelectedVariantByGroup((prev) => ({ ...prev, [group]: variantId }));
     setQuantity(1);
+    setSelectedImage(0);
   }
 
   const handleAddToCart = () => {
@@ -288,6 +298,33 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                       {groupedVariants[group].map((opt) => {
                         const isSelected = selectedVariantByGroup[group] === opt.id;
                         const optOutOfStock = opt.stock <= 0;
+                        if (opt.image_url) {
+                          return (
+                            <button
+                              key={opt.id}
+                              type="button"
+                              title={`${opt.label}${optOutOfStock ? ' (sin stock)' : ''}`}
+                              onClick={() => selectVariant(group, opt.id)}
+                              disabled={optOutOfStock}
+                              className={cn(
+                                'relative h-16 w-16 shrink-0 overflow-hidden rounded-xl border-2 transition-all',
+                                isSelected ? 'border-primary ring-2 ring-primary/30' : 'border-border',
+                                optOutOfStock && 'opacity-30 cursor-not-allowed'
+                              )}
+                            >
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img src={opt.image_url} alt={opt.label} className="h-full w-full object-cover" />
+                              {isSelected && (
+                                <span className="absolute inset-0 flex items-center justify-center bg-foreground/20">
+                                  <Check className="h-5 w-5 text-white drop-shadow" />
+                                </span>
+                              )}
+                              <span className="absolute bottom-0 inset-x-0 truncate bg-background/85 px-1 py-0.5 text-[10px] font-medium leading-tight">
+                                {opt.label}
+                              </span>
+                            </button>
+                          );
+                        }
                         if (opt.color_hex) {
                           return (
                             <button

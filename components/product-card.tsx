@@ -3,19 +3,33 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ShoppingCart, Eye, Palette } from 'lucide-react';
+import { ShoppingCart, Heart, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useCart } from '@/lib/cart-context';
+import { useWishlist } from '@/lib/wishlist-context';
 import { formatPrice } from '@/lib/format';
-import type { Product } from '@/lib/supabase';
+import type { Product, Category } from '@/lib/supabase';
+import { tintForCategory } from '@/lib/category-icons';
 import { cn } from '@/lib/utils';
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({
+  product,
+  categoryMap,
+}: {
+  product: Product;
+  /** Mapa id -> categoría, para pintar el chip de rubro con su color. Opcional. */
+  categoryMap?: Record<string, Category>;
+}) {
   const router = useRouter();
   const { addItem } = useCart();
+  const { isFavorite, toggleFavorite } = useWishlist();
   const outOfStock = product.stock <= 0;
   const [imgError, setImgError] = useState(false);
+
+  const category = product.category_id ? categoryMap?.[product.category_id] : undefined;
+  const tint = tintForCategory(product.category_id);
+  const favorite = isFavorite(product.id);
 
   return (
     <div className="group relative flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-soft transition-all duration-300 hover:shadow-soft-md hover:-translate-y-1">
@@ -34,27 +48,40 @@ export function ProductCard({ product }: { product: Product }) {
               Sin imagen
             </div>
           )}
-          {product.featured && (
-            <Badge className="absolute top-3 left-3 bg-accent text-accent-foreground">
-              Destacado
-            </Badge>
-          )}
-          {product.has_variants && (
-            <Badge variant="secondary" className="absolute top-3 right-3 gap-1">
-              <Palette className="h-3 w-3" />
-              Opciones
-            </Badge>
-          )}
+
+          <div className="absolute top-3 left-3 flex flex-col items-start gap-1.5">
+            {category && (
+              <span
+                className="rounded-full px-2.5 py-1 text-[11px] font-semibold shadow-sm"
+                style={{ backgroundColor: tint.bg, color: tint.fg }}
+              >
+                {category.name}
+              </span>
+            )}
+            {product.featured && (
+              <Badge className="bg-accent text-accent-foreground">Destacado</Badge>
+            )}
+          </div>
+
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              toggleFavorite(product);
+            }}
+            title={favorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}
+            className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-background/90 shadow-sm transition-colors hover:bg-background"
+          >
+            <Heart
+              className={cn('h-4 w-4 transition-colors', favorite ? 'fill-accent text-accent' : 'text-foreground')}
+            />
+          </button>
+
           {outOfStock && (
             <div className="absolute inset-0 flex items-center justify-center bg-foreground/50">
               <Badge variant="destructive">Sin stock</Badge>
             </div>
           )}
-          <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/10 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-            <span className="bg-background rounded-full p-2.5 shadow-soft">
-              <Eye className="h-4 w-4" />
-            </span>
-          </div>
         </div>
       </Link>
 
@@ -67,18 +94,16 @@ export function ProductCard({ product }: { product: Product }) {
         <p className="text-xs text-muted-foreground line-clamp-2 mt-1 flex-1">
           {product.description}
         </p>
-        <div className="flex items-center justify-between gap-2 mt-3">
+        <div className="mt-3 space-y-3">
           <div>
             <p className="text-lg font-display font-semibold">{formatPrice(product.price)}</p>
             <p className={cn('text-xs', outOfStock ? 'text-destructive' : 'text-success')}>
-              {outOfStock ? 'Sin stock' : product.has_variants ? 'Ver opciones' : `${product.stock} disponibles`}
+              {outOfStock ? 'Sin stock' : product.has_variants ? 'Varias opciones disponibles' : `${product.stock} disponibles`}
             </p>
           </div>
           <Button
-            size="icon"
-            className="h-9 w-9 shrink-0"
+            className="w-full"
             disabled={outOfStock}
-            title={product.has_variants ? 'Elegir color/aroma' : 'Agregar al carrito'}
             onClick={(e) => {
               e.preventDefault();
               if (product.has_variants) {
@@ -90,7 +115,11 @@ export function ProductCard({ product }: { product: Product }) {
               addItem(product, 1);
             }}
           >
-            <ShoppingCart className="h-4 w-4" />
+            {product.has_variants ? (
+              <>Ver opciones <ArrowRight className="h-4 w-4 ml-2" /></>
+            ) : (
+              <><ShoppingCart className="h-4 w-4 mr-2" /> Agregar al carrito</>
+            )}
           </Button>
         </div>
       </div>

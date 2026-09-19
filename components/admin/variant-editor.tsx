@@ -1,15 +1,23 @@
 'use client';
 
-import { Plus, Trash2, Palette } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { Plus, Trash2, Palette, Camera, ImageIcon, Loader2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { supabase } from '@/lib/supabase';
+import { useToast } from '@/hooks/use-toast';
+import { compressImage } from '@/lib/image-compress';
+
+const BUCKET = 'product-images';
+const MAX_SIZE_MB = 5;
 
 export type VariantFormRow = {
   id: string;
   group_name: string;
   label: string;
   color_hex: string;
+  image_url: string;
   stock: string;
 };
 
@@ -20,7 +28,89 @@ function newRowId() {
 }
 
 export function emptyVariantRow(groupName = ''): VariantFormRow {
-  return { id: newRowId(), group_name: groupName, label: '', color_hex: '', stock: '' };
+  return { id: newRowId(), group_name: groupName, label: '', color_hex: '', image_url: '', stock: '' };
+}
+
+function VariantPhotoPicker({
+  url,
+  onChange,
+}: {
+  url: string;
+  onChange: (url: string) => void;
+}) {
+  const { toast } = useToast();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+
+  async function handleFile(fileList: FileList | null) {
+    const file = fileList?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      toast({ title: 'Eso no es una imagen', variant: 'destructive' });
+      return;
+    }
+    setUploading(true);
+    const compressed = await compressImage(file);
+    if (compressed.size > MAX_SIZE_MB * 1024 * 1024) {
+      toast({ title: `La imagen pesa más de ${MAX_SIZE_MB}MB incluso comprimida`, variant: 'destructive' });
+      setUploading(false);
+      return;
+    }
+    const ext = compressed.name.split('.').pop() || 'jpg';
+    const path = `variant-${crypto.randomUUID()}.${ext}`;
+    const { error } = await supabase.storage.from(BUCKET).upload(path, compressed, {
+      cacheControl: '3600',
+      upsert: false,
+      contentType: compressed.type || undefined,
+    });
+    setUploading(false);
+    if (error) {
+      toast({ title: 'No se pudo subir la foto', description: error.message, variant: 'destructive' });
+      return;
+    }
+    const { data } = supabase.storage.from(BUCKET).getPublicUrl(path);
+    onChange(data.publicUrl);
+  }
+
+  return (
+    <div className="relative shrink-0" title="Foto de esta variante (opcional)">
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={(e) => {
+          handleFile(e.target.files);
+          e.target.value = '';
+        }}
+      />
+      <button
+        type="button"
+        onClick={() => inputRef.current?.click()}
+        disabled={uploading}
+        className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg border bg-background"
+      >
+        {uploading ? (
+          <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+        ) : url ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={url} alt="Foto variante" className="h-full w-full object-cover" />
+        ) : (
+          <ImageIcon className="h-4 w-4 text-muted-foreground" />
+        )}
+      </button>
+      {url && !uploading && (
+        <button
+          type="button"
+          onClick={() => onChange('')}
+          className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-destructive-foreground"
+          aria-label="Quitar foto"
+        >
+          <X className="h-3 w-3" />
+        </button>
+      )}
+    </div>
+  );
 }
 
 export function VariantEditor({
@@ -58,7 +148,8 @@ export function VariantEditor({
       {variants.length === 0 && (
         <p className="text-xs text-muted-foreground">
           Sin variantes, el producto se vende como una sola opción. Agregá una fila por cada
-          color, aroma o talle disponible (ej: &quot;Color&quot; / &quot;Rojo cereza&quot;).
+          color, aroma o talle disponible (ej: &quot;Color&quot; / &quot;Rojo cereza&quot;), y si
+          querés, una foto propia para esa opción.
         </p>
       )}
 
@@ -66,6 +157,10 @@ export function VariantEditor({
         <div className="space-y-2">
           {variants.map((row) => (
             <div key={row.id} className="flex flex-wrap gap-2 items-center rounded-lg border p-2">
+              <VariantPhotoPicker
+                url={row.image_url}
+                onChange={(image_url) => updateRow(row.id, { image_url })}
+              />
               <Input
                 placeholder="Grupo (ej: Color)"
                 value={row.group_name}

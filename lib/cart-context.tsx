@@ -8,6 +8,7 @@ export type CartVariant = {
   group_name: string;
   label: string;
   color_hex: string | null;
+  image_url: string | null;
 };
 
 export type CartItem = {

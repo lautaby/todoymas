@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Truck, ShieldCheck, Store, Headphones, Leaf } from 'lucide-react';
 import { StoreLayout } from '@/components/store-layout';
@@ -8,26 +8,18 @@ import { ProductCard } from '@/components/product-card';
 import { OrganicBlob, LeafScatter, LeafSprig, Vine, Bloom, Mandala } from '@/components/decorative-plants';
 import { supabase, type Product, type Category } from '@/lib/supabase';
 import { Home } from 'lucide-react';
-import { CATEGORY_ICON_MAP as iconMap } from '@/lib/category-icons';
-
-// Paleta de fondos pastel para los círculos de categoría en la portada,
-// inspirada en la identidad de marca (mandalas + tonos tierra/verdes) para
-// que la grilla de categorías no se vea toda del mismo color.
-const CATEGORY_TINTS = [
-  { bg: '#F3DEE3', fg: '#8A4A5A' }, // rosa (belleza)
-  { bg: '#F3E6D0', fg: '#8A6A3A' }, // arena (hogar/bazar)
-  { bg: '#DCEAF0', fg: '#3A6A80' }, // celeste (pesca)
-  { bg: '#E7E1F3', fg: '#5A4A8A' }, // lila (electro)
-  { bg: '#F6E3C0', fg: '#8A5A1A' }, // mostaza (herramientas)
-  { bg: '#DCE9D8', fg: '#2E5D46' }, // salvia (camping/outdoor)
-  { bg: '#F0DCD4', fg: '#8A4A2E' }, // terracota
-  { bg: '#E0E5DC', fg: '#4A5A44' }, // gris verdoso
-];
+import { CATEGORY_ICON_MAP as iconMap, tintForCategory } from '@/lib/category-icons';
 
 export default function HomePage() {
   const [featured, setFeatured] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const categoryMap = useMemo(() => {
+    const map: Record<string, Category> = {};
+    categories.forEach((c) => { map[c.id] = c; });
+    return map;
+  }, [categories]);
 
   useEffect(() => {
     async function load() {
@@ -130,9 +122,9 @@ export default function HomePage() {
           </Link>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4 relative">
-          {categories.map((cat, i) => {
+          {categories.map((cat) => {
             const Icon = cat.icon ? iconMap[cat.icon] : Home;
-            const palette = CATEGORY_TINTS[i % CATEGORY_TINTS.length];
+            const palette = tintForCategory(cat.id);
             return (
               <Link
                 key={cat.id}
@@ -171,7 +163,7 @@ export default function HomePage() {
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 relative">
             {featured.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product.id} product={product} categoryMap={categoryMap} />
             ))}
           </div>
         )}

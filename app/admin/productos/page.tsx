@@ -150,6 +150,7 @@ export default function ProductosPage() {
                   group_name: v.group_name,
                   label: v.label,
                   color_hex: v.color_hex ?? '',
+                  image_url: v.image_url ?? '',
                   stock: String(v.stock),
                 })),
               }
@@ -223,6 +224,7 @@ export default function ProductosPage() {
           group_name: v.group_name,
           label: v.label,
           color_hex: v.color_hex || null,
+          image_url: v.image_url || null,
           stock: Number(v.stock) || 0,
           sort_order: v.index,
         }))

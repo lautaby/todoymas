@@ -50,10 +50,10 @@ export default function CartPage() {
                 >
                   <Link href={`/producto/${item.product.id}`} className="shrink-0">
                     <div className="h-24 w-24 overflow-hidden rounded-lg border bg-muted">
-                      {item.product.images[0] && (
+                      {(item.variant?.image_url || item.product.images[0]) && (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
-                          src={item.product.images[0]}
+                          src={item.variant?.image_url || item.product.images[0]}
                           alt={item.product.name}
                           className="h-full w-full object-cover"
                         />

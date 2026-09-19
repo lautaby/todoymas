@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { Menu, Search, ShoppingCart, X, Leaf, Instagram } from 'lucide-react';
+import { Menu, Search, ShoppingCart, X, Leaf, Instagram, Heart } from 'lucide-react';
 import { TikTokIcon } from '@/components/icons/tiktok-icon';
 import { INSTAGRAM_URL, TIKTOK_URL, INSTAGRAM_HANDLE } from '@/lib/contact';
 import { Button } from '@/components/ui/button';
@@ -16,6 +16,7 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { useCart } from '@/lib/cart-context';
+import { useWishlist } from '@/lib/wishlist-context';
 import { CartDrawer } from './cart-drawer';
 import { CategoryMenu } from './category-menu';
 import { cn } from '@/lib/utils';
@@ -25,6 +26,7 @@ export function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const { itemCount, isCartOpen, setCartOpen } = useCart();
+  const { count: wishlistCount } = useWishlist();
   const [searchQuery, setSearchQuery] = useState('');
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -139,6 +141,18 @@ export function Header() {
                 className="pl-10 bg-secondary/50 border-transparent focus-visible:bg-background"
               />
             </form>
+
+            {/* Wishlist */}
+            <Link href="/favoritos" className="shrink-0">
+              <Button variant="outline" size="icon" className="relative">
+                <Heart className="h-5 w-5" />
+                {wishlistCount > 0 && (
+                  <span className="absolute -top-1.5 -right-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-accent text-accent-foreground text-xs font-bold px-1 ring-2 ring-background">
+                    {wishlistCount}
+                  </span>
+                )}
+              </Button>
+            </Link>
 
             {/* Cart */}
             <Button

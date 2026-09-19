@@ -110,7 +110,7 @@ export default function CheckoutPage() {
         name: i.product.name,
         price: i.product.price,
         quantity: i.quantity,
-        image: i.product.images[0] ?? '',
+        image: i.variant?.image_url || i.product.images[0] || '',
         variant: i.variant ? `${i.variant.group_name}: ${i.variant.label}` : undefined,
       }));
 
@@ -586,9 +586,9 @@ export default function CheckoutPage() {
                 {items.map((item) => (
                   <div key={cartLineKey(item.product.id, item.variant?.id)} className="flex gap-3">
                     <div className="h-14 w-14 shrink-0 overflow-hidden rounded-lg border bg-muted">
-                      {item.product.images[0] && (
+                      {(item.variant?.image_url || item.product.images[0]) && (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={item.product.images[0]} alt={item.product.name} className="h-full w-full object-cover" />
+                        <img src={item.variant?.image_url || item.product.images[0]} alt={item.product.name} className="h-full w-full object-cover" />
                       )}
                     </div>
                     <div className="flex-1 min-w-0">

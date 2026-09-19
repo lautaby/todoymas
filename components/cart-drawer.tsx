@@ -55,10 +55,10 @@ export function CartDrawer({
                 {items.map((item) => (
                   <div key={cartLineKey(item.product.id, item.variant?.id)} className="flex gap-3">
                     <div className="h-20 w-20 shrink-0 overflow-hidden rounded-lg border bg-muted">
-                      {item.product.images[0] && (
+                      {(item.variant?.image_url || item.product.images[0]) && (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
-                          src={item.product.images[0]}
+                          src={item.variant?.image_url || item.product.images[0]}
                           alt={item.product.name}
                           className="h-full w-full object-cover"
                         />

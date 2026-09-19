@@ -2,6 +2,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Fraunces, Nunito_Sans, JetBrains_Mono, Outfit } from 'next/font/google';
 import { CartProvider } from '@/lib/cart-context';
+import { WishlistProvider } from '@/lib/wishlist-context';
 import { AuthProvider } from '@/lib/auth-context';
 import { Toaster } from '@/components/ui/toaster';
 
@@ -45,8 +46,10 @@ export default function RootLayout({
       <body className={`${nunitoSans.variable} ${fraunces.variable} ${jetbrainsMono.variable} ${scriptFont.variable} font-sans`}>
         <AuthProvider>
           <CartProvider>
-            {children}
-            <Toaster />
+            <WishlistProvider>
+              {children}
+              <Toaster />
+            </WishlistProvider>
           </CartProvider>
         </AuthProvider>
       </body>

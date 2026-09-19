@@ -82,3 +82,25 @@ export const CATEGORY_ICON_OPTIONS: CategoryIconOption[] = [
 
 export const CATEGORY_ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> =
   Object.fromEntries(CATEGORY_ICON_OPTIONS.map((opt) => [opt.value, opt.Icon]));
+
+// Paleta de fondos pastel para chips/círculos de categoría (portada y
+// tarjetas de producto), inspirada en la identidad de marca. Se elige de
+// forma determinística según el id de categoría, así una misma categoría
+// siempre tiene el mismo color en todo el sitio.
+export const CATEGORY_TINTS: { bg: string; fg: string }[] = [
+  { bg: '#F3DEE3', fg: '#8A4A5A' }, // rosa (belleza)
+  { bg: '#F3E6D0', fg: '#8A6A3A' }, // arena (hogar/bazar)
+  { bg: '#DCEAF0', fg: '#3A6A80' }, // celeste (pesca)
+  { bg: '#E7E1F3', fg: '#5A4A8A' }, // lila (electro)
+  { bg: '#F6E3C0', fg: '#8A5A1A' }, // mostaza (herramientas)
+  { bg: '#DCE9D8', fg: '#2E5D46' }, // salvia (camping/outdoor)
+  { bg: '#F0DCD4', fg: '#8A4A2E' }, // terracota
+  { bg: '#E0E5DC', fg: '#4A5A44' }, // gris verdoso
+];
+
+export function tintForCategory(id: string | null | undefined) {
+  if (!id) return CATEGORY_TINTS[CATEGORY_TINTS.length - 1];
+  let hash = 0;
+  for (let i = 0; i < id.length; i++) hash = (hash * 31 + id.charCodeAt(i)) >>> 0;
+  return CATEGORY_TINTS[hash % CATEGORY_TINTS.length];
+}
