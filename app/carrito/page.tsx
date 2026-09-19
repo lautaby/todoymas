@@ -6,7 +6,7 @@ import { StoreLayout } from '@/components/store-layout';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { LeafSprig, OrganicBlob, Bloom } from '@/components/decorative-plants';
-import { useCart } from '@/lib/cart-context';
+import { useCart, cartLineKey } from '@/lib/cart-context';
 import { formatPrice } from '@/lib/format';
 
 export default function CartPage() {
@@ -45,7 +45,7 @@ export default function CartPage() {
             <div className="lg:col-span-2 space-y-4">
               {items.map((item) => (
                 <div
-                  key={item.product.id}
+                  key={cartLineKey(item.product.id, item.variant?.id)}
                   className="flex gap-4 rounded-3xl border border-border bg-card p-4 shadow-soft"
                 >
                   <Link href={`/producto/${item.product.id}`} className="shrink-0">
@@ -67,6 +67,17 @@ export default function CartPage() {
                         {item.product.name}
                       </h3>
                     </Link>
+                    {item.variant && (
+                      <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1.5">
+                        {item.variant.color_hex && (
+                          <span
+                            className="inline-block h-3 w-3 rounded-full border shrink-0"
+                            style={{ backgroundColor: item.variant.color_hex }}
+                          />
+                        )}
+                        {item.variant.group_name}: {item.variant.label}
+                      </p>
+                    )}
                     <p className="text-sm text-muted-foreground mt-1">
                       Precio unitario: {formatPrice(item.product.price)}
                     </p>
@@ -77,7 +88,7 @@ export default function CartPage() {
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8"
-                          onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
+                          onClick={() => updateQuantity(item.product.id, item.quantity - 1, item.variant?.id)}
                         >
                           <Minus className="h-3 w-3" />
                         </Button>
@@ -88,7 +99,7 @@ export default function CartPage() {
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8"
-                          onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                          onClick={() => updateQuantity(item.product.id, item.quantity + 1, item.variant?.id)}
                         >
                           <Plus className="h-3 w-3" />
                         </Button>
@@ -102,7 +113,7 @@ export default function CartPage() {
                           variant="ghost"
                           size="icon"
                           className="text-muted-foreground hover:text-destructive"
-                          onClick={() => removeItem(item.product.id)}
+                          onClick={() => removeItem(item.product.id, item.variant?.id)}
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
@@ -133,9 +144,10 @@ export default function CartPage() {
                 <Separator className="relative" />
                 <div className="space-y-2 relative">
                   {items.map((item) => (
-                    <div key={item.product.id} className="flex justify-between text-sm">
+                    <div key={cartLineKey(item.product.id, item.variant?.id)} className="flex justify-between text-sm">
                       <span className="text-muted-foreground line-clamp-1 pr-2">
                         {item.quantity}x {item.product.name}
+                        {item.variant && ` (${item.variant.label})`}
                       </span>
                       <span className="font-medium shrink-0">
                         {formatPrice(item.product.price * item.quantity)}

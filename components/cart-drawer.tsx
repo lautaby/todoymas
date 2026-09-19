@@ -5,7 +5,7 @@ import { X, Plus, Minus, ShoppingCart, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
-import { useCart } from '@/lib/cart-context';
+import { useCart, cartLineKey } from '@/lib/cart-context';
 import { formatPrice } from '@/lib/format';
 import {
   Sheet,
@@ -53,7 +53,7 @@ export function CartDrawer({
             <ScrollArea className="flex-1 px-4">
               <div className="space-y-4 py-4">
                 {items.map((item) => (
-                  <div key={item.product.id} className="flex gap-3">
+                  <div key={cartLineKey(item.product.id, item.variant?.id)} className="flex gap-3">
                     <div className="h-20 w-20 shrink-0 overflow-hidden rounded-lg border bg-muted">
                       {item.product.images[0] && (
                         // eslint-disable-next-line @next/next/no-img-element
@@ -68,6 +68,17 @@ export function CartDrawer({
                       <p className="text-sm font-medium line-clamp-2">
                         {item.product.name}
                       </p>
+                      {item.variant && (
+                        <p className="text-xs text-muted-foreground mt-0.5 flex items-center gap-1.5">
+                          {item.variant.color_hex && (
+                            <span
+                              className="inline-block h-3 w-3 rounded-full border shrink-0"
+                              style={{ backgroundColor: item.variant.color_hex }}
+                            />
+                          )}
+                          {item.variant.group_name}: {item.variant.label}
+                        </p>
+                      )}
                       <p className="text-sm text-primary font-semibold mt-1">
                         {formatPrice(item.product.price)}
                       </p>
@@ -76,7 +87,7 @@ export function CartDrawer({
                           variant="outline"
                           size="icon"
                           className="h-7 w-7"
-                          onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
+                          onClick={() => updateQuantity(item.product.id, item.quantity - 1, item.variant?.id)}
                         >
                           <Minus className="h-3 w-3" />
                         </Button>
@@ -87,7 +98,7 @@ export function CartDrawer({
                           variant="outline"
                           size="icon"
                           className="h-7 w-7"
-                          onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                          onClick={() => updateQuantity(item.product.id, item.quantity + 1, item.variant?.id)}
                         >
                           <Plus className="h-3 w-3" />
                         </Button>
@@ -95,7 +106,7 @@ export function CartDrawer({
                           variant="ghost"
                           size="icon"
                           className="h-7 w-7 ml-auto text-muted-foreground hover:text-destructive"
-                          onClick={() => removeItem(item.product.id)}
+                          onClick={() => removeItem(item.product.id, item.variant?.id)}
                         >
                           <Trash2 className="h-3 w-3" />
                         </Button>

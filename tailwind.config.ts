@@ -83,6 +83,15 @@ const config: Config = {
           '4': 'hsl(var(--chart-4))',
           '5': 'hsl(var(--chart-5))',
         },
+        // Colores de acento tomados directo de la paleta de marca (manual
+        // de identidad), para sumar variedad en texturas/fondos sin tocar
+        // los colores funcionales (primary/secondary/accent) de la UI.
+        brand: {
+          sage: '#A7C4A0',
+          sand: '#EDE6D9',
+          clay: '#C9A87A',
+          stone: '#8B8F86',
+        },
       },
       keyframes: {
         'accordion-down': {

@@ -13,7 +13,7 @@ import { Separator } from '@/components/ui/separator';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Textarea } from '@/components/ui/textarea';
 import { OrganicBlob, LeafScatter, LeafSprig, Bloom } from '@/components/decorative-plants';
-import { useCart } from '@/lib/cart-context';
+import { useCart, cartLineKey } from '@/lib/cart-context';
 import { formatPrice } from '@/lib/format';
 import { supabase } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
@@ -111,6 +111,7 @@ export default function CheckoutPage() {
         price: i.product.price,
         quantity: i.quantity,
         image: i.product.images[0] ?? '',
+        variant: i.variant ? `${i.variant.group_name}: ${i.variant.label}` : undefined,
       }));
 
       const newOrderId = crypto.randomUUID();
@@ -583,7 +584,7 @@ export default function CheckoutPage() {
               <Separator />
               <div className="space-y-3 max-h-64 overflow-y-auto">
                 {items.map((item) => (
-                  <div key={item.product.id} className="flex gap-3">
+                  <div key={cartLineKey(item.product.id, item.variant?.id)} className="flex gap-3">
                     <div className="h-14 w-14 shrink-0 overflow-hidden rounded-lg border bg-muted">
                       {item.product.images[0] && (
                         // eslint-disable-next-line @next/next/no-img-element
@@ -592,6 +593,11 @@ export default function CheckoutPage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-xs font-medium line-clamp-2">{item.product.name}</p>
+                      {item.variant && (
+                        <p className="text-xs text-muted-foreground">
+                          {item.variant.group_name}: {item.variant.label}
+                        </p>
+                      )}
                       <p className="text-xs text-muted-foreground mt-0.5">
                         {item.quantity}x {formatPrice(item.product.price)}
                       </p>

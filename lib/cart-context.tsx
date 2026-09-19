@@ -3,16 +3,30 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import type { Product } from './supabase';
 
+export type CartVariant = {
+  id: string;
+  group_name: string;
+  label: string;
+  color_hex: string | null;
+};
+
 export type CartItem = {
   product: Product;
   quantity: number;
+  variant?: CartVariant;
 };
+
+// Clave única de línea de carrito: mismo producto con distinta variante
+// (ej. dos colores del mismo labial) son líneas separadas.
+export function cartLineKey(productId: string, variantId?: string) {
+  return variantId ? `${productId}::${variantId}` : productId;
+}
 
 type CartContextType = {
   items: CartItem[];
-  addItem: (product: Product, quantity?: number) => void;
-  removeItem: (productId: string) => void;
-  updateQuantity: (productId: string, quantity: number) => void;
+  addItem: (product: Product, quantity?: number, variant?: CartVariant) => void;
+  removeItem: (productId: string, variantId?: string) => void;
+  updateQuantity: (productId: string, quantity: number, variantId?: string) => void;
   clearCart: () => void;
   total: number;
   itemCount: number;
@@ -43,33 +57,36 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, [items, hydrated]);
 
-  const addItem = useCallback((product: Product, quantity = 1) => {
+  const addItem = useCallback((product: Product, quantity = 1, variant?: CartVariant) => {
     setItems(prev => {
-      const existing = prev.find(i => i.product.id === product.id);
+      const key = cartLineKey(product.id, variant?.id);
+      const existing = prev.find(i => cartLineKey(i.product.id, i.variant?.id) === key);
       if (existing) {
         return prev.map(i =>
-          i.product.id === product.id
+          cartLineKey(i.product.id, i.variant?.id) === key
             ? { ...i, quantity: i.quantity + quantity }
             : i
         );
       }
-      return [...prev, { product, quantity }];
+      return [...prev, { product, quantity, variant }];
     });
     setCartOpen(true);
   }, []);
 
-  const removeItem = useCallback((productId: string) => {
-    setItems(prev => prev.filter(i => i.product.id !== productId));
+  const removeItem = useCallback((productId: string, variantId?: string) => {
+    const key = cartLineKey(productId, variantId);
+    setItems(prev => prev.filter(i => cartLineKey(i.product.id, i.variant?.id) !== key));
   }, []);
 
-  const updateQuantity = useCallback((productId: string, quantity: number) => {
+  const updateQuantity = useCallback((productId: string, quantity: number, variantId?: string) => {
+    const key = cartLineKey(productId, variantId);
     if (quantity <= 0) {
-      setItems(prev => prev.filter(i => i.product.id !== productId));
+      setItems(prev => prev.filter(i => cartLineKey(i.product.id, i.variant?.id) !== key));
       return;
     }
     setItems(prev =>
       prev.map(i =>
-        i.product.id === productId ? { ...i, quantity } : i
+        cartLineKey(i.product.id, i.variant?.id) === key ? { ...i, quantity } : i
       )
     );
   }, []);

@@ -44,6 +44,7 @@ import { supabase, type Product, type Category } from '@/lib/supabase';
 import { formatPrice } from '@/lib/format';
 import { useToast } from '@/hooks/use-toast';
 import { ImageUploader } from '@/components/admin/image-uploader';
+import { VariantEditor, emptyVariantRow, type VariantFormRow } from '@/components/admin/variant-editor';
 
 const NONE = 'none';
 
@@ -57,6 +58,7 @@ type FormState = {
   subcategory_id: string;
   images: string[];
   featured: boolean;
+  variants: VariantFormRow[];
 };
 
 const EMPTY_FORM: FormState = {
@@ -69,6 +71,7 @@ const EMPTY_FORM: FormState = {
   subcategory_id: NONE,
   images: [],
   featured: false,
+  variants: [],
 };
 
 export default function ProductosPage() {
@@ -116,7 +119,7 @@ export default function ProductosPage() {
     setDialogOpen(true);
   }
 
-  function openEdit(p: Product) {
+  async function openEdit(p: Product) {
     setForm({
       id: p.id,
       name: p.name,
@@ -127,8 +130,33 @@ export default function ProductosPage() {
       subcategory_id: p.subcategory_id ?? NONE,
       images: p.images ?? [],
       featured: p.featured,
+      variants: [],
     });
     setDialogOpen(true);
+
+    if (p.has_variants) {
+      const { data } = await supabase
+        .from('product_variants')
+        .select('*')
+        .eq('product_id', p.id)
+        .order('sort_order');
+      if (data) {
+        setForm((prev) =>
+          prev.id === p.id
+            ? {
+                ...prev,
+                variants: data.map((v) => ({
+                  id: v.id,
+                  group_name: v.group_name,
+                  label: v.label,
+                  color_hex: v.color_hex ?? '',
+                  stock: String(v.stock),
+                })),
+              }
+            : prev
+        );
+      }
+    }
   }
 
   async function handleSave() {
@@ -136,6 +164,18 @@ export default function ProductosPage() {
       toast({ title: 'Falta completar nombre y precio', variant: 'destructive' });
       return;
     }
+
+    const cleanVariants = form.variants
+      .map((v, index) => ({ ...v, group_name: v.group_name.trim(), label: v.label.trim(), index }))
+      .filter((v) => v.label);
+
+    for (const v of cleanVariants) {
+      if (!v.group_name) {
+        toast({ title: 'Falta el nombre del grupo en una variante', description: `Completá el grupo (ej: "Color") para "${v.label}".`, variant: 'destructive' });
+        return;
+      }
+    }
+
     setSaving(true);
 
     const payload = {
@@ -149,17 +189,55 @@ export default function ProductosPage() {
       featured: form.featured,
     };
 
-    const { error } = form.id
-      ? await supabase.from('products').update(payload).eq('id', form.id)
-      : await supabase.from('products').insert(payload);
+    const { data: savedProduct, error } = form.id
+      ? await supabase.from('products').update(payload).eq('id', form.id).select().maybeSingle()
+      : await supabase.from('products').insert(payload).select().maybeSingle();
 
-    setSaving(false);
-
-    if (error) {
-      toast({ title: 'No se pudo guardar el producto', description: error.message, variant: 'destructive' });
+    if (error || !savedProduct) {
+      setSaving(false);
+      toast({ title: 'No se pudo guardar el producto', description: error?.message, variant: 'destructive' });
       return;
     }
 
+    const productId = savedProduct.id as string;
+
+    // Reemplaza todas las variantes existentes por la lista actual: más
+    // simple y confiable que calcular altas/bajas/cambios fila por fila.
+    const { error: deleteVariantsError } = await supabase
+      .from('product_variants')
+      .delete()
+      .eq('product_id', productId);
+
+    if (deleteVariantsError) {
+      setSaving(false);
+      toast({ title: 'El producto se guardó, pero no se pudieron actualizar las variantes', description: deleteVariantsError.message, variant: 'destructive' });
+      setDialogOpen(false);
+      loadData();
+      return;
+    }
+
+    if (cleanVariants.length > 0) {
+      const { error: insertVariantsError } = await supabase.from('product_variants').insert(
+        cleanVariants.map((v) => ({
+          product_id: productId,
+          group_name: v.group_name,
+          label: v.label,
+          color_hex: v.color_hex || null,
+          stock: Number(v.stock) || 0,
+          sort_order: v.index,
+        }))
+      );
+
+      if (insertVariantsError) {
+        setSaving(false);
+        toast({ title: 'El producto se guardó, pero no se pudieron guardar las variantes', description: insertVariantsError.message, variant: 'destructive' });
+        setDialogOpen(false);
+        loadData();
+        return;
+      }
+    }
+
+    setSaving(false);
     toast({ title: form.id ? 'Producto actualizado' : 'Producto creado' });
     setDialogOpen(false);
     loadData();
@@ -235,6 +313,9 @@ export default function ProductosPage() {
                   <div className="flex items-center gap-2">
                     {p.featured && <Star className="h-3.5 w-3.5 fill-primary text-primary shrink-0" />}
                     <span className="truncate max-w-[240px]">{p.name}</span>
+                    {p.has_variants && (
+                      <Badge variant="outline" className="text-[10px] shrink-0">Variantes</Badge>
+                    )}
                   </div>
                 </TableCell>
                 <TableCell className="text-muted-foreground">
@@ -262,7 +343,7 @@ export default function ProductosPage() {
       </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>{form.id ? 'Editar producto' : 'Nuevo producto'}</DialogTitle>
           </DialogHeader>
@@ -352,6 +433,13 @@ export default function ProductosPage() {
               <ImageUploader
                 images={form.images}
                 onChange={(images) => setForm({ ...form, images })}
+              />
+            </div>
+
+            <div className="rounded-lg border p-3">
+              <VariantEditor
+                variants={form.variants}
+                onChange={(variants) => setForm({ ...form, variants })}
               />
             </div>
 

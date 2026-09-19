@@ -7,14 +7,6 @@ import {
   Trash2,
   FolderTree,
   ChevronRight,
-  Fish,
-  Cpu,
-  Home,
-  Flower2,
-  Shirt,
-  Sparkles,
-  Tent,
-  Camera,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -46,24 +38,10 @@ import {
 } from '@/components/ui/select';
 import { supabase, type Category } from '@/lib/supabase';
 import { useToast } from '@/hooks/use-toast';
+import { CATEGORY_ICON_OPTIONS as ICON_OPTIONS, CATEGORY_ICON_MAP as ICON_MAP } from '@/lib/category-icons';
 
 const NONE = 'none';
 const NO_ICON = 'no-icon';
-
-const ICON_OPTIONS: { value: string; label: string; Icon: React.ComponentType<{ className?: string }> }[] = [
-  { value: 'Fish', label: 'Pesca', Icon: Fish },
-  { value: 'Cpu', label: 'Tecnología', Icon: Cpu },
-  { value: 'Home', label: 'Hogar', Icon: Home },
-  { value: 'Flower2', label: 'Belleza', Icon: Flower2 },
-  { value: 'Shirt', label: 'Indumentaria', Icon: Shirt },
-  { value: 'Sparkles', label: 'Bazar / Regalos', Icon: Sparkles },
-  { value: 'Tent', label: 'Camping', Icon: Tent },
-  { value: 'Camera', label: 'Fotografía', Icon: Camera },
-];
-
-const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = Object.fromEntries(
-  ICON_OPTIONS.map((opt) => [opt.value, opt.Icon])
-);
 
 type FormState = {
   id: string | null;

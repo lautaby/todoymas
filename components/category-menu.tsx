@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { ChevronDown, Fish, Cpu, Flower2, Home, Shirt, Sparkles, Tent, Camera } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -13,10 +13,7 @@ import {
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import { supabase, type Category } from '@/lib/supabase';
-
-const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-  Fish, Cpu, Flower2, Home, Shirt, Sparkles, Tent, Camera,
-};
+import { CATEGORY_ICON_MAP as iconMap } from '@/lib/category-icons';
 
 export function CategoryMenu({ onNavigate }: { onNavigate?: () => void }) {
   const [categories, setCategories] = useState<Category[]>([]);

@@ -5,13 +5,24 @@ import Link from 'next/link';
 import { ArrowRight, Truck, ShieldCheck, Store, Headphones, Leaf } from 'lucide-react';
 import { StoreLayout } from '@/components/store-layout';
 import { ProductCard } from '@/components/product-card';
-import { OrganicBlob, LeafScatter, LeafSprig, Vine, Bloom } from '@/components/decorative-plants';
+import { OrganicBlob, LeafScatter, LeafSprig, Vine, Bloom, Mandala } from '@/components/decorative-plants';
 import { supabase, type Product, type Category } from '@/lib/supabase';
-import { Fish, Cpu, Flower2, Home, Shirt, Sparkles, Tent, Camera } from 'lucide-react';
+import { Home } from 'lucide-react';
+import { CATEGORY_ICON_MAP as iconMap } from '@/lib/category-icons';
 
-const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-  Fish, Cpu, Flower2, Home, Shirt, Sparkles, Tent, Camera,
-};
+// Paleta de fondos pastel para los círculos de categoría en la portada,
+// inspirada en la identidad de marca (mandalas + tonos tierra/verdes) para
+// que la grilla de categorías no se vea toda del mismo color.
+const CATEGORY_TINTS = [
+  { bg: '#F3DEE3', fg: '#8A4A5A' }, // rosa (belleza)
+  { bg: '#F3E6D0', fg: '#8A6A3A' }, // arena (hogar/bazar)
+  { bg: '#DCEAF0', fg: '#3A6A80' }, // celeste (pesca)
+  { bg: '#E7E1F3', fg: '#5A4A8A' }, // lila (electro)
+  { bg: '#F6E3C0', fg: '#8A5A1A' }, // mostaza (herramientas)
+  { bg: '#DCE9D8', fg: '#2E5D46' }, // salvia (camping/outdoor)
+  { bg: '#F0DCD4', fg: '#8A4A2E' }, // terracota
+  { bg: '#E0E5DC', fg: '#4A5A44' }, // gris verdoso
+];
 
 export default function HomePage() {
   const [featured, setFeatured] = useState<Product[]>([]);
@@ -43,10 +54,12 @@ export default function HomePage() {
     <StoreLayout>
       {/* Hero */}
       <section className="relative overflow-hidden bg-hearth">
+        <Mandala className="pointer-events-none absolute -right-24 -top-24 h-[420px] w-[420px] text-brand-clay opacity-[0.12] sm:-right-16 sm:-top-32 sm:h-[600px] sm:w-[600px]" />
+        <Mandala className="pointer-events-none absolute -left-32 bottom-[-8rem] h-72 w-72 text-brand-sage opacity-[0.14] hidden sm:block sm:h-96 sm:w-96" />
         <OrganicBlob className="absolute -right-32 -top-32 h-80 w-80 text-primary/25 animate-drift sm:-right-40 sm:-top-40 sm:h-[560px] sm:w-[560px] md:-right-24 md:-top-24" />
         <OrganicBlob className="absolute -left-28 bottom-[-6rem] h-64 w-64 text-accent/20 opacity-80 animate-drift sm:-left-52 sm:bottom-[-12rem] sm:h-[460px] sm:w-[460px]" />
         <LeafScatter className="absolute right-3 top-3 h-28 w-28 text-primary sm:right-8 sm:top-8 sm:h-64 sm:w-64" />
-        <Bloom className="absolute left-4 bottom-8 h-16 w-16 text-accent opacity-30 sm:left-10 sm:bottom-14 sm:h-24 sm:w-24" />
+        <Bloom className="absolute left-4 bottom-8 h-16 w-16 text-brand-clay opacity-40 sm:left-10 sm:bottom-14 sm:h-24 sm:w-24" />
         <Bloom className="absolute right-1/4 top-6 h-10 w-10 text-primary opacity-20 hidden sm:block" />
         <div className="container mx-auto px-4 relative">
           <div className="flex flex-col items-center text-center py-20 md:py-28 max-w-3xl mx-auto">
@@ -107,6 +120,7 @@ export default function HomePage() {
 
       {/* Categories */}
       <section className="relative overflow-hidden container mx-auto px-4 py-14">
+        <Mandala className="pointer-events-none absolute -right-16 -top-16 h-72 w-72 text-brand-stone opacity-[0.08] sm:h-96 sm:w-96" />
         <LeafSprig className="pointer-events-none absolute -top-4 -left-2 h-24 w-14 text-primary opacity-[0.09] -rotate-12 sm:h-36 sm:w-20" />
         <Bloom className="pointer-events-none absolute -bottom-6 right-2 h-20 w-20 text-accent opacity-[0.12] sm:h-28 sm:w-28" />
         <div className="flex items-center justify-between mb-6 relative">
@@ -116,15 +130,19 @@ export default function HomePage() {
           </Link>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4 relative">
-          {categories.map((cat) => {
+          {categories.map((cat, i) => {
             const Icon = cat.icon ? iconMap[cat.icon] : Home;
+            const palette = CATEGORY_TINTS[i % CATEGORY_TINTS.length];
             return (
               <Link
                 key={cat.id}
                 href={`/catalogo?categoria=${cat.slug}`}
                 className="group flex flex-col items-center gap-2.5 p-4 rounded-3xl border border-border bg-card shadow-soft hover:shadow-soft-md hover:-translate-y-1 transition-all"
               >
-                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-secondary text-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                <div
+                  className="flex h-14 w-14 items-center justify-center rounded-full transition-colors"
+                  style={{ backgroundColor: palette.bg, color: palette.fg }}
+                >
                   <Icon className="h-6 w-6" />
                 </div>
                 <span className="text-xs font-medium text-center">{cat.name}</span>
@@ -162,6 +180,7 @@ export default function HomePage() {
       {/* CTA banner */}
       <section className="container mx-auto px-4 py-14">
         <div className="relative overflow-hidden rounded-[2.5rem] bg-primary p-8 md:p-14 text-center shadow-soft-lg">
+          <Mandala className="absolute -right-20 -bottom-20 h-72 w-72 text-primary-foreground opacity-[0.1] sm:h-96 sm:w-96" />
           <OrganicBlob className="absolute -right-28 -bottom-28 h-80 w-80 text-primary-foreground opacity-15" />
           <Bloom className="absolute left-6 top-6 h-16 w-16 text-primary-foreground opacity-20 sm:left-10 sm:top-10 sm:h-24 sm:w-24" />
           <Vine className="pointer-events-none absolute top-0 left-0 h-6 w-full text-primary-foreground opacity-[0.15] sm:h-8" />

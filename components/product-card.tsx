@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ShoppingCart, Eye } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { ShoppingCart, Eye, Palette } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useCart } from '@/lib/cart-context';
@@ -11,6 +12,7 @@ import type { Product } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
 
 export function ProductCard({ product }: { product: Product }) {
+  const router = useRouter();
   const { addItem } = useCart();
   const outOfStock = product.stock <= 0;
   const [imgError, setImgError] = useState(false);
@@ -35,6 +37,12 @@ export function ProductCard({ product }: { product: Product }) {
           {product.featured && (
             <Badge className="absolute top-3 left-3 bg-accent text-accent-foreground">
               Destacado
+            </Badge>
+          )}
+          {product.has_variants && (
+            <Badge variant="secondary" className="absolute top-3 right-3 gap-1">
+              <Palette className="h-3 w-3" />
+              Opciones
             </Badge>
           )}
           {outOfStock && (
@@ -63,15 +71,22 @@ export function ProductCard({ product }: { product: Product }) {
           <div>
             <p className="text-lg font-display font-semibold">{formatPrice(product.price)}</p>
             <p className={cn('text-xs', outOfStock ? 'text-destructive' : 'text-success')}>
-              {outOfStock ? 'Sin stock' : `${product.stock} disponibles`}
+              {outOfStock ? 'Sin stock' : product.has_variants ? 'Ver opciones' : `${product.stock} disponibles`}
             </p>
           </div>
           <Button
             size="icon"
             className="h-9 w-9 shrink-0"
             disabled={outOfStock}
+            title={product.has_variants ? 'Elegir color/aroma' : 'Agregar al carrito'}
             onClick={(e) => {
               e.preventDefault();
+              if (product.has_variants) {
+                // Tiene variantes (color, aroma, talle...): hay que elegir
+                // una opción antes de agregar, así que llevamos a la ficha.
+                router.push(`/producto/${product.id}`);
+                return;
+              }
               addItem(product, 1);
             }}
           >

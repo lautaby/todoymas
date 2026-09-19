@@ -105,3 +105,45 @@ export function Bloom({ className }: { className?: string }) {
     </svg>
   );
 }
+
+// Mandala ornamental, en línea con el logo de la marca. Pensada como
+// textura de fondo (poca opacidad, currentColor) para secciones grandes:
+// hero, franjas de categorías, footer. Se construye con varios anillos
+// de pétalos repetidos por rotación.
+export function Mandala({ className }: { className?: string }) {
+  const petal = (r: number, w: number, h: number, opacity: number) => {
+    const steps = 12;
+    const items = [];
+    for (let i = 0; i < steps; i++) {
+      const angle = (360 / steps) * i;
+      items.push(
+        <ellipse
+          key={`${r}-${i}`}
+          cx="200"
+          cy={200 - r}
+          rx={w}
+          ry={h}
+          opacity={opacity}
+          transform={`rotate(${angle} 200 200)`}
+        />
+      );
+    }
+    return items;
+  };
+
+  return (
+    <svg viewBox="0 0 400 400" className={className} aria-hidden="true">
+      <g fill="none" stroke="currentColor" strokeWidth="1">
+        <circle cx="200" cy="200" r="190" opacity="0.15" />
+        <circle cx="200" cy="200" r="150" opacity="0.18" />
+        <circle cx="200" cy="200" r="60" opacity="0.25" />
+      </g>
+      <g fill="currentColor">
+        {petal(170, 10, 26, 0.16)}
+        {petal(120, 14, 34, 0.2)}
+        {petal(70, 12, 26, 0.26)}
+        <circle cx="200" cy="200" r="16" opacity="0.32" />
+      </g>
+    </svg>
+  );
+}
