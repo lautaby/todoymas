@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { notifyOrderOnce } from '@/lib/server/notify';
 import { createClient } from '@supabase/supabase-js';
 import { getValidMercadoPagoAccessToken } from '@/lib/server/mercadopago-connection';
 import { getServerEnv } from '@/lib/server/env';
@@ -102,6 +103,10 @@ export async function POST(request: Request) {
 
     if (updateError) {
       console.error('Error updating order from Mercado Pago webhook:', updateError);
+    }
+
+    if (!updateError && paymentStatus === 'aprobado') {
+      await notifyOrderOnce(supabaseAdmin, orderId);
     }
 
     return NextResponse.json({ received: true });

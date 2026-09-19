@@ -54,11 +54,11 @@ export default function HomePage() {
               <Leaf className="h-4 w-4 text-primary" />
               Toda la variedad, en un solo lugar
             </span>
-            <h1 className="text-6xl md:text-8xl font-script font-normal tracking-tight text-primary drop-shadow-sm">
+            <h1 className="text-6xl md:text-8xl font-script font-semibold tracking-tight text-primary drop-shadow-sm">
               Todo y Más
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground mt-5 max-w-2xl">
-              Pesca, tecnología, hogar, belleza, camping, seguridad y mucho más.
+              Pesca, camping, tecnología, hogar, belleza, aromaterapia y mucho más.
               Todo lo que buscás, en un solo lugar, con envíos a todo el país.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mt-8">

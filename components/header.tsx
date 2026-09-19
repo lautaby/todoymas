@@ -157,7 +157,7 @@ export function Header() {
           </div>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-1 h-12">
+          <nav className="hidden md:flex flex-wrap items-center gap-x-1 gap-y-0.5 min-h-12 py-1">
             <Link href="/">
               <Button variant="ghost" size="sm" className={cn(pathname === '/' && 'bg-secondary')}>
                 Inicio

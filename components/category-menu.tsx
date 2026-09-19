@@ -78,7 +78,7 @@ export function CategoryMenu({ onNavigate }: { onNavigate?: () => void }) {
         const Icon = parent.icon ? iconMap[parent.icon] : null;
         const subs = childrenOf(parent.id);
         return (
-          <DropdownMenu key={parent.id}>
+          <DropdownMenu key={parent.id} modal={false}>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="sm" className="gap-1">
                 {Icon && <Icon className="h-4 w-4" />}

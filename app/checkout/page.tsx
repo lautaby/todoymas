@@ -204,6 +204,14 @@ export default function CheckoutPage() {
       const { error: insertError } = await supabase.from('orders').insert(baseOrder);
       if (insertError) throw insertError;
 
+      // Aviso al celular de la dueña (no bloquea ni rompe la compra si falla)
+      fetch('/api/notify-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId: newOrderId }),
+        keepalive: true,
+      }).catch(() => {});
+
       setOrderId(newOrderId);
       setSuccess(true);
       clearCart();

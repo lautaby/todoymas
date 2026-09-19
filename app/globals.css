@@ -10,11 +10,11 @@
     --card-foreground: 25 24% 15%;
     --popover: 40 30% 98%;
     --popover-foreground: 25 24% 15%;
-    --primary: 142 28% 29%;
+    --primary: 168 45% 33%;
     --primary-foreground: 46 45% 97%;
     --secondary: 36 36% 90%;
     --secondary-foreground: 25 24% 18%;
-    --muted: 88 20% 93%;
+    --muted: 160 20% 93%;
     --muted-foreground: 30 12% 42%;
     --accent: 16 55% 46%;
     --accent-foreground: 46 45% 97%;
@@ -22,18 +22,18 @@
     --destructive-foreground: 46 45% 97%;
     --border: 35 24% 85%;
     --input: 35 22% 82%;
-    --ring: 142 30% 30%;
-    --chart-1: 142 28% 38%;
+    --ring: 168 45% 33%;
+    --chart-1: 168 40% 42%;
     --chart-2: 16 55% 50%;
     --chart-3: 42 65% 55%;
     --chart-4: 350 30% 58%;
     --chart-5: 195 25% 35%;
     --radius: 1.25rem;
-    --success: 142 35% 32%;
+    --success: 168 45% 30%;
     --success-foreground: 46 45% 97%;
     --warning: 38 75% 48%;
     --warning-foreground: 25 24% 15%;
-    --footer: 140 20% 14%;
+    --footer: 165 25% 13%;
     --footer-foreground: 42 30% 92%;
   }
 
@@ -44,7 +44,7 @@
     --card-foreground: 42 25% 92%;
     --popover: 25 16% 13%;
     --popover-foreground: 42 25% 92%;
-    --primary: 142 28% 45%;
+    --primary: 168 40% 50%;
     --primary-foreground: 25 18% 10%;
     --secondary: 25 14% 20%;
     --secondary-foreground: 42 25% 92%;
@@ -56,7 +56,7 @@
     --destructive-foreground: 42 25% 92%;
     --border: 25 14% 24%;
     --input: 25 14% 24%;
-    --ring: 142 28% 45%;
+    --ring: 168 40% 50%;
   }
 }
 
@@ -66,6 +66,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    overflow-x: clip;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-display tracking-tight;
@@ -81,7 +82,7 @@
     font-family: var(--font-display), 'Georgia', serif;
   }
   .font-script {
-    font-family: var(--font-script), cursive;
+    font-family: var(--font-script), 'Comic Sans MS', ui-rounded, sans-serif;
   }
   .bg-hearth {
     background: radial-gradient(circle at 15% 20%, hsl(var(--primary) / 0.08), transparent 45%),

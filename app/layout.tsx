@@ -1,6 +1,6 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Fraunces, Nunito_Sans, JetBrains_Mono, Pacifico } from 'next/font/google';
+import { Fraunces, Nunito_Sans, JetBrains_Mono, Fredoka } from 'next/font/google';
 import { CartProvider } from '@/lib/cart-context';
 import { AuthProvider } from '@/lib/auth-context';
 import { Toaster } from '@/components/ui/toaster';
@@ -23,10 +23,10 @@ const jetbrainsMono = JetBrains_Mono({
   variable: '--font-mono',
 });
 
-const pacifico = Pacifico({
+const fredoka = Fredoka({
   subsets: ['latin'],
   variable: '--font-script',
-  weight: ['400'],
+  weight: ['400', '500', '600', '700'],
 });
 
 export const metadata: Metadata = {
@@ -41,7 +41,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" suppressHydrationWarning>
-      <body className={`${nunitoSans.variable} ${fraunces.variable} ${jetbrainsMono.variable} ${pacifico.variable} font-sans`}>
+      <body className={`${nunitoSans.variable} ${fraunces.variable} ${jetbrainsMono.variable} ${fredoka.variable} font-sans`}>
         <AuthProvider>
           <CartProvider>
             {children}

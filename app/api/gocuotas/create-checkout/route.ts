@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { getServerEnv } from '@/lib/server/env';
 
 // GoCuotas "API Redirect V1" - https://www.gocuotas.com/api_redirect_docs
 // Flow: 1) authenticate with email/password to get a token, 2) create a
@@ -35,8 +36,8 @@ function extractInitUrl(data: any): string | undefined {
 
 export async function POST(request: Request) {
   try {
-    const email = process.env.GOCUOTAS_EMAIL;
-    const password = process.env.GOCUOTAS_PASSWORD;
+    const email = await getServerEnv('GOCUOTAS_EMAIL');
+    const password = await getServerEnv('GOCUOTAS_PASSWORD');
 
     if (!email || !password) {
       return NextResponse.json(
