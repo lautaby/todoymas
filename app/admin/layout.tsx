@@ -12,12 +12,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
 
   const isLoginPage = pathname === '/admin';
+  // Pagos (credenciales de Mercado Pago) y Usuarios son solo para el dueño.
+  // El servidor ya rechaza estas acciones si no sos admin (requireAdmin en
+  // las rutas /api correspondientes); esto es una segunda barrera para que
+  // un empleado ni siquiera pueda entrar a la pantalla escribiendo la URL.
+  const isAdminOnlyPage = pathname.startsWith('/admin/pagos') || pathname.startsWith('/admin/usuarios');
 
   useEffect(() => {
     if (!loading && !session && !isLoginPage) {
       router.replace('/admin');
+      return;
     }
-  }, [session, loading, isLoginPage, router]);
+    if (!loading && profile && isAdminOnlyPage && profile.role !== 'admin') {
+      router.replace('/admin/dashboard');
+    }
+  }, [session, profile, loading, isLoginPage, isAdminOnlyPage, router]);
 
   if (isLoginPage) {
     return <>{children}</>;
@@ -32,6 +41,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   if (!session || !profile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  // Evita el "flash" del contenido de una pantalla admin-only mientras el
+  // efecto de arriba redirige a un empleado.
+  if (isAdminOnlyPage && profile.role !== 'admin') {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />

@@ -2,19 +2,25 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Store, LayoutDashboard, Package, FolderTree, ShoppingCart, ShoppingBag, LogOut, Menu, X, CreditCard } from 'lucide-react';
+import { Store, LayoutDashboard, Package, FolderTree, ShoppingCart, ShoppingBag, LogOut, Menu, X, CreditCard, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/lib/auth-context';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 
 const navItems = [
-  { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/admin/ventas', label: 'Mostrador', icon: ShoppingBag },
-  { href: '/admin/productos', label: 'Productos', icon: Package },
-  { href: '/admin/categorias', label: 'Categorías', icon: FolderTree },
-  { href: '/admin/pedidos', label: 'Pedidos', icon: ShoppingCart },
-  { href: '/admin/pagos', label: 'Pagos', icon: CreditCard },
+  { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard, adminOnly: false },
+  { href: '/admin/ventas', label: 'Mostrador', icon: ShoppingBag, adminOnly: false },
+  { href: '/admin/productos', label: 'Productos', icon: Package, adminOnly: false },
+  { href: '/admin/categorias', label: 'Categorías', icon: FolderTree, adminOnly: false },
+  { href: '/admin/pedidos', label: 'Pedidos', icon: ShoppingCart, adminOnly: false },
+  // Pagos (credenciales de Mercado Pago) y Usuarios son cosas que solo el
+  // dueño debería ver o tocar - un empleado ni siquiera necesita saber que
+  // existen. El servidor igual las bloquea aunque alguien entre por URL
+  // directa (ver requireAdmin en las rutas /api/mercadopago/* y
+  // /api/admin/users), esto es solo para no mostrarlas en el menú.
+  { href: '/admin/pagos', label: 'Pagos', icon: CreditCard, adminOnly: true },
+  { href: '/admin/usuarios', label: 'Usuarios', icon: Users, adminOnly: true },
 ];
 
 export function AdminSidebar() {
@@ -41,7 +47,9 @@ export function AdminSidebar() {
       </div>
 
       <nav className="flex-1 p-4 space-y-1">
-        {navItems.map((item) => {
+        {navItems
+          .filter((item) => !item.adminOnly || profile?.role === 'admin')
+          .map((item) => {
           const active = pathname === item.href || pathname.startsWith(item.href + '/');
           return (
             <Link
