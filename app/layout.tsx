@@ -1,6 +1,6 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Fraunces, Nunito_Sans, JetBrains_Mono, Montserrat } from 'next/font/google';
+import { Fraunces, Nunito_Sans, JetBrains_Mono, Outfit } from 'next/font/google';
 import { CartProvider } from '@/lib/cart-context';
 import { AuthProvider } from '@/lib/auth-context';
 import { Toaster } from '@/components/ui/toaster';
@@ -23,7 +23,7 @@ const jetbrainsMono = JetBrains_Mono({
   variable: '--font-mono',
 });
 
-const scriptFont = Montserrat({
+const scriptFont = Outfit({
   subsets: ['latin'],
   variable: '--font-script',
   weight: ['500', '600', '700'],
