@@ -7,3 +7,5 @@ export const INSTAGRAM_HANDLE = 'todoymas307';
 export const INSTAGRAM_URL = `https://instagram.com/${INSTAGRAM_HANDLE}`;
 export const TIKTOK_HANDLE = 'todoymas307';
 export const TIKTOK_URL = `https://www.tiktok.com/@${TIKTOK_HANDLE}`;
+// TODO: reemplazar por el link real de la página de Facebook del cliente.
+export const FACEBOOK_URL = 'https://facebook.com/todoymas';

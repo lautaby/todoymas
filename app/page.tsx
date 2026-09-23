@@ -2,10 +2,10 @@
 
 import { useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Truck, ShieldCheck, Store, Headphones, Leaf } from 'lucide-react';
+import { ArrowRight, Truck, ShieldCheck, Store, Headphones } from 'lucide-react';
 import { StoreLayout } from '@/components/store-layout';
 import { ProductCard } from '@/components/product-card';
-import { OrganicBlob, LeafScatter, LeafSprig, Vine, Bloom, Mandala } from '@/components/decorative-plants';
+import { OrganicBlob, LeafScatter, LeafSprig, Vine, Bloom, Mandala, SceneryPlaceholder } from '@/components/decorative-plants';
 import { supabase, type Product, type Category } from '@/lib/supabase';
 import { Home } from 'lucide-react';
 import { CATEGORY_ICON_MAP as iconMap, tintForCategory } from '@/lib/category-icons';
@@ -48,39 +48,44 @@ export default function HomePage() {
       <section className="relative overflow-hidden bg-hearth bg-grain">
         <Mandala className="pointer-events-none absolute -right-24 -top-24 h-[420px] w-[420px] text-brand-clay opacity-[0.12] sm:-right-16 sm:-top-32 sm:h-[600px] sm:w-[600px]" />
         <Mandala className="pointer-events-none absolute -left-32 bottom-[-8rem] h-72 w-72 text-brand-sage opacity-[0.14] hidden sm:block sm:h-96 sm:w-96" />
-        <OrganicBlob className="absolute -right-32 -top-32 h-80 w-80 text-primary/25 animate-drift sm:-right-40 sm:-top-40 sm:h-[560px] sm:w-[560px] md:-right-24 md:-top-24" />
-        <OrganicBlob className="absolute -left-28 bottom-[-6rem] h-64 w-64 text-accent/20 opacity-80 animate-drift sm:-left-52 sm:bottom-[-12rem] sm:h-[460px] sm:w-[460px]" />
-        <LeafScatter className="absolute right-3 top-3 h-28 w-28 text-primary sm:right-8 sm:top-8 sm:h-64 sm:w-64" />
+        <LeafScatter className="absolute -left-6 -top-6 h-28 w-28 text-primary opacity-70 sm:left-4 sm:top-4 sm:h-48 sm:w-48" />
         <Bloom className="absolute left-4 bottom-8 h-16 w-16 text-brand-clay opacity-40 sm:left-10 sm:bottom-14 sm:h-24 sm:w-24" />
-        <Bloom className="absolute right-1/4 top-6 h-10 w-10 text-primary opacity-20 hidden sm:block" />
         <div className="container mx-auto px-4 relative">
-          <div className="flex flex-col items-center text-center py-20 md:py-28 max-w-3xl mx-auto">
-            <span className="inline-flex items-center gap-2 rounded-full bg-secondary px-4 py-1.5 text-sm font-medium text-secondary-foreground mb-6">
-              <Leaf className="h-4 w-4 text-primary" />
-              Toda la variedad, en un solo lugar
-            </span>
-            <h1 className="text-6xl md:text-8xl font-display font-bold tracking-tight text-primary drop-shadow-sm">
-              Todo y Más
-            </h1>
-            <p className="font-script text-2xl md:text-3xl text-accent mt-2">
-              Un poco de todo, en un solo lugar ♡
-            </p>
-            <p className="text-lg md:text-xl text-muted-foreground mt-5 max-w-2xl">
-              Pesca, camping, tecnología, hogar, belleza, aromaterapia y mucho más.
-              Todo lo que buscás, en un solo lugar, con envíos a todo el país.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 mt-8">
-              <Link href="/catalogo">
-                <button className="inline-flex items-center gap-2 bg-primary text-primary-foreground rounded-full px-8 py-3 font-semibold shadow-soft hover:shadow-soft-md hover:-translate-y-0.5 transition-all">
-                  Ver catálogo
-                  <ArrowRight className="h-4 w-4" />
-                </button>
-              </Link>
-              <Link href="/catalogo?destacados=true">
-                <button className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-8 py-3 font-semibold hover:bg-secondary hover:-translate-y-0.5 transition-all">
-                  Destacados
-                </button>
-              </Link>
+          <div className="grid lg:grid-cols-2 gap-10 items-center py-14 md:py-20">
+            {/* Columna de texto */}
+            <div className="text-center lg:text-left">
+              <p className="font-script text-xl md:text-2xl text-accent">Todo lo que necesitás...</p>
+              <h1 className="text-5xl md:text-7xl font-display font-bold tracking-tight text-primary drop-shadow-sm mt-1">
+                Todo y Más
+              </h1>
+              <p className="text-2xl md:text-3xl font-display text-foreground/80 mt-1">en un solo lugar ♡</p>
+              <p className="text-sm md:text-base font-medium text-muted-foreground mt-5 tracking-wide">
+                Belleza · Bazar &amp; Hogar · Pesca · Electro · Herramientas · Más
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 mt-8 justify-center lg:justify-start">
+                <Link href="/catalogo">
+                  <button className="inline-flex items-center gap-2 bg-primary text-primary-foreground rounded-full px-8 py-3 font-semibold shadow-soft hover:shadow-soft-md hover:-translate-y-0.5 transition-all">
+                    Ver productos
+                    <ArrowRight className="h-4 w-4" />
+                  </button>
+                </Link>
+                <Link href="/catalogo?destacados=true">
+                  <button className="inline-flex items-center gap-2 bg-background border border-foreground/70 rounded-full px-8 py-3 font-semibold hover:bg-secondary hover:-translate-y-0.5 transition-all">
+                    Ver más
+                  </button>
+                </Link>
+              </div>
+            </div>
+
+            {/* Columna de foto: placeholder texturado hasta tener la foto real del cliente */}
+            <div className="relative">
+              <div className="photo-slot aspect-[4/3] rounded-[3rem] shadow-soft-lg flex items-center justify-center text-primary-foreground/70">
+                <SceneryPlaceholder className="h-20 w-28" />
+              </div>
+              <Mandala className="pointer-events-none absolute -right-8 -top-8 h-28 w-28 text-background opacity-40 hidden sm:block" />
+              <p className="font-script text-lg md:text-xl text-accent absolute -bottom-6 -left-2 sm:-left-8 max-w-[10rem] text-center leading-tight hidden sm:block">
+                Lo esencial, lo útil, lo que te gusta... ♡
+              </p>
             </div>
           </div>
         </div>
@@ -174,8 +179,35 @@ export default function HomePage() {
         )}
       </section>
 
-      {/* CTA banner */}
+      {/* Banner promocional: foto + bloque de ofertas, como en las referencias */}
       <section className="container mx-auto px-4 py-14">
+        <div className="grid md:grid-cols-2 gap-4">
+          <div className="photo-slot relative overflow-hidden rounded-[2rem] min-h-[220px] flex items-end p-8 shadow-soft-lg">
+            <SceneryPlaceholder className="absolute right-6 top-6 h-14 w-20 text-primary-foreground/50" />
+            <p className="font-script text-2xl md:text-3xl text-primary-foreground leading-tight relative">
+              Viví la experiencia de estar afuera ♡
+            </p>
+          </div>
+          <div className="relative overflow-hidden rounded-[2rem] bg-secondary p-8 md:p-10 flex flex-col justify-center shadow-soft-lg">
+            <Mandala className="pointer-events-none absolute -right-10 -bottom-10 h-48 w-48 text-primary opacity-[0.12]" />
+            <h2 className="text-2xl md:text-3xl font-display font-semibold tracking-tight text-primary relative">
+              Ofertas imperdibles
+            </h2>
+            <p className="text-muted-foreground mt-2 max-w-sm relative">
+              Productos seleccionados con los mejores precios.
+            </p>
+            <Link href="/catalogo?destacados=true" className="relative mt-6 w-fit">
+              <button className="inline-flex items-center gap-2 bg-primary text-primary-foreground rounded-full px-6 py-3 font-semibold hover:-translate-y-0.5 transition-all shadow-soft">
+                Ver ofertas
+                <ArrowRight className="h-4 w-4" />
+              </button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA banner */}
+      <section className="container mx-auto px-4 pb-14">
         <div className="relative overflow-hidden rounded-[2.5rem] bg-wave bg-mandala-tile-light p-8 md:p-14 text-center shadow-soft-lg">
           <Mandala className="absolute -right-20 -bottom-20 h-72 w-72 text-primary-foreground opacity-[0.1] sm:h-96 sm:w-96" />
           <OrganicBlob className="absolute -right-28 -bottom-28 h-80 w-80 text-primary-foreground opacity-15" />

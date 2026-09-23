@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { Menu, Search, ShoppingCart, X, Leaf, Instagram, Heart } from 'lucide-react';
+import { LogoMark } from './decorative-plants';
 import { TikTokIcon } from '@/components/icons/tiktok-icon';
 import { INSTAGRAM_URL, TIKTOK_URL, INSTAGRAM_HANDLE } from '@/lib/contact';
 import { Button } from '@/components/ui/button';
@@ -101,7 +102,7 @@ export function Header() {
               <SheetContent side="left" className="w-80 p-0">
                 <SheetHeader className="p-4 border-b border-border">
                   <SheetTitle className="flex items-center gap-2 font-display font-semibold text-xl">
-                    <Leaf className="h-5 w-5 text-primary shrink-0" />
+                    <LogoMark className="h-5 w-5 text-primary shrink-0" />
                     Todo y Más
                   </SheetTitle>
                 </SheetHeader>
@@ -122,12 +123,12 @@ export function Header() {
 
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2.5 shrink-0">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                <Leaf className="h-5 w-5" />
+              <div className="flex h-11 w-11 items-center justify-center rounded-full border border-primary/30 text-primary shrink-0">
+                <LogoMark className="h-8 w-8" />
               </div>
               <div className="hidden sm:block">
                 <span className="text-2xl font-display font-semibold leading-none text-primary">Todo y Más</span>
-                <p className="text-[11px] text-muted-foreground mt-0.5">Tienda online</p>
+                <p className="font-script text-sm text-accent leading-none mt-1">Un poco de todo, en un solo lugar ♡</p>
               </div>
             </Link>
 

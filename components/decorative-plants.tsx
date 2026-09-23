@@ -147,3 +147,49 @@ export function Mandala({ className }: { className?: string }) {
     </svg>
   );
 }
+
+// Isotipo de mandala/flor de loto para el logo (header, footer). A
+// diferencia de <Mandala>, pensada como textura de fondo a baja opacidad,
+// esta va a opacidad plena y tamaño chico, como el ícono de línea fina
+// del manual de marca.
+export function LogoMark({ className }: { className?: string }) {
+  const petals = (r: number, w: number, h: number, count: number) => {
+    const items = [];
+    for (let i = 0; i < count; i++) {
+      const angle = (360 / count) * i;
+      items.push(
+        <ellipse
+          key={`${r}-${i}`}
+          cx="50"
+          cy={50 - r}
+          rx={w}
+          ry={h}
+          transform={`rotate(${angle} 50 50)`}
+        />
+      );
+    }
+    return items;
+  };
+
+  return (
+    <svg viewBox="0 0 100 100" className={className} fill="none" stroke="currentColor" strokeWidth="1.3" aria-hidden="true">
+      <circle cx="50" cy="50" r="47" strokeWidth="1" opacity="0.5" />
+      <g>{petals(30, 4, 12, 8)}</g>
+      <g>{petals(18, 5, 10, 8)}</g>
+      <circle cx="50" cy="50" r="7" />
+    </svg>
+  );
+}
+
+// Ilustración de línea (montaña + sol + agua) para usar dentro de los
+// "photo slots": el espacio reservado para la foto real de producto/estilo
+// que todavía no tenemos, así ese bloque no se ve vacío mientras tanto.
+export function SceneryPlaceholder({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 200 140" className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="150" cy="35" r="14" opacity="0.6" />
+      <path d="M10 110 L60 55 L90 85 L120 45 L190 110 Z" opacity="0.7" />
+      <path d="M0 120 Q50 105 100 120 T200 120" opacity="0.5" />
+    </svg>
+  );
+}

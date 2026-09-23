@@ -2,12 +2,12 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { Leaf, Phone, MapPin, Instagram, CreditCard, Landmark, Wallet } from 'lucide-react';
+import { Phone, MapPin, Instagram, Facebook, CreditCard, Landmark, Wallet } from 'lucide-react';
 import { supabase, type Category } from '@/lib/supabase';
 import { WhatsAppIcon } from '@/components/icons/whatsapp-icon';
 import { TikTokIcon } from '@/components/icons/tiktok-icon';
-import { LeafScatter, LeafSprig, Bloom, Vine, Mandala } from '@/components/decorative-plants';
-import { WHATSAPP_URL, WHATSAPP_CHANNEL_URL, INSTAGRAM_URL, TIKTOK_URL } from '@/lib/contact';
+import { LeafScatter, LeafSprig, Bloom, Vine, Mandala, LogoMark } from '@/components/decorative-plants';
+import { WHATSAPP_URL, WHATSAPP_CHANNEL_URL, INSTAGRAM_URL, TIKTOK_URL, FACEBOOK_URL } from '@/lib/contact';
 
 export function Footer() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -38,10 +38,13 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-3">
             <div className="flex items-center gap-2.5">
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                <Leaf className="h-5 w-5" />
+              <div className="flex h-9 w-9 items-center justify-center rounded-full border border-footer-foreground/30 text-footer-foreground shrink-0">
+                <LogoMark className="h-6 w-6" />
               </div>
-              <span className="text-2xl font-display font-semibold leading-none">Todo y Más</span>
+              <div>
+                <span className="text-2xl font-display font-semibold leading-none block">Todo y Más</span>
+                <span className="font-script text-sm text-footer-foreground/70 leading-none">Un poco de todo, en un solo lugar ♡</span>
+              </div>
             </div>
             <p className="text-sm text-footer-foreground/70">
               Tu tienda de confianza, con una gran variedad de rubros y productos, todo en un mismo lugar.
@@ -55,6 +58,15 @@ export function Footer() {
                 className="flex h-9 w-9 items-center justify-center rounded-full bg-footer-foreground/10 text-footer-foreground hover:bg-[#25D366] hover:text-white transition-colors"
               >
                 <WhatsAppIcon className="h-4 w-4" />
+              </a>
+              <a
+                href={FACEBOOK_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Seguinos en Facebook"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-footer-foreground/10 text-footer-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
+              >
+                <Facebook className="h-4 w-4" />
               </a>
               <a
                 href={INSTAGRAM_URL}
