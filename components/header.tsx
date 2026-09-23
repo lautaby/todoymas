@@ -100,7 +100,7 @@ export function Header() {
               </SheetTrigger>
               <SheetContent side="left" className="w-80 p-0">
                 <SheetHeader className="p-4 border-b border-border">
-                  <SheetTitle className="flex items-center gap-2 font-script text-xl">
+                  <SheetTitle className="flex items-center gap-2 font-display font-semibold text-xl">
                     <Leaf className="h-5 w-5 text-primary shrink-0" />
                     Todo y Más
                   </SheetTitle>
@@ -126,7 +126,7 @@ export function Header() {
                 <Leaf className="h-5 w-5" />
               </div>
               <div className="hidden sm:block">
-                <span className="text-2xl font-script leading-none">Todo y Más</span>
+                <span className="text-2xl font-display font-semibold leading-none text-primary">Todo y Más</span>
                 <p className="text-[11px] text-muted-foreground mt-0.5">Tienda online</p>
               </div>
             </Link>

@@ -87,10 +87,12 @@ const config: Config = {
         // de identidad), para sumar variedad en texturas/fondos sin tocar
         // los colores funcionales (primary/secondary/accent) de la UI.
         brand: {
+          forest: '#2E5D46',
           sage: '#A7C4A0',
           sand: '#EDE6D9',
           clay: '#C9A87A',
           stone: '#8B8F86',
+          cream: '#FAF9F6',
         },
       },
       keyframes: {

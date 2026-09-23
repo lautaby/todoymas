@@ -41,7 +41,7 @@ export function Footer() {
               <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground">
                 <Leaf className="h-5 w-5" />
               </div>
-              <span className="text-2xl font-script leading-none">Todo y Más</span>
+              <span className="text-2xl font-display font-semibold leading-none">Todo y Más</span>
             </div>
             <p className="text-sm text-footer-foreground/70">
               Tu tienda de confianza, con una gran variedad de rubros y productos, todo en un mismo lugar.

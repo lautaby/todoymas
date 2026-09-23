@@ -1,21 +1,21 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Fraunces, Nunito_Sans, JetBrains_Mono, Outfit } from 'next/font/google';
+import { Playfair_Display, Montserrat, JetBrains_Mono, Caveat } from 'next/font/google';
 import { CartProvider } from '@/lib/cart-context';
 import { WishlistProvider } from '@/lib/wishlist-context';
 import { AuthProvider } from '@/lib/auth-context';
 import { Toaster } from '@/components/ui/toaster';
 
-const nunitoSans = Nunito_Sans({
+const montserrat = Montserrat({
   subsets: ['latin'],
   variable: '--font-sans',
   weight: ['400', '500', '600', '700', '800'],
 });
 
-const fraunces = Fraunces({
+const playfairDisplay = Playfair_Display({
   subsets: ['latin'],
   variable: '--font-display',
-  weight: ['400', '500', '600', '700'],
+  weight: ['400', '500', '600', '700', '800', '900'],
   style: ['normal', 'italic'],
 });
 
@@ -24,7 +24,7 @@ const jetbrainsMono = JetBrains_Mono({
   variable: '--font-mono',
 });
 
-const scriptFont = Outfit({
+const scriptFont = Caveat({
   subsets: ['latin'],
   variable: '--font-script',
   weight: ['500', '600', '700'],
@@ -43,7 +43,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" suppressHydrationWarning>
-      <body className={`${nunitoSans.variable} ${fraunces.variable} ${jetbrainsMono.variable} ${scriptFont.variable} font-sans`}>
+      <body className={`${montserrat.variable} ${playfairDisplay.variable} ${jetbrainsMono.variable} ${scriptFont.variable} font-sans`}>
         <AuthProvider>
           <CartProvider>
             <WishlistProvider>
