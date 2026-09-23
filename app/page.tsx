@@ -5,10 +5,11 @@ import Link from 'next/link';
 import { ArrowRight, Truck, ShieldCheck, Store, Headphones } from 'lucide-react';
 import { StoreLayout } from '@/components/store-layout';
 import { ProductCard } from '@/components/product-card';
-import { OrganicBlob, LeafScatter, LeafSprig, Vine, Bloom, Mandala, SceneryPlaceholder } from '@/components/decorative-plants';
+import { OrganicBlob, LeafScatter, LeafSprig, Vine, Bloom, Mandala } from '@/components/decorative-plants';
 import { supabase, type Product, type Category } from '@/lib/supabase';
 import { Home } from 'lucide-react';
-import { CATEGORY_ICON_MAP as iconMap, tintForCategory } from '@/lib/category-icons';
+import { CATEGORY_ICON_MAP as iconMap, tintForCategory, blobVariantForCategory } from '@/lib/category-icons';
+import { PaintedBlob } from '@/components/decorative-plants';
 
 export default function HomePage() {
   const [featured, setFeatured] = useState<Product[]>([]);
@@ -80,7 +81,7 @@ export default function HomePage() {
             {/* Columna de foto: placeholder texturado hasta tener la foto real del cliente */}
             <div className="relative">
               <div className="photo-slot aspect-[4/3] rounded-[3rem] shadow-soft-lg flex items-center justify-center text-primary-foreground/70">
-                <SceneryPlaceholder className="h-20 w-28" />
+                <Mandala className="h-40 w-40 text-primary-foreground/60" />
               </div>
               <Mandala className="pointer-events-none absolute -right-8 -top-8 h-28 w-28 text-background opacity-40 hidden sm:block" />
               <p className="font-script text-lg md:text-xl text-accent absolute -bottom-6 -left-2 sm:-left-8 max-w-[10rem] text-center leading-tight hidden sm:block">
@@ -134,17 +135,20 @@ export default function HomePage() {
           {categories.map((cat) => {
             const Icon = cat.icon ? iconMap[cat.icon] : Home;
             const palette = tintForCategory(cat.id);
+            const blobVariant = blobVariantForCategory(cat.id);
             return (
               <Link
                 key={cat.id}
                 href={`/catalogo?categoria=${cat.slug}`}
                 className="group flex flex-col items-center gap-2.5 p-4 rounded-3xl border border-border bg-card shadow-soft hover:shadow-soft-md hover:-translate-y-1 transition-all"
               >
-                <div
-                  className="flex h-14 w-14 items-center justify-center rounded-full transition-colors"
-                  style={{ backgroundColor: palette.bg, color: palette.fg }}
-                >
-                  <Icon className="h-6 w-6" />
+                <div className="relative flex h-14 w-14 items-center justify-center">
+                  <PaintedBlob
+                    variant={blobVariant}
+                    className="absolute inset-0 h-full w-full transition-transform group-hover:scale-110"
+                    style={{ color: palette.bg }}
+                  />
+                  <Icon className="relative h-6 w-6" style={{ color: palette.fg }} />
                 </div>
                 <span className="text-xs font-medium text-center">{cat.name}</span>
               </Link>
@@ -183,7 +187,7 @@ export default function HomePage() {
       <section className="container mx-auto px-4 py-14">
         <div className="grid md:grid-cols-2 gap-4">
           <div className="photo-slot relative overflow-hidden rounded-[2rem] min-h-[220px] flex items-end p-8 shadow-soft-lg">
-            <SceneryPlaceholder className="absolute right-6 top-6 h-14 w-20 text-primary-foreground/50" />
+            <Mandala className="pointer-events-none absolute right-4 top-4 h-24 w-24 text-primary-foreground opacity-40" />
             <p className="font-script text-2xl md:text-3xl text-primary-foreground leading-tight relative">
               Viví la experiencia de estar afuera ♡
             </p>

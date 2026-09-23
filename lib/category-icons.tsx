@@ -104,3 +104,12 @@ export function tintForCategory(id: string | null | undefined) {
   for (let i = 0; i < id.length; i++) hash = (hash * 31 + id.charCodeAt(i)) >>> 0;
   return CATEGORY_TINTS[hash % CATEGORY_TINTS.length];
 }
+
+// Elige una de las 3 formas de "mancha pintada" (PaintedBlob) de forma
+// determinística por categoría, así el mismo rubro siempre se ve igual.
+export function blobVariantForCategory(id: string | null | undefined) {
+  if (!id) return 0;
+  let hash = 0;
+  for (let i = 0; i < id.length; i++) hash = (hash * 17 + id.charCodeAt(i)) >>> 0;
+  return hash % 3;
+}

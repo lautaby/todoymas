@@ -181,15 +181,28 @@ export function LogoMark({ className }: { className?: string }) {
   );
 }
 
-// Ilustración de línea (montaña + sol + agua) para usar dentro de los
-// "photo slots": el espacio reservado para la foto real de producto/estilo
-// que todavía no tenemos, así ese bloque no se ve vacío mientras tanto.
-export function SceneryPlaceholder({ className }: { className?: string }) {
+// Mancha "pintada" (blob orgánico, no un círculo perfecto) para poner
+// detrás de los íconos de categoría, imitando el trazo de acuarela/pincel
+// del manual de marca. currentColor hereda el tinte pastel de cada rubro.
+const BLOB_PATHS = [
+  'M50 6c22 0 42 16 44 38 2 20-14 40-38 46-24 6-48-6-52-28C0 40 12 18 26 10 33 6 42 6 50 6Z',
+  'M48 4c20-2 40 10 46 30 6 20-4 42-26 50-22 8-46 0-54-20C6 44 10 22 24 12 31 7 40 5 48 4Z',
+  'M52 8c24-4 42 10 46 32 4 20-10 40-32 46-24 6-48-4-54-26C6 40 8 18 24 10c8-4 18-2 28-2Z',
+];
+
+export function PaintedBlob({
+  className,
+  variant = 0,
+  style,
+}: {
+  className?: string;
+  variant?: number;
+  style?: React.CSSProperties;
+}) {
+  const d = BLOB_PATHS[Math.abs(variant) % BLOB_PATHS.length];
   return (
-    <svg viewBox="0 0 200 140" className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="150" cy="35" r="14" opacity="0.6" />
-      <path d="M10 110 L60 55 L90 85 L120 45 L190 110 Z" opacity="0.7" />
-      <path d="M0 120 Q50 105 100 120 T200 120" opacity="0.5" />
+    <svg viewBox="0 0 100 100" className={className} style={style} aria-hidden="true">
+      <path d={d} fill="currentColor" />
     </svg>
   );
 }
