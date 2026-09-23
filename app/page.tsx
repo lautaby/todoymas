@@ -45,7 +45,7 @@ export default function HomePage() {
   return (
     <StoreLayout>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-hearth">
+      <section className="relative overflow-hidden bg-hearth bg-grain">
         <Mandala className="pointer-events-none absolute -right-24 -top-24 h-[420px] w-[420px] text-brand-clay opacity-[0.12] sm:-right-16 sm:-top-32 sm:h-[600px] sm:w-[600px]" />
         <Mandala className="pointer-events-none absolute -left-32 bottom-[-8rem] h-72 w-72 text-brand-sage opacity-[0.14] hidden sm:block sm:h-96 sm:w-96" />
         <OrganicBlob className="absolute -right-32 -top-32 h-80 w-80 text-primary/25 animate-drift sm:-right-40 sm:-top-40 sm:h-[560px] sm:w-[560px] md:-right-24 md:-top-24" />
@@ -87,7 +87,7 @@ export default function HomePage() {
       </section>
 
       {/* Features bar */}
-      <section className="relative overflow-hidden border-y border-border bg-secondary/40">
+      <section className="relative overflow-hidden border-y border-border bg-secondary/60 bg-leaf-tile">
         <LeafSprig className="absolute -bottom-4 left-2 h-20 w-12 text-primary sm:-bottom-6 sm:left-6 sm:h-32 sm:w-20" />
         <LeafSprig className="absolute -top-6 right-3 h-16 w-10 text-accent rotate-[160deg] sm:-top-10 sm:right-10 sm:h-28 sm:w-16" />
         <Vine className="pointer-events-none absolute -bottom-2 left-0 h-8 w-full text-primary opacity-[0.12] sm:h-10" />
@@ -114,7 +114,8 @@ export default function HomePage() {
       </section>
 
       {/* Categories */}
-      <section className="relative overflow-hidden container mx-auto px-4 py-14">
+      <section className="relative overflow-hidden bg-mandala-tile bg-secondary/20">
+       <div className="container mx-auto px-4 py-14 relative">
         <Mandala className="pointer-events-none absolute -right-16 -top-16 h-72 w-72 text-brand-stone opacity-[0.08] sm:h-96 sm:w-96" />
         <LeafSprig className="pointer-events-none absolute -top-4 -left-2 h-24 w-14 text-primary opacity-[0.09] -rotate-12 sm:h-36 sm:w-20" />
         <Bloom className="pointer-events-none absolute -bottom-6 right-2 h-20 w-20 text-accent opacity-[0.12] sm:h-28 sm:w-28" />
@@ -145,10 +146,11 @@ export default function HomePage() {
             );
           })}
         </div>
+        </div>
       </section>
 
       {/* Featured products */}
-      <section className="relative overflow-hidden container mx-auto px-4 py-10">
+      <section className="relative overflow-hidden bg-grain container mx-auto px-4 py-10">
         <LeafScatter className="pointer-events-none absolute -right-6 bottom-0 h-32 w-32 text-accent opacity-[0.1] sm:h-52 sm:w-52" />
         <LeafSprig className="pointer-events-none absolute -top-6 -left-3 h-24 w-14 text-primary opacity-[0.08] rotate-[25deg] sm:h-36 sm:w-20" />
         <div className="flex items-center justify-between mb-6 relative">
@@ -174,7 +176,7 @@ export default function HomePage() {
 
       {/* CTA banner */}
       <section className="container mx-auto px-4 py-14">
-        <div className="relative overflow-hidden rounded-[2.5rem] bg-primary p-8 md:p-14 text-center shadow-soft-lg">
+        <div className="relative overflow-hidden rounded-[2.5rem] bg-wave bg-mandala-tile-light p-8 md:p-14 text-center shadow-soft-lg">
           <Mandala className="absolute -right-20 -bottom-20 h-72 w-72 text-primary-foreground opacity-[0.1] sm:h-96 sm:w-96" />
           <OrganicBlob className="absolute -right-28 -bottom-28 h-80 w-80 text-primary-foreground opacity-15" />
           <Bloom className="absolute left-6 top-6 h-16 w-16 text-primary-foreground opacity-20 sm:left-10 sm:top-10 sm:h-24 sm:w-24" />

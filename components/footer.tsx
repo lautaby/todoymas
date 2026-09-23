@@ -26,7 +26,7 @@ export function Footer() {
   }, []);
 
   return (
-    <footer className="relative overflow-hidden bg-footer text-footer-foreground mt-16">
+    <footer className="relative overflow-hidden bg-footer bg-mandala-tile-light text-footer-foreground mt-16">
       <div className="h-1 w-full bg-gradient-to-r from-primary via-accent to-primary opacity-70" />
       <Mandala className="pointer-events-none absolute -left-16 -bottom-24 h-80 w-80 text-primary-foreground opacity-[0.06] hidden md:block" />
       <LeafScatter className="absolute -right-10 -top-10 h-44 w-44 text-primary opacity-20 sm:-right-16 sm:-top-16 sm:h-72 sm:w-72" />
