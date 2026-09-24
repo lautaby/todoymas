@@ -128,7 +128,7 @@ export function Header() {
               </div>
               <div className="hidden sm:block">
                 <span className="text-2xl font-display font-semibold leading-none text-primary">Todo y Más</span>
-                <p className="font-script text-sm text-accent leading-none mt-1">Un poco de todo, en un solo lugar ♡</p>
+                <p className="font-script text-sm text-accent-ink leading-none mt-1">Un poco de todo, en un solo lugar ♡</p>
               </div>
             </Link>
 
@@ -172,7 +172,7 @@ export function Header() {
           </div>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex flex-wrap items-center gap-x-1 gap-y-0.5 min-h-12 py-1">
+          <nav className="hidden md:flex flex-wrap items-center gap-x-2 gap-y-1 min-h-12 py-1.5">
             <Link href="/">
               <Button variant="ghost" size="sm" className={cn(pathname === '/' && 'bg-secondary')}>
                 Inicio

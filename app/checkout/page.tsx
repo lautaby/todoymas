@@ -226,7 +226,7 @@ export default function CheckoutPage() {
   if (success) {
     return (
       <StoreLayout>
-        <div className="relative overflow-hidden bg-hearth">
+        <div className="relative overflow-hidden">
           <OrganicBlob className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 text-primary opacity-15 animate-drift sm:-right-32 sm:-top-32 sm:h-96 sm:w-96" />
           <LeafScatter className="pointer-events-none absolute -left-14 bottom-0 h-40 w-40 text-accent opacity-20 sm:-left-24 sm:h-72 sm:w-72" />
           <Bloom className="pointer-events-none absolute right-8 bottom-10 h-16 w-16 text-accent opacity-25 sm:right-16 sm:h-24 sm:w-24" />

@@ -77,7 +77,7 @@ export function CategoryMenu({ onNavigate }: { onNavigate?: () => void }) {
         return (
           <DropdownMenu key={parent.id} modal={false}>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="gap-1">
+              <Button variant="ghost" size="sm" className="gap-1.5 px-4">
                 {Icon && <Icon className="h-4 w-4" />}
                 {parent.name}
                 <ChevronDown className="h-3 w-3 opacity-50" />

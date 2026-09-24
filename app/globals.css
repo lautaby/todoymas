@@ -15,9 +15,10 @@
     --secondary: 39 35% 91%;
     --secondary-foreground: 151 34% 20%;
     --muted: 108 15% 84%;
-    --muted-foreground: 100 4% 55%;
+    --muted-foreground: 100 6% 38%;
     --accent: 35 42% 63%;
     --accent-foreground: 151 34% 16%;
+    --accent-ink: 30 42% 34%;
     --destructive: 6 58% 45%;
     --destructive-foreground: 60 33% 98%;
     --border: 39 20% 82%;
@@ -49,7 +50,7 @@
     --secondary: 151 12% 18%;
     --secondary-foreground: 39 25% 92%;
     --muted: 151 10% 17%;
-    --muted-foreground: 100 6% 62%;
+    --muted-foreground: 100 6% 68%;
     --accent: 35 42% 58%;
     --accent-foreground: 151 20% 9%;
     --destructive: 6 55% 50%;
@@ -85,9 +86,11 @@
     font-family: var(--font-script), system-ui, sans-serif;
     font-weight: 600;
   }
-  .bg-hearth {
-    background: radial-gradient(circle at 15% 20%, hsl(var(--primary) / 0.08), transparent 45%),
-      radial-gradient(circle at 85% 75%, hsl(var(--accent) / 0.08), transparent 50%);
+  /* Tono tierra oscurecido para texto manuscrito legible sobre fondos
+     claros — el --accent normal es muy claro para usarse como texto
+     (fallaba el contraste). */
+  .text-accent-ink {
+    color: hsl(var(--accent-ink));
   }
   .bg-grain {
     position: relative;
@@ -118,19 +121,12 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg fill='none' stroke='%23FAF9F6' stroke-width='1' opacity='0.08' transform='translate(80 80)'%3E%3Ccircle r='58'/%3E%3Ccircle r='40'/%3E%3Ccircle r='14'/%3E%3Cg%3E%3Cellipse cx='0' cy='-50' rx='5' ry='13'/%3E%3Cellipse cx='0' cy='-50' rx='5' ry='13' transform='rotate(45)'/%3E%3Cellipse cx='0' cy='-50' rx='5' ry='13' transform='rotate(90)'/%3E%3Cellipse cx='0' cy='-50' rx='5' ry='13' transform='rotate(135)'/%3E%3Cellipse cx='0' cy='-50' rx='5' ry='13' transform='rotate(180)'/%3E%3Cellipse cx='0' cy='-50' rx='5' ry='13' transform='rotate(225)'/%3E%3Cellipse cx='0' cy='-50' rx='5' ry='13' transform='rotate(270)'/%3E%3Cellipse cx='0' cy='-50' rx='5' ry='13' transform='rotate(315)'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     background-size: 160px 160px;
   }
-  /* Onda diagonal verde (swatch de textura verde ondulada del manual),
-     para bloques destacados como el CTA final. */
+  /* Degradado diagonal verde (swatch de textura verde del manual), para
+     bloques destacados como el CTA final. Antes tenía un patrón de rayas
+     repetidas encima; se sacó por verse como una plantilla genérica. */
   .bg-wave {
     background-color: hsl(var(--primary));
-    background-image:
-      linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(151 34% 22%) 100%),
-      repeating-linear-gradient(135deg, hsl(0 0% 100% / 0.05) 0px, hsl(0 0% 100% / 0.05) 2px, transparent 2px, transparent 34px);
-  }
-  .shadow-soft {
-    box-shadow: 0 1px 2px hsl(25 30% 20% / 0.04), 0 8px 24px -8px hsl(25 30% 20% / 0.12);
-  }
-  .shadow-soft-md {
-    box-shadow: 0 2px 4px hsl(25 30% 20% / 0.05), 0 16px 32px -12px hsl(25 30% 20% / 0.16);
+    background-image: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(151 34% 22%) 100%);
   }
 }
 

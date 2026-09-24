@@ -46,7 +46,7 @@ export default function HomePage() {
   return (
     <StoreLayout>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-hearth bg-grain">
+      <section className="relative overflow-hidden bg-grain">
         <Mandala className="pointer-events-none absolute -right-24 -top-24 h-[420px] w-[420px] text-brand-clay opacity-[0.12] sm:-right-16 sm:-top-32 sm:h-[600px] sm:w-[600px]" />
         <Mandala className="pointer-events-none absolute -left-32 bottom-[-8rem] h-72 w-72 text-brand-sage opacity-[0.14] hidden sm:block sm:h-96 sm:w-96" />
         <LeafScatter className="absolute -left-6 -top-6 h-28 w-28 text-primary opacity-70 sm:left-4 sm:top-4 sm:h-48 sm:w-48" />
@@ -55,7 +55,7 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-2 gap-10 items-center py-14 md:py-20">
             {/* Columna de texto */}
             <div className="text-center lg:text-left">
-              <p className="font-script text-xl md:text-2xl text-accent">Todo lo que necesitás...</p>
+              <p className="font-script text-xl md:text-2xl text-accent-ink">Todo lo que necesitás...</p>
               <h1 className="text-5xl md:text-7xl font-display font-bold tracking-tight text-primary drop-shadow-sm mt-1">
                 Todo y Más
               </h1>
@@ -89,7 +89,7 @@ export default function HomePage() {
                 />
               </div>
               <Mandala className="pointer-events-none absolute -right-8 -top-8 h-28 w-28 text-background opacity-70 hidden sm:block" />
-              <p className="font-script text-lg md:text-xl text-accent absolute -bottom-6 -left-2 sm:-left-8 max-w-[10rem] text-center leading-tight hidden sm:block">
+              <p className="font-script text-lg md:text-xl text-accent-ink absolute -bottom-6 -left-2 sm:-left-8 max-w-[10rem] text-center leading-tight hidden sm:block">
                 Lo esencial, lo útil, lo que te gusta... ♡
               </p>
             </div>
@@ -145,7 +145,7 @@ export default function HomePage() {
               <Link
                 key={cat.id}
                 href={`/catalogo?categoria=${cat.slug}`}
-                className="group flex flex-col items-center gap-2.5 p-4 rounded-3xl border border-border bg-card shadow-soft hover:shadow-soft-md hover:-translate-y-1 transition-all"
+                className="group flex flex-col items-center gap-2.5 p-4 rounded-3xl bg-card shadow-soft hover:shadow-soft-md hover:-translate-y-0.5 transition-all"
               >
                 <div className="relative flex h-14 w-14 items-center justify-center">
                   <PaintedBlob

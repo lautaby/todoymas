@@ -87,7 +87,7 @@ export function Footer() {
                 <TikTokIcon className="h-4 w-4" />
               </a>
             </div>
-            <p className="text-xs text-footer-foreground/60 pt-1 leading-relaxed">
+            <p className="text-xs text-footer-foreground/80 pt-1 leading-relaxed">
               ¿Querés recibir notificaciones de promociones y nuevos productos? Sumate a nuestro{' '}
               <a
                 href={WHATSAPP_CHANNEL_URL}
@@ -101,7 +101,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-display font-semibold mb-3 text-primary/90">Categorías</h3>
+            <h3 className="font-display font-semibold mb-3 text-footer-foreground">Categorías</h3>
             <ul className="space-y-2 text-sm text-footer-foreground/70">
               {categories.map((cat) => (
                 <li key={cat.id}>
@@ -119,7 +119,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-display font-semibold mb-3 text-primary/90">Información</h3>
+            <h3 className="font-display font-semibold mb-3 text-footer-foreground">Información</h3>
             <ul className="space-y-2 text-sm text-footer-foreground/70">
               <li><Link href="/catalogo" className="hover:text-primary transition-colors">Catálogo completo</Link></li>
               <li><Link href="/carrito" className="hover:text-primary transition-colors">Carrito</Link></li>
@@ -128,7 +128,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-display font-semibold mb-3 text-primary/90">Contacto</h3>
+            <h3 className="font-display font-semibold mb-3 text-footer-foreground">Contacto</h3>
             <ul className="space-y-2 text-sm text-footer-foreground/70">
               <li className="flex items-center gap-2"><MapPin className="h-4 w-4 shrink-0" /> Paseo España, Avenida España 86, Local 8</li>
               <li className="flex items-center gap-2"><Phone className="h-4 w-4 shrink-0" /> +54 9 261 665-7183</li>
@@ -137,7 +137,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-footer-foreground/10 mt-8 pt-6">
-          <h3 className="font-display font-semibold mb-3 text-primary/90 text-sm">Medios de pago</h3>
+          <h3 className="font-display font-semibold mb-3 text-footer-foreground text-sm">Medios de pago</h3>
           <div className="flex flex-wrap gap-2">
             {[
               { label: 'Go Cuotas', icon: Wallet },
@@ -157,7 +157,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-footer-foreground/10 mt-6 pt-6 text-center text-xs text-footer-foreground/50">
+        <div className="border-t border-footer-foreground/10 mt-6 pt-6 text-center text-xs text-footer-foreground/65">
           <p>&copy; {new Date().getFullYear()} Todo y Más · Todos los derechos reservados</p>
         </div>
       </div>

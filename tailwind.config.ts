@@ -26,9 +26,9 @@ const config: Config = {
         sm: 'calc(var(--radius) - 10px)',
       },
       boxShadow: {
-        soft: '0 1px 2px hsl(25 30% 20% / 0.04), 0 8px 24px -8px hsl(25 30% 20% / 0.12)',
-        'soft-md': '0 2px 4px hsl(25 30% 20% / 0.05), 0 16px 32px -12px hsl(25 30% 20% / 0.16)',
-        'soft-lg': '0 4px 8px hsl(25 30% 20% / 0.06), 0 24px 48px -16px hsl(25 30% 20% / 0.2)',
+        soft: '0 1px 2px hsl(25 25% 15% / 0.06), 0 1px 3px hsl(25 25% 15% / 0.08)',
+        'soft-md': '0 2px 4px hsl(25 25% 15% / 0.07), 0 4px 8px hsl(25 25% 15% / 0.10)',
+        'soft-lg': '0 4px 6px hsl(25 25% 15% / 0.08), 0 8px 16px hsl(25 25% 15% / 0.12)',
       },
       colors: {
         background: 'hsl(var(--background))',
