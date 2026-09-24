@@ -47,14 +47,11 @@ export default function HomePage() {
     <StoreLayout>
       {/* Hero */}
       <section className="relative overflow-hidden bg-grain">
-        <Mandala className="pointer-events-none absolute -right-24 -top-24 h-[420px] w-[420px] text-brand-clay opacity-[0.12] sm:-right-16 sm:-top-32 sm:h-[600px] sm:w-[600px]" />
-        <Mandala className="pointer-events-none absolute -left-32 bottom-[-8rem] h-72 w-72 text-brand-sage opacity-[0.14] hidden sm:block sm:h-96 sm:w-96" />
-        <LeafScatter className="absolute -left-6 -top-6 h-28 w-28 text-primary opacity-70 sm:left-4 sm:top-4 sm:h-48 sm:w-48" />
-        <Bloom className="absolute left-4 bottom-8 h-16 w-16 text-brand-clay opacity-40 sm:left-10 sm:bottom-14 sm:h-24 sm:w-24" />
-        <div className="container mx-auto px-4 relative">
-          <div className="grid lg:grid-cols-2 gap-10 items-center py-14 md:py-20">
-            {/* Columna de texto */}
-            <div className="text-center lg:text-left">
+        <Mandala className="pointer-events-none absolute -left-32 bottom-[-8rem] h-72 w-72 text-brand-sage opacity-[0.14] hidden sm:block sm:h-96 sm:w-96 z-10" />
+        <div className="grid lg:grid-cols-2 items-stretch">
+          {/* Columna de texto */}
+          <div className="container mx-auto px-4 lg:pr-8 relative z-10">
+            <div className="text-center lg:text-left py-14 md:py-20">
               <p className="font-script text-xl md:text-2xl text-accent-ink">Todo lo que necesitás...</p>
               <h1 className="text-5xl md:text-7xl font-display font-bold tracking-tight text-primary drop-shadow-sm mt-1">
                 Todo y Más
@@ -77,24 +74,26 @@ export default function HomePage() {
                 </Link>
               </div>
             </div>
+          </div>
 
-            {/* Columna de foto */}
-            <div className="relative">
-              <div className="relative aspect-[4/3] rounded-[3rem] shadow-soft-lg overflow-hidden bg-secondary">
-                <img
-                  src="https://images.unsplash.com/photo-1600672196900-c98c011a0977?auto=format&fit=crop&w=1200&q=80"
-                  alt="Paisaje de montaña y lago"
-                  className="h-full w-full object-cover"
-                  loading="eager"
-                />
-              </div>
-              <Mandala className="pointer-events-none absolute -right-8 -top-8 h-28 w-28 text-background opacity-70 hidden sm:block" />
-              <p className="font-script text-lg md:text-xl text-accent-ink absolute -bottom-6 -left-2 sm:-left-8 max-w-[10rem] text-center leading-tight hidden sm:block">
-                Lo esencial, lo útil, lo que te gusta... ♡
-              </p>
-            </div>
+          {/* Columna de foto: a sangre completa contra el borde derecho */}
+          <div className="relative h-72 sm:h-96 lg:h-auto lg:min-h-[420px] overflow-hidden rounded-l-[3rem] lg:rounded-l-[4rem]">
+            <img
+              src="https://images.unsplash.com/photo-1600672196900-c98c011a0977?auto=format&fit=crop&w=1400&q=80"
+              alt="Paisaje de montaña y lago"
+              className="absolute inset-0 h-full w-full object-cover"
+              loading="eager"
+            />
+            <Mandala className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 text-background opacity-60" />
+            <Mandala className="pointer-events-none absolute -left-16 -bottom-16 h-48 w-48 text-background opacity-30 hidden sm:block" />
+            <p className="font-script text-lg md:text-xl text-background drop-shadow-md absolute top-6 right-6 md:top-10 md:right-10 text-right leading-tight">
+              Lo esencial, lo útil,<br />lo que te gusta... ♡
+            </p>
           </div>
         </div>
+        {/* Hojas que cruzan la costura entre el panel de texto y la foto */}
+        <LeafScatter className="pointer-events-none absolute -left-6 -top-6 h-28 w-28 text-primary opacity-70 sm:left-4 sm:top-4 sm:h-48 sm:w-48 z-10" />
+        <Bloom className="pointer-events-none absolute left-4 bottom-8 h-16 w-16 text-brand-clay opacity-40 sm:left-10 sm:bottom-14 sm:h-24 sm:w-24 z-10" />
       </section>
 
       {/* Features bar */}
@@ -136,7 +135,7 @@ export default function HomePage() {
             Ver todo
           </Link>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4 relative">
+        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-8 gap-x-4 gap-y-8 relative">
           {categories.map((cat) => {
             const Icon = cat.icon ? iconMap[cat.icon] : Home;
             const palette = tintForCategory(cat.id);
@@ -145,17 +144,17 @@ export default function HomePage() {
               <Link
                 key={cat.id}
                 href={`/catalogo?categoria=${cat.slug}`}
-                className="group flex flex-col items-center gap-2.5 p-4 rounded-3xl bg-card shadow-soft hover:shadow-soft-md hover:-translate-y-0.5 transition-all"
+                className="group flex flex-col items-center gap-3 text-center"
               >
-                <div className="relative flex h-14 w-14 items-center justify-center">
+                <div className="relative flex h-20 w-20 sm:h-24 sm:w-24 items-center justify-center">
                   <PaintedBlob
                     variant={blobVariant}
                     className="absolute inset-0 h-full w-full transition-transform group-hover:scale-110"
                     style={{ color: palette.bg }}
                   />
-                  <Icon className="relative h-6 w-6" style={{ color: palette.fg }} />
+                  <Icon className="relative h-8 w-8" style={{ color: palette.fg }} />
                 </div>
-                <span className="text-xs font-medium text-center">{cat.name}</span>
+                <span className="text-sm font-semibold">{cat.name}</span>
               </Link>
             );
           })}
@@ -212,7 +211,7 @@ export default function HomePage() {
               Productos seleccionados con los mejores precios.
             </p>
             <Link href="/catalogo?destacados=true" className="relative mt-6 w-fit">
-              <button className="inline-flex items-center gap-2 bg-primary text-primary-foreground rounded-full px-6 py-3 font-semibold hover:-translate-y-0.5 transition-all shadow-soft">
+              <button className="inline-flex items-center gap-2 bg-accent text-accent-foreground rounded-full px-6 py-3 font-semibold hover:-translate-y-0.5 transition-all shadow-soft">
                 Ver ofertas
                 <ArrowRight className="h-4 w-4" />
               </button>

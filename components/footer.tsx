@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { Phone, MapPin, Instagram, Facebook, CreditCard, Landmark, Wallet } from 'lucide-react';
+import { Phone, MapPin, Instagram, Facebook, CreditCard, Landmark, Wallet, Heart } from 'lucide-react';
 import { supabase, type Category } from '@/lib/supabase';
 import { WhatsAppIcon } from '@/components/icons/whatsapp-icon';
 import { TikTokIcon } from '@/components/icons/tiktok-icon';
@@ -136,25 +136,30 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-footer-foreground/10 mt-8 pt-6">
-          <h3 className="font-display font-semibold mb-3 text-footer-foreground text-sm">Medios de pago</h3>
-          <div className="flex flex-wrap gap-2">
-            {[
-              { label: 'Go Cuotas', icon: Wallet },
-              { label: 'Mercado Pago', icon: Landmark },
-              { label: 'Tarjetas de crédito', icon: CreditCard },
-              { label: 'Tarjetas de débito', icon: CreditCard },
-              { label: 'Y más', icon: null },
-            ].map(({ label, icon: Icon }) => (
-              <span
-                key={label}
-                className="inline-flex items-center gap-1.5 rounded-full border border-footer-foreground/15 bg-footer-foreground/5 px-3 py-1.5 text-xs text-footer-foreground/80"
-              >
-                {Icon && <Icon className="h-3.5 w-3.5" />}
-                {label}
-              </span>
-            ))}
+        <div className="border-t border-footer-foreground/10 mt-8 pt-6 flex flex-col md:flex-row items-start md:items-end justify-between gap-6">
+          <div>
+            <h3 className="font-display font-semibold mb-3 text-footer-foreground text-sm">Medios de pago</h3>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { label: 'Go Cuotas', icon: Wallet },
+                { label: 'Mercado Pago', icon: Landmark },
+                { label: 'Tarjetas de crédito', icon: CreditCard },
+                { label: 'Tarjetas de débito', icon: CreditCard },
+                { label: 'Y más', icon: null },
+              ].map(({ label, icon: Icon }) => (
+                <span
+                  key={label}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-footer-foreground/15 bg-footer-foreground/5 px-3 py-1.5 text-xs text-footer-foreground/80"
+                >
+                  {Icon && <Icon className="h-3.5 w-3.5" />}
+                  {label}
+                </span>
+              ))}
+            </div>
           </div>
+          <p className="font-script text-xl text-footer-foreground/90 flex items-center gap-1.5 shrink-0">
+            Gracias por ser parte de este proyecto <Heart className="h-4 w-4 fill-current" />
+          </p>
         </div>
 
         <div className="border-t border-footer-foreground/10 mt-6 pt-6 text-center text-xs text-footer-foreground/65">
