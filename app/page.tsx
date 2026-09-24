@@ -78,12 +78,17 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Columna de foto: placeholder texturado hasta tener la foto real del cliente */}
+            {/* Columna de foto */}
             <div className="relative">
-              <div className="photo-slot aspect-[4/3] rounded-[3rem] shadow-soft-lg flex items-center justify-center text-primary-foreground/70">
-                <Mandala className="h-40 w-40 text-primary-foreground/60" />
+              <div className="relative aspect-[4/3] rounded-[3rem] shadow-soft-lg overflow-hidden bg-secondary">
+                <img
+                  src="https://images.unsplash.com/photo-1600672196900-c98c011a0977?auto=format&fit=crop&w=1200&q=80"
+                  alt="Paisaje de montaña y lago"
+                  className="h-full w-full object-cover"
+                  loading="eager"
+                />
               </div>
-              <Mandala className="pointer-events-none absolute -right-8 -top-8 h-28 w-28 text-background opacity-40 hidden sm:block" />
+              <Mandala className="pointer-events-none absolute -right-8 -top-8 h-28 w-28 text-background opacity-70 hidden sm:block" />
               <p className="font-script text-lg md:text-xl text-accent absolute -bottom-6 -left-2 sm:-left-8 max-w-[10rem] text-center leading-tight hidden sm:block">
                 Lo esencial, lo útil, lo que te gusta... ♡
               </p>
@@ -186,8 +191,14 @@ export default function HomePage() {
       {/* Banner promocional: foto + bloque de ofertas, como en las referencias */}
       <section className="container mx-auto px-4 py-14">
         <div className="grid md:grid-cols-2 gap-4">
-          <div className="photo-slot relative overflow-hidden rounded-[2rem] min-h-[220px] flex items-end p-8 shadow-soft-lg">
-            <Mandala className="pointer-events-none absolute right-4 top-4 h-24 w-24 text-primary-foreground opacity-40" />
+          <div className="relative overflow-hidden rounded-[2rem] min-h-[220px] flex items-end p-8 shadow-soft-lg">
+            <img
+              src="https://images.unsplash.com/photo-1649519605812-400ba1767985?auto=format&fit=crop&w=1200&q=80"
+              alt="Carpa iluminada de noche bajo las estrellas"
+              className="absolute inset-0 h-full w-full object-cover"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
             <p className="font-script text-2xl md:text-3xl text-primary-foreground leading-tight relative">
               Viví la experiencia de estar afuera ♡
             </p>
